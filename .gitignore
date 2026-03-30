@@ -1,0 +1,16 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode-test/
+
+# Logs / temp
+*.log
+*.tmp
+*.bak
+
+# Python / Node noise if local tooling gets added later
+__pycache__/
+*.pyc
+node_modules/
+dist/
+out/

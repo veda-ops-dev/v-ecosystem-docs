@@ -1,0 +1,243 @@
+# V Ecosystem
+
+## Purpose
+
+This document defines what the V Ecosystem is.
+
+It exists to answer:
+
+```text
+What systems make up the V Ecosystem, what role does each system play, and how should the ecosystem be understood as a whole?
+```
+
+This is a Tier 1 ecosystem authority document.
+
+---
+
+## Scope
+
+This document governs:
+
+- the top-level identity of the V Ecosystem
+- the role of each core system in the ecosystem
+- the high-level separation of system responsibilities
+- the ecosystem-wide mental model used by operators and LLMs
+
+---
+
+## Out of Scope
+
+This document does not define:
+
+- detailed cross-system interface contracts
+- detailed workflow steps
+- detailed governance rules
+- project-specific internal doctrine
+- implementation details
+
+Those belong in more specific ecosystem, project, interface, workflow, or governance docs.
+
+---
+
+## System
+
+- ecosystem
+
+---
+
+## Tier 1 Note
+
+A Tier 1 ecosystem authority document defines top-level cross-system truth for the V Ecosystem.
+
+Tier 1 docs should be:
+
+- broadly stable
+- low-ambiguity
+- load-bearing for later docs
+- limited to top-level ecosystem meaning and rules
+
+---
+
+## Core Rule
+
+The V Ecosystem is a bounded multi-system environment.
+
+Each system exists to own a different kind of truth.
+The ecosystem is strongest when those ownership boundaries stay explicit.
+
+No system should expand casually into another system’s truth domain.
+
+---
+
+## Ecosystem Definition
+
+The V Ecosystem is the coordinated set of systems used to:
+
+- observe reality
+- interpret signal
+- create and govern plans
+- hand off work
+- execute work
+- report outcomes
+- maintain and improve launched work over time
+
+The ecosystem is not a single monolithic application.
+It is a governed set of cooperating systems.
+
+---
+
+## Core Systems
+
+## Project V
+
+### Role
+Project V is the planning and orchestration system of record.
+
+### Owns
+- planning truth
+- orchestration truth
+- project decomposition
+- readiness truth
+- decision truth
+- handoff truth
+
+### Does Not Own
+- long-lived execution truth
+- signal/observability truth
+- raw external evidence as a canonical store
+
+### Main Use
+Project V exists to decide what should be pursued, how it should be structured, when it is ready, and when it should be handed off.
+
+---
+
+## VEDA
+
+### Role
+VEDA is the signal, evidence, and observability system of record.
+
+### Owns
+- signal truth
+- evidence truth
+- observability truth
+- external reality inputs relevant to the ecosystem
+
+### Does Not Own
+- planning truth
+- execution truth
+- project orchestration truth
+
+### Main Use
+VEDA exists to observe, gather, organize, and preserve the external and internal signals that other systems may interpret.
+
+---
+
+## V Forge
+
+### Role
+V Forge is the execution system of record.
+
+### Owns
+- execution truth
+- implementation truth
+- bounded execution-side research
+- maintenance execution
+- execution-side reporting
+
+### Does Not Own
+- planning truth
+- orchestration truth
+- signal/observability truth as a system of record
+
+### Main Use
+V Forge exists to carry out approved work, perform bounded execution-side research, report what happened, and return execution findings back into the ecosystem where required.
+
+---
+
+## High-Level Ecosystem Model
+
+The ecosystem should be understood through this flow:
+
+1. **VEDA** provides signal, evidence, and observability
+2. **Project V** interprets what matters for planning and orchestration
+3. **Project V** creates structure, readiness, and handoff truth
+4. **Human review and approval** occurs at meaningful choke points before execution where required
+5. **V Forge** executes approved work within its bounded role
+6. **V Forge** reports outcomes, issues, and findings back into the ecosystem
+7. **VEDA** continues to observe reality over time
+8. **Project V** may re-prioritize, re-plan, or create new handoffs based on evidence and outcomes
+
+This is a cooperation model, not shared ownership.
+
+---
+
+## Human-In-The-Loop Principle
+
+The V Ecosystem is not designed around unrestricted autonomy.
+
+Human review, direction, and approval remain important at meaningful choke points, especially around:
+
+- project creation
+- approvals
+- external paid actions
+- significant mutations
+- launch decisions
+- ecosystem doctrine changes
+
+The ecosystem may be heavily LLM-assisted, but it remains governed.
+
+---
+
+## LLM Use Principle
+
+The V Ecosystem docs are written LLM-first.
+
+That means the ecosystem must be understandable by a capable LLM without relying on hidden tribal knowledge.
+
+Each system must have:
+
+- a clear role
+- clear boundaries
+- clear vocabulary
+- clear interactions
+- clear authority
+
+If the docs are ambiguous, the ecosystem becomes easier for LLMs to drift while implementing or operating it.
+
+---
+
+## Future Growth Principle
+
+The V Ecosystem is expected to grow beyond the first three systems.
+
+Any future project added to the ecosystem must:
+
+- have a clear role
+- have a bounded truth domain
+- have clear access and interface rules
+- have required doctrine and onboarding docs
+- avoid collapsing existing system boundaries
+
+Future growth is governed expansion, not casual accumulation.
+
+---
+
+## Usage
+
+This document should be used:
+
+- as the first identity/orientation doc for the ecosystem
+- as the top-level system-role reference for operators
+- as a first-stop authority doc for LLM sessions working from the shared docs root
+- as a boundary reminder when writing more specific doctrine docs
+
+---
+
+## Related Docs
+
+- `cross-system-boundaries.md`
+- `vocabulary.md`
+- `../project-v/project-v.md`
+- `../veda/veda.md`
+- `../v-forge/v-forge.md`
+- `../governance/agent-operating-doctrine.md`
