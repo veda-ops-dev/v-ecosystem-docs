@@ -46,7 +46,7 @@ Anything required to reconstruct, govern, continue, or implement the V Ecosystem
 
 ---
 
-## Current State — CORE AUTHORITY COMPLETE, PROJECT V NEAR-MATURE, VEDA MATERIALLY UNDERWAY, V FORGE SCHEMA SPINE WRITTEN AND SURFACE EXECUTION CONDITION DESIGN THREAD ACTIVE
+## Current State — CORE AUTHORITY COMPLETE, PROJECT V NEAR-MATURE, VEDA MATERIALLY UNDERWAY, V FORGE SCHEMA SPINE AND DATA BOUNDARIES COMPLETE — OPERABILITY WAVE NEXT
 
 ### What exists right now
 
@@ -168,6 +168,7 @@ C:\dev\v-ecosystem-docs
     schema-authority.md               ✅  ← NEW: first-pass schema domain and record family authority, reviewed and patched
     schema-specification.md           ✅  ← NEW: concrete first-pass field-level schema spec, reviewed and patched
     surface-execution-state-design-note.md  ✅  ← NEW: design note for deferred surface execution condition pattern (execution condition is the canonical concept name)
+    data-boundaries.md                        ✅  ← NEW: V Forge-specific data ownership boundary rules
     system-invariants.md
     v-forge.md                        ✅  ← strengthened identity layer
     vs-project-v.md
@@ -264,13 +265,14 @@ Core spine written and reviewed:
 
 Remaining VEDA implementation-build-spec work: see Priority 2 below.
 
-### V Forge implementation-build-spec layer — schema spine now written ✅
-Core schema and vocabulary docs written, reviewed, and patched this session:
+### V Forge implementation-build-spec layer — schema spine and data boundaries complete ✅
+Core schema, vocabulary, and boundary docs written, reviewed, and patched:
 - `v-forge/v-forge.md` ✅ (strengthened identity layer)
 - `v-forge/schema-authority.md` ✅ (7 domains, record families, ownership posture, anti-drift rules)
 - `v-forge/controlled-vocabularies.md` ✅ (first-pass enums for all governed fields, reviewed and patched)
 - `v-forge/schema-specification.md` ✅ (22 record families, full field-level spec, reviewed and patched)
 - `v-forge/surface-execution-state-design-note.md` ✅ (deferred pattern acknowledged and captured)
+- `v-forge/data-boundaries.md` ✅ (V Forge-specific data ownership boundary rules, anti-drift rules, light-tracking boundary, surface execution condition boundary)
 
 **V Forge first-pass scoping is now locked:**
 - Two first-class project types: `content_affiliate`, `plugin_product`
@@ -328,35 +330,60 @@ When working from legacy VEDA schema/build-spec material, content graph structur
 
 ---
 
-### Priority 3 — V Forge remaining implementation-build-spec docs
+### Priority 3 — V Forge Operability Wave
 
-**Status:** V Forge now has a real schema/build-spec spine. The three core schema docs (schema-authority, controlled-vocabularies, schema-specification) are written, reviewed, and patched. The design note for surface execution-state is also written.
+**Status:** V Forge schema spine and data boundaries are complete. The next phase is not more identity or schema establishment. It is operability.
 
-**The remaining V Forge implementation-build-spec work is:**
+Two completed operator-seat audits (a broad ecosystem audit and a focused V Forge audit) established this sequencing. The priority order below is not arbitrary — it reflects where the system is genuinely weak and what a human operator in VS Code with an LLM connected actually needs.
+
+**Audit conclusions accepted as input:**
+- The doctrine layer is strong. The practical operator layer is weak.
+- V Forge is currently closer to a record-keeping system than a usable execution environment.
+- The biggest missing layer is not more identity/schema doctrine — it is MCP tool surface, concrete execution workflows, content graph operability, execution intelligence operationalization, and playbook/quickstart content.
+- There is no good "what do I do?" entry path for a human in VS Code with an LLM connected.
+
+**V Forge active frontier:** tools, workflows, content graph operability, execution intelligence.
+Not more identity groundwork. Not more schema establishment.
+
+#### Workstream A — MCP Tool Surface (first; current V Forge blocker)
 
 6. `v-forge/mcp-surface.md`
-   — defines the V Forge MCP tool surface: what tools exist, what they do, what they expose, session scoping posture
+   — defines the V Forge MCP tool surface: what tools exist, what they do, what they expose, session scoping posture. This is the single most important next V Forge doc. Nothing else in the operability wave moves well without it.
 
-7. `v-forge/data-boundaries.md`
-   — V Forge-specific data ownership boundary rules; companion to the ecosystem-level `interfaces/data-boundaries.md`
+#### Workstream B — Concrete Execution Workflows
 
-**Should happen after those:**
+7. `v-forge/content-lifecycle-workflow.md`
+   — the step-by-step workflow for producing, publishing, and maintaining content on V Forge-operated surfaces
 
-8. Review and patch pass on new V Forge schema docs
-   — the schema-authority, controlled-vocabularies, and schema-specification docs are fresh; a structured review pass (similar to what was done this session) should be planned before implementation starts in earnest
+8. `v-forge/release-lifecycle-workflow.md`
+   — the step-by-step workflow for managing plugin/product releases through the V Forge release surface
 
-9. `v-forge/operator-surfaces/vscode-extension.md`
-   — V Forge operator surface for the VSCode extension; analogous to `project-v/operator-surfaces/vscode-extension.md`
+#### Workstream C — Content Graph Operations
 
-10. `v-forge/hammer-doctrine.md` and `v-forge/hammer-plan.md`
-    — V Forge hammer layer; deferred until schema docs are stable but should happen before implementation goes far
+9. `v-forge/content-graph-operations.md`
+   — how the content graph is built, maintained, and queried operationally; content decay criteria may live here or split later
+
+#### Workstream D — Execution Intelligence Operations
+
+10. `v-forge/execution-intelligence-operations.md`
+    — how execution intelligence is operationalized: how VEDA signal is consumed and crossed against the content graph, what outputs are produced, how findings are generated
+
+#### Workstream E — Operator Quickstart and Playbook Layer
+
+11. `v-forge/operator-quickstart.md`
+    — the practical "what do I do?" entry path for a human operator in VS Code; the operator-seat entry point that is currently missing
+
+12. `v-forge/playbooks/` initial content (later in this workstream)
+
+#### Later (after operability wave is materially underway)
+
+- `v-forge/operator-surfaces/vscode-extension.md`
+- V Forge hammer layer (`hammer-doctrine.md`, `hammer-plan.md`)
+- Surface execution condition governed-spec expansion
+- Schema cleanup/patch passes as needed
 
 **Surface execution condition design thread:**
-The design note is written. The next deliberate action on this thread is either:
-- updating `v-forge/schema-authority.md` to name surface execution condition as a named extension hook (currently the extension hooks section names "Deep YouTube metadata" but not this broader pattern)
-- or leaving it in the design note until surface-specific feature vocabularies are researched and a governed spec pass is warranted
-
-Do not let this thread disappear. Do not silently pre-build it.
+The design note is written. The next deliberate action on this thread is naming surface execution condition as a named extension hook in `v-forge/schema-authority.md`. Do not silently pre-build it.
 
 **Rule:**
 Do not copy old source material for V Forge — write from current ecosystem doctrine and the content-graph material that legitimately moved from legacy VEDA source.
@@ -396,14 +423,13 @@ Create these only when concrete provider integrations are admitted through `ecos
 ### Still blocking coding
 
 - `veda/validation-and-error-taxonomy.md` — blocking VEDA implementation sufficiency
-- `v-forge/mcp-surface.md` — blocking V Forge MCP tool implementation
-- `v-forge/data-boundaries.md` — blocking V Forge data boundary enforcement implementation
+- `v-forge/mcp-surface.md` — blocking V Forge operability wave; the real current V Forge blocker
 
 ### Should happen soon
 
 - Remaining Project V API family docs if needed for coding readiness (external-links, research-docs, decision-records, status-history)
-- Review/patch pass on new V Forge schema docs before implementation begins in earnest
-- `v-forge/schema-authority.md` extension hooks section: add surface execution-state as a named hook
+- `v-forge/schema-authority.md` extension hooks section: add surface execution condition as a named hook
+- V Forge operability wave Workstreams B–E (content-lifecycle-workflow, release-lifecycle-workflow, content-graph-operations, execution-intelligence-operations, operator-quickstart)
 
 ### Can wait until later
 
@@ -411,7 +437,8 @@ Create these only when concrete provider integrations are admitted through `ecos
 - VEDA MCP tool registry/tooling principles
 - V Forge operator-surface VSCode doc
 - V Forge hammer docs
-- Surface execution-state governed spec (deferred until feature vocabularies are researched per surface type)
+- V Forge playbooks/ initial content
+- Surface execution condition governed spec (deferred until feature vocabularies are researched per surface type)
 
 ---
 
@@ -443,9 +470,10 @@ The remaining Project V gap is the four remaining API family docs (external-link
 **VEDA is materially underway.**
 The VEDA implementation-build-spec spine — schema-reference, observatory-models, search-intelligence-layer, api-contract-principles — is written and reviewed. The next missing doc is `veda/validation-and-error-taxonomy.md`.
 
-**V Forge is no longer the untouched frontier.**
-V Forge now has a real implementation-build-spec spine: strengthened identity, schema authority, controlled vocabularies (reviewed and patched twice), and a concrete 22-record-family schema specification (reviewed and patched). First-pass scoping is locked. The design note for the surface execution condition pattern is written.
-The remaining V Forge gaps are mcp-surface, data-boundaries, a schema-doc review pass, the operator-surface doc, and the hammer layer.
+**V Forge schema spine and data boundaries are complete.**
+V Forge now has: strengthened identity, schema authority, controlled vocabularies (reviewed and patched), a concrete 22-record-family schema specification (reviewed and patched), the surface execution condition design note, and data boundaries.
+First-pass scoping is locked. The active V Forge frontier is the operability wave — tools, workflows, content graph operability, execution intelligence — not more schema groundwork.
+The remaining V Forge gaps are mcp-surface (current blocker), the four workstream B–D docs, and the operator quickstart layer.
 
 ---
 
@@ -526,12 +554,21 @@ Then load the implementation-build-spec spine:
 Also read the design note if surface/execution-state work is on the agenda:
 - `v-forge/surface-execution-state-design-note.md`
 
-**The active next V Forge write targets are `v-forge/mcp-surface.md` and `v-forge/data-boundaries.md`.**
+**The active V Forge frontier is the operability wave, not more schema work.**
+Schema, vocabulary, field-level spec, and data boundaries are done.
+Do not treat any of these as still missing — they are written.
 
-These are now the V Forge implementation blockers. Schema, vocabulary, and field-level spec are done.
-Do not treat schema authority or schema spec as still missing — they are written.
+**V Forge operability wave — workstream order:**
+1. `v-forge/mcp-surface.md` — current blocker; write first
+2. `v-forge/content-lifecycle-workflow.md` — Workstream B
+3. `v-forge/release-lifecycle-workflow.md` — Workstream B
+4. `v-forge/content-graph-operations.md` — Workstream C
+5. `v-forge/execution-intelligence-operations.md` — Workstream D
+6. `v-forge/operator-quickstart.md` — Workstream E
 
-**Surface execution condition design thread:** The design note is written and must be preserved. The next deliberate action on this thread is adding surface execution condition as a named extension hook in `v-forge/schema-authority.md`. Do not silently pre-build it into schema before that governed step.
+The operator-quickstart (Workstream E) is the entry-point doc that makes V Forge usable for a human in VS Code with an LLM connected. It is the practical payoff of everything else in this wave.
+
+**Surface execution condition design thread:** The design note is written and must be preserved. The next deliberate action is adding surface execution condition as a named extension hook in `v-forge/schema-authority.md`. Do not silently pre-build it.
 
 ---
 
