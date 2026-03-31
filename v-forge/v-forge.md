@@ -163,7 +163,10 @@ V Forge must support these high-level capability domains:
 - **Content graph / structure** — maintaining the structural model of what a
   project has built across all relevant dimensions
 - **Owned/branded surface operations** — building, operating, and maintaining
-  the project's owned execution surfaces
+  the project's owned execution surfaces; a deeper execution condition model
+  (tracking what has been configured, what is missing, and what operational state
+  each surface is in) is a recognized future concern captured in
+  `surface-execution-state-design-note.md`
 - **Release and publication continuity** — managing the structured lifecycle of
   what gets published, when, and in what state
 - **Engagement continuity** — where publication and engagement are part of
@@ -183,6 +186,14 @@ Specific design for each domain belongs in more specific V Forge docs.
 
 Some capability domains may exist later as bounded extensions or adjacent layers,
 but are **not core V Forge by default**.
+
+- **Surface execution condition** — a structured model of what has been
+  configured, what is missing, what execution work has been applied, and what
+  operational condition each owned surface is in. This is a recognized future V
+  Forge capability area, distinct from surface registry state, playbook guidance,
+  and observatory signal. It is not part of first-pass schema. The pattern and
+  its conceptual boundaries are captured in
+  `surface-execution-state-design-note.md`.
 
 - **Experimentation / optimization layer** — capabilities focused on systematic
   testing, experimentation, and optimization of execution assets. This may be a
@@ -336,6 +347,9 @@ A capable LLM operating inside V Forge should understand that:
   Project V has planned
 - surface ownership and publication continuity belong to V Forge, but open-ended
   signal gathering and strategic planning do not
+- surface execution condition — what has been configured, what is missing, and
+  what operational state each surface is in — is a recognized future V Forge
+  concern, not part of first-pass schema; see `surface-execution-state-design-note.md`
 - experimentation layers and commercial/SaaS layers are not assumed to be part
   of V Forge unless explicitly bounded in the ecosystem doctrine
 
@@ -364,6 +378,7 @@ This document should be used:
 - `../ecosystem/cross-system-boundaries.md`
 - `../ecosystem/vocabulary.md`
 - `system-invariants.md`
+- `surface-execution-state-design-note.md`
 - `operational-model.md`
 - `vs-project-v.md`
 - `vs-veda.md`

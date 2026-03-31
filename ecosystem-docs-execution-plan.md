@@ -46,7 +46,7 @@ Anything required to reconstruct, govern, continue, or implement the V Ecosystem
 
 ---
 
-## Current State — CORE AUTHORITY COMPLETE, PROJECT V NEAR-MATURE, VEDA MATERIALLY UNDERWAY, V FORGE SCHEMA SPINE NOW WRITTEN
+## Current State — CORE AUTHORITY COMPLETE, PROJECT V NEAR-MATURE, VEDA MATERIALLY UNDERWAY, V FORGE SCHEMA SPINE WRITTEN AND SURFACE EXECUTION CONDITION DESIGN THREAD ACTIVE
 
 ### What exists right now
 
@@ -167,7 +167,7 @@ C:\dev\v-ecosystem-docs
     reporting-and-approval-model.md
     schema-authority.md               ✅  ← NEW: first-pass schema domain and record family authority, reviewed and patched
     schema-specification.md           ✅  ← NEW: concrete first-pass field-level schema spec, reviewed and patched
-    surface-execution-state-design-note.md  ✅  ← NEW: design note for deferred surface execution-state pattern
+    surface-execution-state-design-note.md  ✅  ← NEW: design note for deferred surface execution condition pattern (execution condition is the canonical concept name)
     system-invariants.md
     v-forge.md                        ✅  ← strengthened identity layer
     vs-project-v.md
@@ -279,7 +279,7 @@ Core schema and vocabulary docs written, reviewed, and patched this session:
 - Deferred: experimentation/optimization, SaaS/runtime/commercial, advanced engagement analytics, advanced graph features
 
 **V Forge recognized design thread (not yet first-pass schema):**
-Surface execution-state / completion-state tracking is now acknowledged as a real future V Forge pattern.
+Surface execution condition — the structured representation of what has been configured, what is missing, and what operational state each owned surface is in — is now acknowledged as a real future V Forge pattern.
 It is not first-pass schema. It is captured in `v-forge/surface-execution-state-design-note.md` and must not be lost or silently pre-built as implementation drift.
 
 ---
@@ -351,9 +351,9 @@ When working from legacy VEDA schema/build-spec material, content graph structur
 10. `v-forge/hammer-doctrine.md` and `v-forge/hammer-plan.md`
     — V Forge hammer layer; deferred until schema docs are stable but should happen before implementation goes far
 
-**Surface execution-state design thread:**
+**Surface execution condition design thread:**
 The design note is written. The next deliberate action on this thread is either:
-- updating `v-forge/schema-authority.md` to name surface execution-state as a named extension hook (currently the extension hooks section names "Deep YouTube metadata" but not this broader pattern)
+- updating `v-forge/schema-authority.md` to name surface execution condition as a named extension hook (currently the extension hooks section names "Deep YouTube metadata" but not this broader pattern)
 - or leaving it in the design note until surface-specific feature vocabularies are researched and a governed spec pass is warranted
 
 Do not let this thread disappear. Do not silently pre-build it.
@@ -444,7 +444,7 @@ The remaining Project V gap is the four remaining API family docs (external-link
 The VEDA implementation-build-spec spine — schema-reference, observatory-models, search-intelligence-layer, api-contract-principles — is written and reviewed. The next missing doc is `veda/validation-and-error-taxonomy.md`.
 
 **V Forge is no longer the untouched frontier.**
-V Forge now has a real implementation-build-spec spine: strengthened identity, schema authority, controlled vocabularies (reviewed and patched twice), and a concrete 22-record-family schema specification (reviewed and patched). First-pass scoping is locked. The design note for the surface execution-state pattern is written.
+V Forge now has a real implementation-build-spec spine: strengthened identity, schema authority, controlled vocabularies (reviewed and patched twice), and a concrete 22-record-family schema specification (reviewed and patched). First-pass scoping is locked. The design note for the surface execution condition pattern is written.
 The remaining V Forge gaps are mcp-surface, data-boundaries, a schema-doc review pass, the operator-surface doc, and the hammer layer.
 
 ---
@@ -531,7 +531,7 @@ Also read the design note if surface/execution-state work is on the agenda:
 These are now the V Forge implementation blockers. Schema, vocabulary, and field-level spec are done.
 Do not treat schema authority or schema spec as still missing — they are written.
 
-**Surface execution-state design thread:** The design note is written and must be preserved. The next deliberate action on this thread is adding surface execution-state as a named extension hook in `v-forge/schema-authority.md`. Do not silently pre-build it into schema before that governed step.
+**Surface execution condition design thread:** The design note is written and must be preserved. The next deliberate action on this thread is adding surface execution condition as a named extension hook in `v-forge/schema-authority.md`. Do not silently pre-build it into schema before that governed step.
 
 ---
 
