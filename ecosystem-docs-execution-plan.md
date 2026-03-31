@@ -36,17 +36,17 @@ It must not remain as a long-term substitute for the real doctrine set.
 
 ## Authority Model
 
-- `C:\dev\v-ecosystem-docs` — shared docs root, sole authority
-- `C:\dev\veda-ops-dev\project-v` — source reference only
-- `C:\dev\veda` — source reference only
-- `C:\dev\veda-ops-dev\veda` — source reference only
+- `C:\\dev\\v-ecosystem-docs` — shared docs root, sole authority
+- `C:\\dev\\veda-ops-dev\\project-v` — legacy source reference only
+- `C:\\dev\\veda` — legacy source reference only
+- `C:\\dev\\veda-ops-dev\\veda` — legacy source reference only
 
 Legacy source repos are temporary migration inputs only.
-Anything required to reconstruct, govern, continue, or implement the V Ecosystem after legacy repo deletion must live in `C:\dev\v-ecosystem-docs`.
+Anything required to reconstruct, govern, continue, or implement the V Ecosystem after legacy repo deletion must live in `C:\\dev\\v-ecosystem-docs`.
 
 ---
 
-## Current State — CORE AUTHORITY COMPLETE, IMPLEMENTATION-BUILD-SPEC LAYER STILL IN PROGRESS
+## Current State — CORE AUTHORITY COMPLETE, PROJECT V IMPLEMENTATION-BUILD-SPEC NEAR-MATURE, VEDA MATERIALLY UNDERWAY, V FORGE NEXT FRONTIER
 
 ### What exists right now
 
@@ -112,28 +112,45 @@ C:\dev\v-ecosystem-docs
     new-project-onboarding-doctrine.md
     new-project-required-docs.md
   project-v/
-    byda-in-project-v.md
-    controlled-vocabularies.md
-    data-boundaries.md
+    api/                              ← ACTIVE — major first-pass API family docs already written
+      objectives.md                   ✅
+      initiatives.md                  ✅
+      work-items.md                   ✅
+      dependencies.md                 ✅
+      handoffs.md                     ✅
+      readiness.md                    ✅
+      audits.md                       ✅
+      evidence-links.md               ✅
     decisions/
       ADR-001-separate-databases-per-bounded-system.md
       ADR-002-strict-multi-project-enforcement.md
       ADR-003-governed-schema-and-endpoint-expansion.md
       ADR-004-separate-audit-and-readiness-records.md
+    operator-surfaces/
+      vscode-extension.md             ✅
+    api-conventions.md                ✅
     audit-evaluation-rules.md
+    byda-in-project-v.md
+    controlled-vocabularies.md
+    data-boundaries.md
+    endpoint-governance.md            ✅
     github-integration.md
+    hammer-coverage-map.md            ✅
     hammer-doctrine.md
+    hammer-implementation-rules.md    ✅
     hammer-plan.md
     implementation-traceability.md
     lifecycle.md
     mcp-surface.md
     multi-project-doctrine.md
     operational-workflow.md
+    polymorphic-reference-enforcement.md  ✅
     project-v.md
     readiness-evaluation-rules.md
     readiness-methodology.md
     schema-authority.md
     schema-governance.md
+    schema-specification.md           ✅
     status-transitions.md
     system-invariants.md
     v-forge-integration.md
@@ -158,9 +175,13 @@ C:\dev\v-ecosystem-docs
     evidence-and-source-provenance.md
     mcp-surface.md
     observability-and-signal-role.md
+    observatory-models.md             ✅
     operator-surfaces.md
+    api-contract-principles.md        ✅
     providers/
       registry.md
+    schema-reference.md               ✅
+    search-intelligence-layer.md      ✅
     system-invariants.md
     veda.md
   workflows/
@@ -182,8 +203,6 @@ C:\dev\v-ecosystem-docs
 
 **The core authority set is complete.**
 
-The original cluster plan is complete:
-
 ### Core authority clusters ✅
 - all governance docs complete and patched ✅
 - all onboarding docs complete and patched ✅
@@ -193,7 +212,7 @@ The original cluster plan is complete:
 - ADR hygiene done for ecosystem, Project V, and VEDA ✅
 - V Forge decisions folder intentionally empty because no source ADRs were found ✅
 
-### Extension doctrine sequence ✅
+### Extension doctrine and implementation architecture ✅
 - `interfaces/extension-llm-behavior-contract.md` ✅
 - `interfaces/extension-governance-and-gating-model.md` ✅
 - `interfaces/extension-state-and-context-model.md` ✅
@@ -202,8 +221,8 @@ The original cluster plan is complete:
 - `interfaces/extension-implementation-architecture.md` ✅
 - `EXTENSION-CODING-README.md` ✅
 
-### New implementation-build-spec layer work now started ✅
-Project V implementation-facing doctrine now has a real first pass:
+### Project V implementation-build-spec layer — near first-pass complete ✅
+Core implementation-facing docs:
 - `project-v/controlled-vocabularies.md` ✅
 - `project-v/status-transitions.md` ✅
 - `project-v/readiness-methodology.md` ✅
@@ -213,59 +232,103 @@ Project V implementation-facing doctrine now has a real first pass:
 - `project-v/hammer-doctrine.md` ✅
 - `project-v/hammer-plan.md` ✅
 - `project-v/mcp-surface.md` ✅
+- `project-v/schema-specification.md` ✅
+- `project-v/polymorphic-reference-enforcement.md` ✅
+- `project-v/api-conventions.md` ✅
+- `project-v/endpoint-governance.md` ✅
+- `project-v/hammer-coverage-map.md` ✅
+- `project-v/hammer-implementation-rules.md` ✅
+- `project-v/operator-surfaces/vscode-extension.md` ✅
+
+### Project V API family — first pass substantially complete ✅
+Eight route family docs written, reviewed, and patched:
+- `project-v/api/objectives.md` ✅
+- `project-v/api/initiatives.md` ✅
+- `project-v/api/work-items.md` ✅
+- `project-v/api/dependencies.md` ✅
+- `project-v/api/handoffs.md` ✅
+- `project-v/api/readiness.md` ✅
+- `project-v/api/audits.md` ✅
+- `project-v/api/evidence-links.md` ✅
+
+### VEDA implementation-build-spec layer — materially underway
+Core spine written and reviewed:
+- `veda/schema-reference.md` ✅
+- `veda/observatory-models.md` ✅
+- `veda/search-intelligence-layer.md` ✅
+- `veda/api-contract-principles.md` ✅
+
+Remaining VEDA implementation-build-spec work: see Priority 2 below.
 
 ---
 
 ## What Still Needs To Be Done
 
 The core authority completion standard is met.
-What remains is the implementation-build-spec layer and final cleanup needed so coding does not depend on legacy source repos.
+What remains is the implementation-build-spec layer needed so coding does not depend on legacy source repos.
 
-### Priority 1 — Finish Project V implementation layer
+### Priority 1 — Remaining Project V implementation-build-spec docs
 
-**Status:** partially complete and now the active next priority.
+**Status:** Project V is close to first-pass implementation-build-spec sufficiency. The remaining work is narrow.
 
-**Still needed:**
+**Remaining API family docs (write if needed for coding readiness):**
 
-- `project-v/operator-surfaces/vscode-extension.md`
-- update `project-v/lifecycle.md` to remove stale `*(planned)*` reference to `byda-in-project-v`
-- update `project-v/operational-workflow.md` if stale `*(planned)*` markers remain
+1. `project-v/api/external-links.md`
+2. `project-v/api/research-docs.md`
+3. `project-v/api/decision-records.md`
+4. `project-v/api/status-history.md`
 
-**Why this is next:**
-Project V is the most complete source system and the highest coding urgency. The controlled vocabularies, status transitions, readiness rules, and audit rules now exist. The remaining operator-surface and stale-marker cleanup should be finished before coding leans on these docs heavily.
+These are the four remaining API families not yet written as first-pass authority docs. Write them if and when their routes are needed for coding. They follow the same admission gate defined in `endpoint-governance.md`.
 
----
-
-### Priority 2 — Build VEDA implementation layer
-
-**Status:** still missing the main implementation-build-spec docs.
-
-**Docs to write next after Project V operator surface doc:**
-
-- `veda/observatory-models.md`
-- `veda/search-intelligence-layer.md`
-
-**Likely follow-on work:**
-- additional VEDA subdomain docs as needed once the observatory/search-intelligence layer is hardened
-
-**Why this matters:**
-VEDA has strong doctrine but still needs concrete implementation-shaping docs adapted from source material so observatory behavior and search intelligence are not reconstructed ad hoc.
+**Remaining cleanup passes:**
+- `project-v/lifecycle.md` — may need stale `*(planned)*` marker cleanup for `byda-in-project-v.md`
+- `project-v/schema-authority.md` — check whether the companion-spec reference to `schema-specification.md` is still marked planned; patch if so
+- `project-v/github-integration.md` — likely needs a bounded patch to carry forward the ExternalLink single-table rationale and LLM visibility posture explicitly
 
 ---
 
-### Priority 3 — Build V Forge implementation layer fresh
+### Priority 2 — VEDA next implementation-build-spec doc
 
-**Status:** still largely unwritten at implementation-build-spec level.
+**Status:** VEDA has a written spine (schema-reference, observatory-models, search-intelligence-layer, api-contract-principles). One major doc is missing before VEDA has sufficient build-spec coverage to support implementation without legacy repo reference.
+
+**Next:**
+
+5. `veda/validation-and-error-taxonomy.md`
+
+**Why next:** `api-contract-principles.md` establishes the 400/422 distinction and error shape posture. The validation/error taxonomy doc is the companion that enumerates what causes each error class across VEDA route families — the reference implementers need to build consistent validation behavior without reinventing it per route.
+
+**Can wait until later:**
+- `veda/observatory/` subdomain docs
+- `veda/mcp/` tool-registry and tooling-principles docs
+
+**Important adaptation rule:**
+When working from legacy VEDA schema/build-spec material, content graph structures that moved to V Forge must not remain in VEDA authority docs.
+
+---
+
+### Priority 3 — V Forge fresh implementation-build-spec layer
+
+**Status:** V Forge has core authority docs (identity, boundaries, system invariants, operational model, reporting) but no implementation-build-spec docs at all. This is the largest unwritten frontier.
+
+**Blocking for V Forge implementation:**
+
+6. `v-forge/schema-authority.md`
+7. `v-forge/controlled-vocabularies.md`
+
+**Should happen soon after that:**
+
+8. `v-forge/schema-specification.md`
+9. `v-forge/mcp-surface.md`
+10. `v-forge/data-boundaries.md`
+
+**Likely next after those:**
+- evaluate whether `v-forge/execution-intelligence-model.md` should be a standalone doc or folded into another V Forge implementation doc
+- `v-forge/operator-surfaces/vscode-extension.md`
+- `v-forge/hammer-doctrine.md`
+- `v-forge/hammer-plan.md`
 
 **Rule:**
-Do not copy old source material because there is no equivalent mature source repo for V Forge.
-These docs must be written fresh from ecosystem doctrine and current V Forge role.
-
-**Examples of likely future work:**
-- V Forge operator-surface/build-spec docs
-- execution package/build-spec docs
-- reporting implementation specifics
-- hammer/build verification specifics for V Forge
+Do not copy old source material — there is no equivalent mature V Forge source repo. Write these from current ecosystem doctrine and any content-graph material that legitimately moved from legacy VEDA source.
 
 ---
 
@@ -277,6 +340,45 @@ The following remain conditional:
 - `project-v/providers/registry.md`
 
 Create these only when concrete provider integrations are admitted through `ecosystem/external-provider-integration-doctrine.md`.
+
+---
+
+## Coding Blockers vs Later Work
+
+### No longer blocking (now complete)
+- `project-v/schema-specification.md` ✅
+- `project-v/polymorphic-reference-enforcement.md` ✅
+- `project-v/api-conventions.md` ✅
+- `project-v/endpoint-governance.md` ✅
+- `project-v/hammer-coverage-map.md` ✅
+- `project-v/hammer-implementation-rules.md` ✅
+- `project-v/operator-surfaces/vscode-extension.md` ✅
+- Project V API family first pass (8 families) ✅
+- `veda/schema-reference.md` ✅
+- `veda/observatory-models.md` ✅
+- `veda/search-intelligence-layer.md` ✅
+- `veda/api-contract-principles.md` ✅
+
+### Still blocking coding
+
+- `veda/validation-and-error-taxonomy.md` — blocking VEDA implementation sufficiency
+- `v-forge/schema-authority.md` — blocking V Forge implementation start
+- `v-forge/controlled-vocabularies.md` — blocking V Forge implementation start
+
+### Should happen soon
+
+- Remaining Project V API family docs if needed for coding readiness (external-links, research-docs, decision-records, status-history)
+- `v-forge/schema-specification.md`
+- `v-forge/mcp-surface.md`
+- `v-forge/data-boundaries.md`
+
+### Can wait until later
+
+- VEDA observatory subdomain docs
+- VEDA MCP tool registry/tooling principles
+- V Forge operator-surface doc
+- V Forge hammer docs
+- V Forge execution-intelligence-specific build-spec doc if needed as standalone
 
 ---
 
@@ -294,15 +396,22 @@ Create these only when concrete provider integrations are admitted through `ecos
 
 **The original core authority completion standard is met.**
 
-### New implementation sufficiency standard (still in progress)
+### Implementation sufficiency standard (in progress)
 
 The next standard is stricter:
 
-- Project V, VEDA, and V Forge must each have enough implementation-build-spec documentation that a developer does not need to reconstruct key enums, state routes, readiness logic, audit logic, observatory models, or operator-surface behavior from legacy repos
+- Project V, VEDA, and V Forge must each have enough implementation-build-spec documentation that a developer does not need to reconstruct key enums, state routes, readiness logic, audit logic, observatory models, API conventions, endpoint rules, or operator-surface behavior from legacy repos
 - the shared root must be sufficient for continued implementation after legacy source repo deletion
 
-**This second standard is not yet fully met.**
-That is the active remaining work.
+**Project V is close to first-pass implementation-build-spec sufficiency.**
+Project V schema, polymorphic enforcement, API conventions, endpoint governance, all major first-pass API family docs, hammer coverage, and the VSCode operator surface are now written.
+The remaining Project V gap is the four remaining API family docs (external-links, research-docs, decision-records, status-history), which should be written on demand as coding needs them.
+
+**VEDA is materially underway.**
+The VEDA implementation-build-spec spine — schema-reference, observatory-models, search-intelligence-layer, api-contract-principles — is written and reviewed. The next missing doc is `veda/validation-and-error-taxonomy.md`.
+
+**V Forge is now the largest untouched implementation-build-spec frontier.**
+V Forge has core authority docs but no schema, vocabulary, API, or build-spec docs. All of that work remains.
 
 ---
 
@@ -331,7 +440,11 @@ Read next:
 - the six extension docs under `interfaces/` beginning with `extension-llm-behavior-contract.md`
 
 ### Step 5 — If doing Project V implementation work
-Read next:
+Read the core implementation-build-spec docs:
+- `project-v/schema-specification.md`
+- `project-v/polymorphic-reference-enforcement.md`
+- `project-v/api-conventions.md`
+- `project-v/endpoint-governance.md`
 - `project-v/controlled-vocabularies.md`
 - `project-v/status-transitions.md`
 - `project-v/readiness-methodology.md`
@@ -340,7 +453,39 @@ Read next:
 - `project-v/schema-governance.md`
 - `project-v/hammer-doctrine.md`
 - `project-v/hammer-plan.md`
+- `project-v/hammer-coverage-map.md`
+- `project-v/hammer-implementation-rules.md`
 - `project-v/mcp-surface.md`
+- `project-v/operator-surfaces/vscode-extension.md`
+
+Then load specific API family docs as needed from `project-v/api/`.
+
+The active next Project V work is the remaining four API family docs (external-links, research-docs, decision-records, status-history) on demand as coding requires them, plus bounded cleanup patches to schema-authority, github-integration, and lifecycle.
+
+### Step 6 — If doing VEDA implementation work
+Read the core VEDA docs first:
+- `veda/veda.md`
+- `veda/system-invariants.md`
+- `veda/data-boundaries.md`
+- `veda/observability-and-signal-role.md`
+- `veda/evidence-and-source-provenance.md`
+
+Then load the implementation-build-spec spine:
+- `veda/schema-reference.md`
+- `veda/observatory-models.md`
+- `veda/search-intelligence-layer.md`
+- `veda/api-contract-principles.md`
+
+**The active next VEDA write target is `veda/validation-and-error-taxonomy.md`.**
+
+### Step 7 — If doing V Forge implementation work
+Read the core V Forge docs first:
+- `v-forge/v-forge.md`
+- `v-forge/system-invariants.md`
+- `v-forge/operational-model.md`
+
+**The active next V Forge write targets are `v-forge/schema-authority.md` and `v-forge/controlled-vocabularies.md`.**
+These are the V Forge implementation-build-spec blockers. Write them fresh from current ecosystem doctrine; no mature V Forge source repo exists to draw from.
 
 ---
 
