@@ -46,7 +46,7 @@ Anything required to reconstruct, govern, continue, or implement the V Ecosystem
 
 ---
 
-## Current State — CORE AUTHORITY COMPLETE, PROJECT V IMPLEMENTATION-BUILD-SPEC NEAR-MATURE, VEDA MATERIALLY UNDERWAY, V FORGE NEXT FRONTIER
+## Current State — CORE AUTHORITY COMPLETE, PROJECT V NEAR-MATURE, VEDA MATERIALLY UNDERWAY, V FORGE SCHEMA SPINE NOW WRITTEN
 
 ### What exists right now
 
@@ -161,11 +161,15 @@ C:\dev\v-ecosystem-docs
     project-thesis-model.md
   v-forge/
     decisions/                        ← intentionally empty (no V Forge-specific ADRs found in source)
+    controlled-vocabularies.md        ✅  ← NEW: first-pass enum vocabulary, reviewed and patched
     human-in-the-loop-doctrine.md
     operational-model.md
     reporting-and-approval-model.md
+    schema-authority.md               ✅  ← NEW: first-pass schema domain and record family authority, reviewed and patched
+    schema-specification.md           ✅  ← NEW: concrete first-pass field-level schema spec, reviewed and patched
+    surface-execution-state-design-note.md  ✅  ← NEW: design note for deferred surface execution-state pattern
     system-invariants.md
-    v-forge.md
+    v-forge.md                        ✅  ← strengthened identity layer
     vs-project-v.md
     vs-veda.md
   veda/
@@ -260,6 +264,24 @@ Core spine written and reviewed:
 
 Remaining VEDA implementation-build-spec work: see Priority 2 below.
 
+### V Forge implementation-build-spec layer — schema spine now written ✅
+Core schema and vocabulary docs written, reviewed, and patched this session:
+- `v-forge/v-forge.md` ✅ (strengthened identity layer)
+- `v-forge/schema-authority.md` ✅ (7 domains, record families, ownership posture, anti-drift rules)
+- `v-forge/controlled-vocabularies.md` ✅ (first-pass enums for all governed fields, reviewed and patched)
+- `v-forge/schema-specification.md` ✅ (22 record families, full field-level spec, reviewed and patched)
+- `v-forge/surface-execution-state-design-note.md` ✅ (deferred pattern acknowledged and captured)
+
+**V Forge first-pass scoping is now locked:**
+- Two first-class project types: `content_affiliate`, `plugin_product`
+- Deeply modeled surfaces: website, GitHub/release
+- Lightly tracked surfaces: YouTube, social, newsletter, store listings
+- Deferred: experimentation/optimization, SaaS/runtime/commercial, advanced engagement analytics, advanced graph features
+
+**V Forge recognized design thread (not yet first-pass schema):**
+Surface execution-state / completion-state tracking is now acknowledged as a real future V Forge pattern.
+It is not first-pass schema. It is captured in `v-forge/surface-execution-state-design-note.md` and must not be lost or silently pre-built as implementation drift.
+
 ---
 
 ## What Still Needs To Be Done
@@ -306,29 +328,38 @@ When working from legacy VEDA schema/build-spec material, content graph structur
 
 ---
 
-### Priority 3 — V Forge fresh implementation-build-spec layer
+### Priority 3 — V Forge remaining implementation-build-spec docs
 
-**Status:** V Forge has core authority docs (identity, boundaries, system invariants, operational model, reporting) but no implementation-build-spec docs at all. This is the largest unwritten frontier.
+**Status:** V Forge now has a real schema/build-spec spine. The three core schema docs (schema-authority, controlled-vocabularies, schema-specification) are written, reviewed, and patched. The design note for surface execution-state is also written.
 
-**Blocking for V Forge implementation:**
+**The remaining V Forge implementation-build-spec work is:**
 
-6. `v-forge/schema-authority.md`
-7. `v-forge/controlled-vocabularies.md`
+6. `v-forge/mcp-surface.md`
+   — defines the V Forge MCP tool surface: what tools exist, what they do, what they expose, session scoping posture
 
-**Should happen soon after that:**
+7. `v-forge/data-boundaries.md`
+   — V Forge-specific data ownership boundary rules; companion to the ecosystem-level `interfaces/data-boundaries.md`
 
-8. `v-forge/schema-specification.md`
-9. `v-forge/mcp-surface.md`
-10. `v-forge/data-boundaries.md`
+**Should happen after those:**
 
-**Likely next after those:**
-- evaluate whether `v-forge/execution-intelligence-model.md` should be a standalone doc or folded into another V Forge implementation doc
-- `v-forge/operator-surfaces/vscode-extension.md`
-- `v-forge/hammer-doctrine.md`
-- `v-forge/hammer-plan.md`
+8. Review and patch pass on new V Forge schema docs
+   — the schema-authority, controlled-vocabularies, and schema-specification docs are fresh; a structured review pass (similar to what was done this session) should be planned before implementation starts in earnest
+
+9. `v-forge/operator-surfaces/vscode-extension.md`
+   — V Forge operator surface for the VSCode extension; analogous to `project-v/operator-surfaces/vscode-extension.md`
+
+10. `v-forge/hammer-doctrine.md` and `v-forge/hammer-plan.md`
+    — V Forge hammer layer; deferred until schema docs are stable but should happen before implementation goes far
+
+**Surface execution-state design thread:**
+The design note is written. The next deliberate action on this thread is either:
+- updating `v-forge/schema-authority.md` to name surface execution-state as a named extension hook (currently the extension hooks section names "Deep YouTube metadata" but not this broader pattern)
+- or leaving it in the design note until surface-specific feature vocabularies are researched and a governed spec pass is warranted
+
+Do not let this thread disappear. Do not silently pre-build it.
 
 **Rule:**
-Do not copy old source material — there is no equivalent mature V Forge source repo. Write these from current ecosystem doctrine and any content-graph material that legitimately moved from legacy VEDA source.
+Do not copy old source material for V Forge — write from current ecosystem doctrine and the content-graph material that legitimately moved from legacy VEDA source.
 
 ---
 
@@ -358,27 +389,29 @@ Create these only when concrete provider integrations are admitted through `ecos
 - `veda/observatory-models.md` ✅
 - `veda/search-intelligence-layer.md` ✅
 - `veda/api-contract-principles.md` ✅
+- `v-forge/schema-authority.md` ✅
+- `v-forge/controlled-vocabularies.md` ✅
+- `v-forge/schema-specification.md` ✅
 
 ### Still blocking coding
 
 - `veda/validation-and-error-taxonomy.md` — blocking VEDA implementation sufficiency
-- `v-forge/schema-authority.md` — blocking V Forge implementation start
-- `v-forge/controlled-vocabularies.md` — blocking V Forge implementation start
+- `v-forge/mcp-surface.md` — blocking V Forge MCP tool implementation
+- `v-forge/data-boundaries.md` — blocking V Forge data boundary enforcement implementation
 
 ### Should happen soon
 
 - Remaining Project V API family docs if needed for coding readiness (external-links, research-docs, decision-records, status-history)
-- `v-forge/schema-specification.md`
-- `v-forge/mcp-surface.md`
-- `v-forge/data-boundaries.md`
+- Review/patch pass on new V Forge schema docs before implementation begins in earnest
+- `v-forge/schema-authority.md` extension hooks section: add surface execution-state as a named hook
 
 ### Can wait until later
 
 - VEDA observatory subdomain docs
 - VEDA MCP tool registry/tooling principles
-- V Forge operator-surface doc
+- V Forge operator-surface VSCode doc
 - V Forge hammer docs
-- V Forge execution-intelligence-specific build-spec doc if needed as standalone
+- Surface execution-state governed spec (deferred until feature vocabularies are researched per surface type)
 
 ---
 
@@ -410,8 +443,9 @@ The remaining Project V gap is the four remaining API family docs (external-link
 **VEDA is materially underway.**
 The VEDA implementation-build-spec spine — schema-reference, observatory-models, search-intelligence-layer, api-contract-principles — is written and reviewed. The next missing doc is `veda/validation-and-error-taxonomy.md`.
 
-**V Forge is now the largest untouched implementation-build-spec frontier.**
-V Forge has core authority docs but no schema, vocabulary, API, or build-spec docs. All of that work remains.
+**V Forge is no longer the untouched frontier.**
+V Forge now has a real implementation-build-spec spine: strengthened identity, schema authority, controlled vocabularies (reviewed and patched twice), and a concrete 22-record-family schema specification (reviewed and patched). First-pass scoping is locked. The design note for the surface execution-state pattern is written.
+The remaining V Forge gaps are mcp-surface, data-boundaries, a schema-doc review pass, the operator-surface doc, and the hammer layer.
 
 ---
 
@@ -484,8 +518,20 @@ Read the core V Forge docs first:
 - `v-forge/system-invariants.md`
 - `v-forge/operational-model.md`
 
-**The active next V Forge write targets are `v-forge/schema-authority.md` and `v-forge/controlled-vocabularies.md`.**
-These are the V Forge implementation-build-spec blockers. Write them fresh from current ecosystem doctrine; no mature V Forge source repo exists to draw from.
+Then load the implementation-build-spec spine:
+- `v-forge/schema-authority.md`
+- `v-forge/controlled-vocabularies.md`
+- `v-forge/schema-specification.md`
+
+Also read the design note if surface/execution-state work is on the agenda:
+- `v-forge/surface-execution-state-design-note.md`
+
+**The active next V Forge write targets are `v-forge/mcp-surface.md` and `v-forge/data-boundaries.md`.**
+
+These are now the V Forge implementation blockers. Schema, vocabulary, and field-level spec are done.
+Do not treat schema authority or schema spec as still missing — they are written.
+
+**Surface execution-state design thread:** The design note is written and must be preserved. The next deliberate action on this thread is adding surface execution-state as a named extension hook in `v-forge/schema-authority.md`. Do not silently pre-build it into schema before that governed step.
 
 ---
 
@@ -510,6 +556,12 @@ These are the V Forge implementation-build-spec blockers. Write them fresh from 
 
 ### VEDA-level (1 decision in veda/decisions/)
 1. YouTube observatory truth surface (vendor SERP primary, API enrichment, UI validation)
+
+### V Forge scope decisions (locked in schema-authority and schema-specification)
+- Two first-class project types: content_affiliate, plugin_product
+- Deeply modeled surfaces: website, GitHub/release
+- Lightly tracked surfaces: YouTube, social, newsletter, store listings
+- Deferred: experimentation/optimization, SaaS/runtime/commercial
 
 ---
 
