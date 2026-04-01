@@ -27,6 +27,8 @@ This document governs:
 - how rejection and non-acceptance must be handled
 - how stale approval, stale recommendations, and changed context are handled
 - how conflict in approval state or between bounded model outputs is handled
+- delegated-work governance posture and coordinator/worker non-authority rules
+- continuity and transcript non-authority implications relevant to gating
 - structural enforcement requirements
 
 This document builds on `extension-llm-behavior-contract.md`, which defines the LLM's bounded operating posture. That posture is active and binding here. This document defines the governance mechanics that enforce it.
@@ -58,7 +60,7 @@ An extension-side action becomes active only when every required governance cond
 A prepared action is not an active action.
 A reviewed action is not an approved action.
 An approved action is not an activated action unless activation has occurred through the governed path.
-Conversational statements, model confidence, and operator presence are not governance conditions.
+Conversational statements, model confidence, operator presence, delegated-worker participation, and continuity artifacts are not governance conditions.
 
 ---
 
@@ -75,6 +77,8 @@ Examples:
 - running readiness checks in read-only mode
 - displaying evidence and decision context
 - searching records, browsing planning trees, reviewing gaps
+- delegated specialist analysis that returns inert findings only
+- transcript review or continuity inspection that does not mutate governed state
 
 **Gate:** No gate required.
 
@@ -97,7 +101,7 @@ Examples:
 
 **Gate:** Persisted operator approval required before the action becomes active.
 
-**Rule:** Class B actions require an explicit operator approval event persisted to the database before the downstream API call is permitted. Conversational approval does not satisfy this gate. Operator presence in the session does not satisfy this gate. A recommendation package covering the action does not satisfy this gate. The gate is satisfied only when the approval record exists.
+**Rule:** Class B actions require an explicit operator approval event persisted to the database before the downstream API call is permitted. Conversational approval does not satisfy this gate. Operator presence in the session does not satisfy this gate. A recommendation package covering the action does not satisfy this gate. A delegated coordinator or specialist output does not satisfy this gate. The gate is satisfied only when the approval record exists.
 
 **Doubt-default rule:** When an action's class is ambiguous between A and B, treat it as B and require the gate.
 
@@ -124,6 +128,7 @@ Examples:
 - for irreversible actions, typed operator confirmation (not a single-click) is required as an additional gate
 
 Class C approval is not generic. Approval of one Class C action does not cover another, even if they appear similar.
+Delegated work may prepare a Class C package. It may not activate a Class C action.
 
 ---
 
@@ -135,6 +140,8 @@ Examples:
 - actions that depend on ambiguous authority
 - requests to merge system roles or collapse system ownership
 - actions where the class cannot be confidently determined
+- requests to let continuity artifacts or transcripts substitute for canonical records
+- requests to let delegated workers approve or self-activate governed mutations
 
 **Gate:** Escalation required. Must not proceed as normal work.
 
@@ -188,6 +195,40 @@ The downstream system behavior that follows activation. Execution is V Forge's d
 
 ---
 
+## Delegated-Work Governance Rule
+
+Delegation does not change governance class.
+
+If an action is Class B or Class C when performed directly, it remains Class B or Class C when prepared or suggested by a coordinator or specialist worker.
+
+This means:
+- a coordinator may package or route work, but not approve it
+- a specialist may analyze or prepare inert artifacts, but not activate governed mutation
+- a worker output is not a shortcut around approval because it came from internal runtime delegation
+- delegation may narrow runtime scope, but it must not create a parallel approval path
+
+A delegated worker may prepare a package.
+Only the governed operator path may satisfy the gate.
+
+---
+
+## Continuity and Transcript Boundary Rule
+
+Continuity artifacts, transcript artifacts, compaction products, and worker findings may improve operator usefulness.
+They do not satisfy governance gates.
+
+The following are never substitutes for approval or canonical state:
+- memory artifacts
+- transcript artifacts
+- compacted session summaries
+- prior delegated findings
+- chat history
+
+A reviewer may use those artifacts for orientation.
+The gate is still satisfied only by the persisted governed path.
+
+---
+
 ## Persisted State Requirements
 
 The following must be persisted for governed actions to remain reviewable.
@@ -226,8 +267,10 @@ The extension must block, not merely warn, when:
 - a Class D condition is detected and escalation has not been initiated
 - an approval scope is being widened beyond what was persisted
 - an activation is attempted for an action whose approval has expired, been revoked, or become stale
-- a button or command in the wrong system surface is invoked (e.g., "Create Planning Record" from V Forge, "Configure Observatory" from Project V)
+- a button, command, or tool in the wrong system surface is invoked (e.g., "Create Planning Record" from V Forge, "Configure Observatory" from Project V)
 - an action attempts to advance past a blocked state that has not been cleared through the governed path
+- a delegated worker attempts to perform or imply governed mutation outside the existing approval chain
+- continuity or transcript material is being treated as if it were the governing basis for activation
 
 "Block" means the action cannot complete. A warning that can be dismissed without satisfying the gate is not a block. A confirmation dialog followed by an API call that accepts the action regardless of approval record state is not a block. A real block is one where the action fails if the governance condition is not met.
 
@@ -275,11 +318,12 @@ Before presenting the approval gate for a Class B or Class C action, the extensi
 - new gaps opened at blocking or critical severity
 - a significant change in VEDA signal for the scope being approved
 - workflow stage change
+- a material invalidation of the continuity basis used to package the request
 
 ### Behavior when change is detected
 The extension presents the operator with a visible notice before the approval gate:
 
-```
+```text
 CONTEXT HAS CHANGED SINCE THIS RECOMMENDATION WAS PRODUCED
 Changed: [what changed]
 Basis of recommendation may be affected.
@@ -347,7 +391,7 @@ Stale recommendations do not auto-close. The operator must explicitly dismiss or
 ### Recommendation conflicts with prior governing decision
 When the LLM produces a recommendation that conflicts with an active governing decision, the extension surfaces a conflict notice before the approval gate:
 
-```
+```text
 GOVERNING DECISION CONFLICT DETECTED
 Recommendation may conflict with: [decision ID and title]
 Review this decision before approving.
@@ -366,6 +410,9 @@ When approval state is ambiguous — for example, a prior approval appears to ap
 ### Multiple model outputs in conflict
 When multiple LLM sessions or multiple models have produced recommendations that conflict with each other, the extension treats each as an independent inert recommendation. One model's recommendation does not override or invalidate another's. The operator evaluates them independently. No model output is privileged. If both cannot be activated simultaneously, the operator resolves the conflict. The extension does not merge them or silently choose one.
 
+### Worker/package conflict
+When a delegated worker finding, worker package, or continuity artifact conflicts with current canonical state or an active approval basis, canonical state wins. The extension must surface the conflict and block any attempt to treat the worker/package artifact as the authoritative basis for activation.
+
 ---
 
 ## Multi-Model Governance Neutrality
@@ -378,6 +425,7 @@ All of the following apply regardless of which model produced an output:
 - model identity does not change the action class of any output
 - model identity does not relax any gate
 - the extension applies the same gating rules regardless of which model produced the relevant output
+- coordinator and specialist roles do not change gating posture
 
 The extension does not record model identity as a governance factor. Model identity may be logged for audit and debugging purposes, but it does not affect whether the governance gate is required or how it must be satisfied.
 
@@ -396,8 +444,8 @@ The extension's activation path must: (a) write the approval record, (b) confirm
 ### 3. Cross-project scope must be enforced at the API layer
 The session token enforces project scope at the API. The extension cannot activate a Class B or C action in a project other than the one bound to the current session token. This is not a UI-level check — it is an API enforcement requirement.
 
-### 4. System surface restrictions must be enforced by UI construction
-The V Forge panel must not contain buttons or commands that initiate planning-level state changes. The Project V panel must not contain buttons or commands that configure observatory scope. The VEDA panel must not contain buttons or commands that initiate execution or planning decisions. These restrictions are enforced by which commands exist in which surfaces, not by a warning that appears when the operator clicks the wrong thing.
+### 4. System surface restrictions must be enforced by UI and runtime construction
+The V Forge panel must not contain buttons or commands that initiate planning-level state changes. The Project V panel must not contain buttons or commands that configure observatory scope. The VEDA panel must not contain buttons or commands that initiate execution or planning decisions. Likewise, the runtime tool surface must not expose wrong-system mutating paths as casually available. These restrictions are enforced by which commands and tool surfaces exist, not by a warning that appears when the operator clicks the wrong thing.
 
 ### 5. Typed confirmation must be a separate UI input
 For irreversible Class C actions, typed confirmation must be a distinct input element (text field requiring a specific phrase) rendered after the approval gate has been satisfied. It must not be a checkbox. It must not be pre-populated. It must not be dismissible without completing the input.
@@ -410,6 +458,12 @@ When an operator rejects an approval request, the rejection is written to the da
 
 ### 8. Escalation records must be persisted when Class D conditions are detected
 When the extension identifies a Class D condition and blocks the action, the escalation event is persisted. The operator must be able to find, in a later session, that a specific action was blocked and escalated rather than discovering it by noticing missing state.
+
+### 9. Continuity artifacts must remain non-authoritative by construction
+The runtime and UI must not render continuity artifacts in a way that makes them indistinguishable from canonical records. Memory, transcript, and compaction products must remain visibly non-canonical and must not silently replace the governing basis for actions.
+
+### 10. Delegation must not create a hidden mutation path
+If the runtime allows specialist workers, their outputs remain inert until the existing governed path activates anything. A delegated worker must not gain a secret direct route to governed mutation through coordinator convenience.
 
 ---
 
@@ -425,6 +479,7 @@ The LLM must remain able to:
 - package complete and honest approval request packages and recommendations
 - surface stale context, gap conditions, and approval posture questions
 - produce continuity reminders that improve operator decision quality
+- coordinate bounded delegated analysis without turning delegated work into authority
 
 None of that requires removing governance gates from Class B and C actions. The goal is a powerful bounded participant, not a weak one. The gates are what preserve the boundary between helpfulness and authority.
 
@@ -434,7 +489,7 @@ None of that requires removing governance gates from Class B and C actions. The 
 
 Human approval remains real because the gates make it real.
 
-If the gates can be satisfied conversationally, approval becomes theater. If the gates require persisted approval events that cannot be produced by conversational statements or model confidence alone, approval remains a meaningful governance mechanism.
+If the gates can be satisfied conversationally, approval becomes theater. If the gates require persisted approval events that cannot be produced by conversational statements, delegated-worker activity, or model confidence alone, approval remains a meaningful governance mechanism.
 
 The extension's job is to make it easy for operators to provide real governed approval when it is warranted, and structurally impossible for approval to be inferred from anything other than a deliberate governed approval event.
 
@@ -455,9 +510,11 @@ A capable LLM should be able to infer from this doc that:
 - stale approvals must be detected and surfaced, not silently reused
 - conflicting approval state must block activation, not default to the more permissive interpretation
 - model identity does not affect any gate or any action class
+- delegation does not alter governance class
+- continuity artifacts do not satisfy gates
 - structural enforcement exists and is not circumventable through conversational framing
 
-If a model treats operator presence or session context as sufficient to activate a Class B or C action, this governance model is being violated.
+If a model treats operator presence, delegated-worker participation, session context, or continuity artifacts as sufficient to activate a Class B or C action, this governance model is being violated.
 
 ---
 
@@ -468,7 +525,7 @@ This document should be used:
 - when designing extension UI interactions to identify which gate applies to each interaction
 - when designing the API to enforce approval record requirements before activation
 - when reviewing whether a proposed UX flow correctly distinguishes review from approval from activation
-- when evaluating whether a rejection, stale approval, or changed-context condition is being handled correctly
+- when evaluating whether a rejection, stale approval, changed-context condition, or delegated-worker flow is being handled correctly
 - when designing the persisted state model for approval events and rejection records
 - when auditing extension sessions for governance drift
 - as the governance spine for later detailed interaction-model docs
@@ -478,6 +535,9 @@ This document should be used:
 ## Related Docs
 
 - `extension-llm-behavior-contract.md`
+- `extension-agent-orchestration-model.md`
+- `extension-memory-and-continuity-model.md`
+- `extension-system-init-and-tool-surface-model.md`
 - `../governance/approval-and-escalation-model.md`
 - `../governance/agent-operating-doctrine.md`
 - `../governance/auth-and-actor-model.md`

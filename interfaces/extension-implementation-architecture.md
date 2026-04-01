@@ -7,7 +7,7 @@ This document defines the implementation-facing architecture for the V Ecosystem
 It exists to answer:
 
 ```text
-How should the extension be structured in code and runtime so that the already-established extension doctrine becomes a real, buildable VS Code extension without cheating governance, collapsing system boundaries, or letting the LLM interaction surface become the actual system?
+How should the extension be structured in code and runtime so that the already-established extension doctrine becomes a real, buildable VS Code extension without cheating governance, collapsing system boundaries, letting the LLM interaction surface become the actual system, or turning runtime power features into hidden authority paths?
 ```
 
 This is a Tier 1 ecosystem authority support document for implementation.
@@ -24,6 +24,8 @@ This document governs:
 - the required state stores and service boundaries
 - command routing and panel routing responsibilities
 - validation and approval pipeline responsibilities
+- orchestration, continuity, compaction, and tool-surface implementation boundaries
+- runtime refresh and invalidation responsibilities
 - the order in which the extension should be built
 - the anti-drift implementation constraints developers must preserve
 
@@ -34,6 +36,9 @@ This document assumes the active binding of:
 - `extension-state-and-context-model.md`
 - `extension-human-llm-interaction-model.md`
 - `extension-vscode-surface-architecture.md`
+- `extension-agent-orchestration-model.md`
+- `extension-memory-and-continuity-model.md`
+- `extension-system-init-and-tool-surface-model.md`
 
 ---
 
@@ -44,7 +49,7 @@ This document does not define:
 - the final visual design language of the extension
 - exact MCP tool schemas
 - backend API endpoint internals
-- exact TypeScript framework/library choices for webviews
+- exact TypeScript framework or library choices for webviews
 - packaging, publishing, or marketplace distribution details
 
 Those belong in implementation specs, repo-local build docs, and later engineering decisions.
@@ -67,9 +72,10 @@ This means:
 - LLM interaction must remain a support surface, not the source of truth
 - approval-sensitive actions must pass through the governed gate pipeline
 - the wrong actions must be physically absent from the wrong surfaces
+- orchestration, continuity, and tool-surface logic must remain bounded runtime capabilities rather than hidden authority layers
 - module structure must make it hard for implementation convenience to bypass doctrine
 
-If the implementation architecture makes it easy to route around approvals, collapse surfaces, or treat the LLM panel as the real app, the implementation architecture is wrong.
+If the implementation architecture makes it easy to route around approvals, collapse surfaces, let continuity artifacts masquerade as canonical state, or treat the LLM panel as the real app, the implementation architecture is wrong.
 
 ---
 
@@ -85,7 +91,7 @@ Examples:
 - VEDA tree view
 - V Forge tree view
 - detail panels for records, packages, decisions, evidence, and workflow objects
-- status strip / context strip surfaces
+- status strip and context strip surfaces
 
 ### Rule
 Canonical state surfaces render governed system state. They do not infer authority from conversation and they do not store governance state in ephemeral UI objects.
@@ -100,6 +106,8 @@ Examples:
 - operator framing controls
 - typed output cards
 - clarification and refinement requests
+- bounded orchestration summary widgets
+- bounded continuity summary widgets
 
 ### Rule
 The interaction surface produces and routes typed outputs. It does not own canonical state, does not persist approval by prose, and does not activate Class B or C actions directly.
@@ -136,6 +144,9 @@ It should include types for:
 - approval states
 - context descriptors
 - session integrity state
+- orchestration task states
+- continuity artifact types
+- tool-surface posture descriptors
 
 ### Rule
 Core type definitions must reflect doctrine vocabulary directly.
@@ -163,6 +174,7 @@ Owns:
 - evidence basis summary
 - freshness markers
 - loaded context descriptors
+- current tool-surface posture summary
 
 #### `approvalStore`
 Owns:
@@ -178,6 +190,25 @@ Owns:
 - stale recommendations
 - stale readiness states
 - unresolved conflict markers
+- session health flags
+
+#### `orchestrationStore`
+Owns:
+- active orchestrator posture
+- delegated subtasks
+- specialist-role assignments
+- task lifecycle state
+- task failure/cancellation markers
+- orchestration event summaries for visible UI use
+
+#### `continuityStore`
+Owns:
+- active working memory entries
+- active session-durable memory entries
+- compact-boundary records
+- continuity freshness markers
+- visible transcript-derived continuity references
+- clearability/dismissal state
 
 #### `sessionState`
 Owns top-level session composition:
@@ -186,9 +217,11 @@ Owns top-level session composition:
 - current interaction mode if selected
 - current context snapshot
 - current integrity snapshot
+- current orchestration snapshot
+- current continuity snapshot
 
 ### Rule
-State stores mirror extension doctrine. They do not become convenience caches for hidden behavior. Chat/session prose must not be treated as canonical store content.
+State stores mirror extension doctrine. They do not become convenience caches for hidden behavior. Chat or session prose must not be treated as canonical store content.
 
 ---
 
@@ -221,6 +254,50 @@ Responsible for:
 - session integrity checks
 - bounded cross-system context retrieval
 
+#### `systemInitBuilder`
+Responsible for:
+- assembling the runtime session basis
+- building the structured init message input for the LLM runtime
+- converting loaded canonical state into faithful runtime distillation
+- marking missing or stale required categories
+
+#### `toolSurfaceAssembler`
+Responsible for:
+- assembling the session tool surface
+- filtering tools by project scope, current system, action posture, and delegated-role posture
+- narrowing delegated worker tool surfaces
+- surfacing bounded tool posture to state/UI layers
+
+#### `orchestrationService`
+Responsible for:
+- subtask creation and routing
+- specialist invocation within admitted bounds
+- task lifecycle management
+- cancellation and failure handling
+- packaging delegated outputs back into the parent interaction flow
+
+#### `memoryManager`
+Responsible for:
+- creating and updating working memory artifacts
+- session-durable memory handling
+- freshness and age metadata maintenance
+- source attribution for memory artifacts
+- clear/dismiss operations
+
+#### `compactionService`
+Responsible for:
+- micro-compaction and working-memory extraction where admitted
+- preserving protected context across compaction
+- creating compact-boundary records
+- triggering visible refresh notices after material compaction
+
+#### `transcriptService`
+Responsible for:
+- transcript capture
+- transcript artifact retrieval
+- orchestration event log integration
+- non-authority labeling for transcript and trace surfaces
+
 #### `approvalService`
 Responsible for:
 - creation of approval records
@@ -234,6 +311,7 @@ Responsible for:
 - decision conflict detection
 - approval state conflict detection
 - conflicting typed output detection where relevant
+- conflicts between canonical state and continuity or worker artifacts
 
 #### `recommendationValidator`
 Responsible for:
@@ -241,8 +319,14 @@ Responsible for:
 - validating Approval Request Package outputs
 - rejecting incomplete typed outputs before they are rendered as governed widgets
 
+#### `refreshCoordinator`
+Responsible for:
+- invalidation event handling
+- cross-store refresh triggers
+- surface-sync refresh orchestration after approvals, compaction, delegated-task completion, or current-system changes
+
 ### Rule
-Services centralize governed logic. Tree views, webviews, and command handlers must not each invent their own approval, context, or validation behavior.
+Services centralize governed logic. Tree views, webviews, and command handlers must not each invent their own approval, context, orchestration, continuity, or validation behavior.
 
 ---
 
@@ -262,15 +346,18 @@ It should include at minimum:
 - typed output renderer
 - operator input controller
 - interaction mode controller
+- orchestration summary renderer
+- continuity summary renderer
 
 #### Detail panel providers
 - record detail panel router
 - initiative detail panel
-- decision/evidence detail panel
+- decision and evidence detail panel
 - handoff detail panel
 - launch readiness detail panel
 - approval gate panel
 - escalation panel
+- transcript and audit review panel
 
 ### Rule
 Surface providers render state and route actions. They must not silently mutate governed state through hidden side paths.
@@ -286,6 +373,8 @@ It should include at minimum:
 - LLM interaction commands
 - approval and gate commands
 - workflow navigation commands
+- transcript/audit review commands
+- bounded orchestration inspection commands
 
 ### Rule
 Command handlers must remain explicit and narrow. A generic do-anything command is a governance smell.
@@ -328,6 +417,13 @@ Examples:
 - escalate action
 - confirm irreversible Class C action with typed input
 
+### Runtime visibility commands
+Examples:
+- show transcript and audit panel
+- show continuity detail
+- show orchestration detail
+- review compact-boundary event
+
 ### Rule
 Approval and activation commands must only be callable from gate surfaces or from explicit routing into gate surfaces. They must not be attached directly to freeform LLM output prose or generic status-bar shortcuts.
 
@@ -354,6 +450,15 @@ The extension must track whether an item is pending approval, approved, rejected
 
 ### 6. Integrity state
 The extension must track session-start integrity concerns and mid-session integrity changes.
+
+### 7. Orchestration state
+The extension must track meaningful delegated-task lifecycle and review status.
+
+### 8. Continuity state
+The extension must track what non-canonical continuity artifacts are active and whether they are aging, stale, or cleared.
+
+### 9. Tool-surface posture state
+The extension must track what general runtime tool posture is currently active and whether delegated work is narrowed from the parent session.
 
 ### Rule
 These state categories must not be reconstructed ad hoc from LLM output history. They are explicit runtime state, not narrative artifacts.
@@ -386,6 +491,13 @@ Before an Approval Request Package widget is rendered, validation must confirm t
 - default state if denied
 - target detail panel or route for the approval gate
 
+### Delegated output validation
+Where delegated worker outputs are surfaced distinctly, validation must confirm:
+- worker/source attribution
+- bounded task scope
+- non-authority posture
+- lifecycle result state
+
 ### Rule
 If validation fails, the extension must not render the output as a governed widget. It must surface a validation failure and withhold the governed rendering path.
 
@@ -410,7 +522,7 @@ For Class B and C actions, the extension must implement the following chain:
 
 ### Rule
 No code path may skip from typed output card to activation API call.
-No code path may treat LLM-panel interaction as sufficient for approval persistence.
+No code path may treat LLM-panel interaction, delegated worker output, transcript artifact, or continuity artifact as sufficient for approval persistence.
 
 ---
 
@@ -426,6 +538,7 @@ Detail panels should own:
 - launch readiness review
 - approval gate widgets
 - escalation review and documentation
+- transcript and audit review where runtime traceability matters
 
 ### Rule
 If review context is too dense for a sidebar, it belongs in a detail panel. Governance-sensitive work must not be forced into cramped surfaces that encourage skimming.
@@ -440,6 +553,8 @@ The LLM sidebar should own:
 - typed output cards
 - clarification loops
 - routing actions such as `Proceed to Approval Gate`
+- bounded orchestration summary visibility
+- bounded continuity summary visibility
 
 The LLM sidebar must not own:
 - canonical record storage
@@ -479,6 +594,9 @@ The extension must maintain a persistent status/context surface showing at minim
 - current workflow stage
 - approval state summary
 - session integrity state summary
+- orchestration summary when materially relevant
+- continuity summary when materially relevant
+- current tool-surface posture summary in bounded form
 
 This may be split across status bar and context strip surfaces, but the architecture must ensure these elements remain visible and synchronized.
 
@@ -496,6 +614,7 @@ The implementation must scale notification style to governance importance.
 - status/context warning for session health or staleness
 - inline panel banner for changed context
 - session-start integrity notification for unresolved prior-state items
+- visible compaction/refresh notice for material continuity changes
 - blocking modal only for truly irreversible Class C confirmation or equivalent hard stop
 
 ### Rule
@@ -508,14 +627,15 @@ Modal overuse is a governance failure. If everything is modal, operators will di
 The extension must physically enforce absent-affordance doctrine.
 
 Examples:
-- VEDA view must not expose “Create Planning Record”
+- VEDA view must not expose `Create Planning Record`
 - Project V view must not expose execution-only actions
 - V Forge view must not expose planning-decision mutation actions
 - status bar must not expose mutation actions
 - LLM output cards must not expose final approval buttons for Class B or C actions
+- delegated-worker surfaces must not expose broader authority than the parent session
 
 ### Rule
-Absent-affordance doctrine must be implemented in construction of the UI and command map, not as warnings after the operator clicks the wrong thing.
+Absent-affordance doctrine must be implemented in construction of the UI, tool surface, and command map, not as warnings after the operator clicks the wrong thing.
 
 ---
 
@@ -531,6 +651,15 @@ all reflect the same current project scope, current system, and major workflow s
 
 ### Rule
 If one surface updates but the others continue showing stale or mismatched state, the extension creates governance drift. Synchronization is a first-class implementation requirement.
+
+This includes:
+- approval writes
+- decision invalidation
+- evidence refresh
+- compaction events
+- delegated-task completion/failure/cancellation
+- current-system changes
+- session token expiry
 
 ---
 
@@ -557,21 +686,31 @@ Build:
 - status/context surfaces
 - session integrity checks
 
-### Phase 3 — Typed output rendering
+### Phase 3 — Runtime session basis
+Build:
+- systemInitBuilder
+- toolSurfaceAssembler
+- continuity store shell
+- orchestration store shell
+- refreshCoordinator
+
+### Phase 4 — Typed output rendering
 Build:
 - typed output renderer
 - interaction mode handling
 - operator input controller
 - Recommendation and Approval Request Package validation
+- delegated-output rendering rules
 
-### Phase 4 — Detail panels
+### Phase 5 — Detail panels
 Build:
 - generic detail panel router
 - record detail panels
 - approval gate panel
-- launch/handoff review panels
+- launch and handoff review panels
+- transcript and audit review panel
 
-### Phase 5 — Approval pipeline
+### Phase 6 — Approval pipeline
 Build:
 - approval persistence flow
 - rejection flow
@@ -579,7 +718,16 @@ Build:
 - stale approval detection
 - activation precondition checks
 
-### Phase 6 — Workflow-specific drill-down
+### Phase 7 — Runtime power features
+Build:
+- orchestrationService
+- memoryManager
+- compactionService
+- transcriptService
+- orchestration event logging
+- visible continuity and orchestration refresh flows
+
+### Phase 8 — Workflow-specific drill-down
 Build:
 - handoff review flow
 - return trigger handling flow
@@ -587,7 +735,7 @@ Build:
 - conflict handling flow
 
 ### Rule
-Do not begin with decorative UI. Do not begin with clever agent behavior. Build the state spine and approval pipeline before polishing the interaction surface.
+Do not begin with decorative UI. Do not begin with clever agent behavior. Build the state spine, session basis, and approval pipeline before polishing the interaction surface.
 
 ---
 
@@ -600,8 +748,10 @@ The following are implementation failures:
 - letting the LLM surface become the only place where workflow meaning is understandable
 - inferring interaction mode or current system too loosely from topic drift
 - storing governance-relevant state in session prose rather than explicit stores and persisted records
-- duplicating approval logic across multiple UI layers instead of routing through approvalService
+- duplicating approval logic across multiple UI layers instead of routing through `approvalService`
 - allowing convenience commands to bypass panel routing and approval persistence
+- letting continuity artifacts become indistinguishable from canonical state in code or UI
+- letting delegated workers gain broader tool surfaces or hidden mutation paths through implementation shortcuts
 
 ---
 
@@ -609,7 +759,7 @@ The following are implementation failures:
 
 The implementation architecture must preserve the human operator as the accountable party by making real review and real gate completion possible, visible, and structurally required where doctrine says they are required.
 
-If implementation convenience removes the need for dense review or permits approval through side paths, the architecture has ceased to support human-in-the-loop governance even if the UI still uses the right words.
+If implementation convenience removes the need for dense review, hides orchestration influence, or permits approval through side paths, the architecture has ceased to support human-in-the-loop governance even if the UI still uses the right words.
 
 ---
 
@@ -620,12 +770,12 @@ A capable LLM should be able to infer from this architecture that:
 - it operates through bounded services and explicit typed outputs
 - its outputs are validated before they are rendered as governed widgets
 - it may route the operator toward approval but not satisfy approval itself
-- canonical state lives in governed surfaces and explicit stores, not in chat history
-- context loading, approval state, and workflow state are explicit runtime concepts
+- canonical state lives in governed surfaces and explicit stores, not in chat history or continuity artifacts
+- context loading, approval state, workflow state, orchestration state, and continuity state are explicit runtime concepts
 - the wrong actions are absent from the wrong surfaces by design
 - structural enforcement is the implementation priority, not behavioral aspiration
 
-If the implementation lets a model jump from typed output to mutating API call, or lets the LLM surface become the only meaningful control surface, the implementation architecture is being violated.
+If the implementation lets a model jump from typed output to mutating API call, lets delegated runtime become a hidden authority layer, or lets the LLM surface become the only meaningful control surface, the implementation architecture is being violated.
 
 ---
 
@@ -649,6 +799,9 @@ This document should be used:
 - `extension-state-and-context-model.md`
 - `extension-human-llm-interaction-model.md`
 - `extension-vscode-surface-architecture.md`
+- `extension-agent-orchestration-model.md`
+- `extension-memory-and-continuity-model.md`
+- `extension-system-init-and-tool-surface-model.md`
 - `operator-surface-interfaces.md`
 - `mcp-coordination-model.md`
 - `../governance/approval-and-escalation-model.md`

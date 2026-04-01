@@ -137,6 +137,67 @@ Any external service, API, or data source that the ecosystem integrates with to 
 ## Hammer
 The invariant verification layer used to confirm that a system's behavioral invariants hold under real execution. Every system in the V Ecosystem must implement its own hammer layer adapted to its own surfaces and invariants. The hammer is not a unit test suite or a code coverage tool. It is a boundary and invariant verification system.
 
+## Agent Orchestrator
+The extension-runtime role that coordinates bounded session behavior, delegated subtasks, runtime continuity, and tool-surface assembly without becoming a new truth-owning system.
+
+An agent orchestrator is a runtime coordinator, not a peer ecosystem system and not an approval authority.
+
+## Specialist Agent
+A bounded delegated runtime worker used for narrowly scoped reasoning or packaging work inside the extension.
+
+A specialist agent may increase reasoning specialization.
+It does not gain independent governance authority, project authority, or system ownership by virtue of specialization.
+
+## Delegated Subtask
+A bounded runtime task delegated by the extension orchestrator to a specialist agent or equivalent worker.
+
+A delegated subtask inherits the parent session scope and constraints.
+It does not create a new approval path or a new authority domain.
+
+## Session Tool Surface
+The governed set of MCP tools and related runtime capabilities exposed to the LLM for the active session.
+
+The session tool surface is assembled from admitted system surfaces according to current system posture, project scope, and governance constraints.
+The LLM must not be shown tools it is not currently entitled to use.
+
+## Protected Context
+The categories of session context that must not be dropped, obscured, or casually compacted because they are required to preserve correct governed behavior.
+
+Protected context includes the items defined in the extension state and continuity doctrine such as current-system posture, active approval state, decision continuity context, evidence basis markers, and session integrity items.
+
+## Working Memory
+Non-canonical runtime continuity context used to preserve useful operational understanding across turns or compaction events inside the extension.
+
+Working memory is not system truth.
+It must remain visible, bounded, and subordinate to canonical governed records.
+
+## Durable Memory
+A longer-lived form of non-canonical runtime continuity context retained beyond the immediately active turn window.
+
+Durable memory may improve continuity across longer sessions or controlled resume flows.
+It is still not canonical authority and must never override governed system state.
+
+## Transcript Artifact
+A persisted runtime record of session interaction, tool use, compaction events, or delegated work used for audit, review, or continuity support.
+
+A transcript artifact is not a governing decision record and must not be treated as canonical system truth.
+
+## Compact Boundary
+An explicit runtime marker showing where prior conversation context was compacted and replaced by governed continuity artifacts such as preserved protected context, memory records, or structured compaction products.
+
+A compact boundary improves visibility into what the LLM currently sees.
+It does not convert compaction output into canonical authority.
+
+## System Init Message
+The structured runtime context assembled at session start to communicate the active system posture, scope, tool surface, constraints, and other admitted context to the LLM.
+
+The system init message is a runtime assembly product. It must reflect current governed state and must not be ad-hoc or stale.
+
+## Orchestration Event Log
+The runtime record of orchestration activity such as task creation, delegation, completion, cancellation, failure, compaction events, and continuity events.
+
+The orchestration event log supports reviewability and operator visibility. It does not replace canonical system records.
+
 ---
 
 ## Usage

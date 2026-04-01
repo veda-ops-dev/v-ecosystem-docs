@@ -11,6 +11,7 @@ It defines:
 - interfaces
 - governance
 - onboarding
+- extension runtime doctrine
 
 The goal is:
 
@@ -28,6 +29,18 @@ Docs that define the core role and behavior of:
 - Project V
 - VEDA
 - V Forge
+
+### Extension Runtime Authority
+Docs under `interfaces/` that define the governed VS Code extension, including:
+- behavior contract
+- gating and approval posture
+- state and context visibility
+- human–LLM interaction
+- VS Code surface architecture
+- implementation architecture
+- agent orchestration
+- memory and continuity
+- system init and tool-surface posture
 
 ### Archive
 Docs that are:
@@ -54,7 +67,7 @@ Authoritative VEDA planning and doctrine.
 Authoritative V Forge planning and doctrine.
 
 ### interfaces
-Cross-system interfaces and handoffs.
+Cross-system interfaces, extension/runtime doctrine, and operator-surface architecture.
 
 ### governance
 Approvals, reporting, agent rules, and control.
@@ -80,7 +93,7 @@ Every document should answer:
 - What does this enable?
 - What decisions does this support?
 - What behavior does this constrain?
-- What system does this belong to?
+- What system or runtime layer does this belong to?
 - How will it be used?
 
 If it does not affect behavior, it is not needed.

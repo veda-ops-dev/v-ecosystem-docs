@@ -24,6 +24,7 @@ This document governs:
 - how decision continuity is preserved during return-to-planning
 - how decisions are revisited, superseded, or invalidated
 - how decision continuity relates to approval posture
+- how decision continuity differs from runtime continuity artifacts
 
 ---
 
@@ -54,6 +55,7 @@ A decision, once made and governed with the required approval posture, remains p
 Decisions must not disappear, drift, or be silently overridden.
 
 A proposed decision, draft decision, or informally discussed direction is not automatically a governing decision.
+Runtime continuity artifacts are not governing decisions.
 
 ---
 
@@ -66,6 +68,26 @@ Decision continuity is the requirement that:
 - decision history is preserved and interpretable
 - replanning does not reset or ignore prior governing decisions without justification
 - approval-sensitive decisions are not treated as continuity-binding before the required approval posture exists
+
+---
+
+## Decision Continuity vs Runtime Continuity
+
+Decision continuity is not the same as runtime continuity.
+
+### Decision continuity
+Decision continuity concerns governing decisions that have continuity-binding force because they were properly approved, recorded, and remain active unless superseded or invalidated.
+
+### Runtime continuity
+Runtime continuity concerns session-support artifacts such as:
+- working memory
+- durable memory
+- transcript artifacts
+- compaction products
+- retained worker findings
+
+Runtime continuity artifacts may support usefulness and operator recall.
+They do not become governing decision state by existing, by being remembered, or by surviving compaction.
 
 ---
 
@@ -173,6 +195,7 @@ Agents must not:
 - treat informal direction as governed decision state
 - treat a drafted recommendation as continuity-binding
 - carry unapproved decision language forward as if it were settled governing context
+- treat transcript or memory artifacts as substitute decision records
 
 If approval-sensitive decision state is unclear, the decision must not be treated as continuity-binding.
 
@@ -374,19 +397,21 @@ No system may silently mutate decision meaning.
 
 ---
 
-## Decision vs Signal vs Findings
+## Decision vs Signal vs Findings vs Runtime Continuity
 
 To prevent drift:
 
 - **Decision** = a governing choice that becomes continuity-binding when properly approved
 - **Signal** = evidence or observation that may inform or challenge a decision
 - **Findings** = bounded execution outputs that may inform or challenge a decision
+- **Runtime continuity artifact** = a non-canonical memory, transcript, compaction, or worker-derived artifact that may support session continuity without becoming governing state
 
 Rules:
 
 - signal does not become decision automatically
 - findings do not override decisions automatically
 - proposed decisions do not become governing decisions automatically
+- runtime continuity artifacts do not become decision records automatically
 - decisions must be explicitly reviewed, revised, superseded, invalidated, or reaffirmed when signal or findings require it
 
 This distinction is one of the main anti-drift controls in the ecosystem.
@@ -407,6 +432,7 @@ The following are continuity failures:
 - signal being treated as implicit decision
 - findings being treated as automatic decision override
 - informal direction being carried forward as if it were governed decision state
+- runtime continuity artifacts being treated as decision records
 
 ---
 
@@ -437,9 +463,10 @@ A capable LLM should be able to infer from this doc that:
 - replanning does not reset decision state
 - changed evidence or findings do not automatically mutate decisions
 - stale or conflicting approval posture weakens decision continuity and may require revalidation or escalation
+- runtime continuity artifacts are useful but non-authoritative
 - changes to governing decisions must be explicit and justified
 
-If an LLM can treat drafts, informal direction, or stale approvals as binding decisions without consequence, the doctrine is failing.
+If an LLM can treat drafts, informal direction, stale approvals, or runtime continuity artifacts as binding decisions without consequence, the doctrine is failing.
 
 ---
 
@@ -461,9 +488,10 @@ This document should be used:
 - `approval-and-escalation-model.md`
 - `agent-operating-doctrine.md`
 - `auth-and-actor-model.md`
-- `invalidation-and-supersedence-doctrine.md` *(planned)*
-- `evidence-continuity-model.md` *(planned)*
+- `invalidation-and-supersedence-doctrine.md`
+- `evidence-continuity-model.md`
 - `report-structure-and-required-fields.md`
+- `../interfaces/extension-memory-and-continuity-model.md`
 - `../ecosystem/cross-system-boundaries.md`
 - `../interfaces/project-v-to-v-forge-handoff-interface.md`
 - `../interfaces/v-forge-to-project-v-return-to-planning-interface.md`

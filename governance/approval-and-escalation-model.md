@@ -23,6 +23,7 @@ This document governs:
 - what kinds of approval-sensitive transitions exist
 - when escalation is required
 - how agents should behave when approval status is missing, ambiguous, or exceeded
+- the non-approval posture of delegated runtime work and continuity artifacts
 
 ---
 
@@ -52,6 +53,9 @@ Approval is the governance mechanism that allows an action, transition, or outco
 If approval is required, lack of explicit approval is not permission.
 If approval posture is unclear, the default is not to proceed as though approval exists.
 Escalation is required when a meaningful action cannot be safely or correctly resolved within the current approval posture.
+
+Delegation is not approval.
+Continuity artifacts are not approval.
 
 ---
 
@@ -148,13 +152,16 @@ They must not proceed if the current approval posture is unclear.
 ### Class B — Doubt-Default Rule
 When an action is potentially Class B but the current approval posture is ambiguous, the default is to treat it as requiring approval rather than assuming approval-free continuation.
 
-An agent must not resolve Class B ambiguity by proceeding. The correct response is to produce a bounded recommendation, surface the approval question explicitly, or escalate.
+An agent must not resolve Class B ambiguity by proceeding. The correct response is to produce a bounded recommendation, produce a reviewable approval request, surface the approval question explicitly, or escalate. Treating the action as Class B does not mean the agent may skip directly to activation.
 
 ### Class B — Stale Approval Behavior
 A Class B approval that was satisfied in a prior session, workflow stage, or planning cycle does not automatically carry forward into a changed context.
 
 If the underlying scope, conditions, or planning basis have materially changed since a Class B approval was granted, the approval must be treated as stale and must not be reused without explicit reconfirmation.
 A stale Class B approval posture is unclear approval posture and must be treated accordingly.
+
+Orchestration-produced or runtime-produced changes may also be material when they alter the basis the operator would review for the action.
+If delegated work, refreshed context, or continuity reclassification changes what the approval would now mean, the prior approval must be treated cautiously rather than silently reused.
 
 ---
 
@@ -238,6 +245,29 @@ It does not erase approval requirements.
 
 ---
 
+## Delegation Is Not Approval
+
+Delegated runtime work, specialist-agent output, and coordinator routing do not satisfy approval posture.
+
+A delegated worker may prepare or package material for review.
+A coordinator may route or organize work.
+Neither creates a governed approval event.
+
+Delegation may improve specialization and operator usefulness.
+It must not become a shadow approval path.
+
+---
+
+## Continuity Artifacts Are Not Approval
+
+Memory artifacts, transcript artifacts, compacted continuity products, and retained worker findings may improve continuity and reviewability.
+They do not satisfy approval posture.
+
+A continuity artifact may help explain prior context.
+It must not be treated as a persisted approval record or as proof that approval still applies.
+
+---
+
 ## Reviewability Principle
 
 A valid approval must be reviewable after the fact.
@@ -279,6 +309,7 @@ When approval posture is unclear, the agent must not:
 - widen the scope of a prior approval silently
 - reinterpret informal direction as governed approval
 - substitute its own confidence for governance
+- treat delegation or continuity artifacts as proof that approval has already been satisfied
 
 Instead, the agent should do one or more of the following:
 
@@ -404,6 +435,8 @@ A capable LLM should be able to infer from this doc that:
 - workflow eligibility is not the same as approval
 - approval does not erase boundaries
 - informal direction is not automatically governed approval
+- delegation does not satisfy approval
+- continuity artifacts do not satisfy approval
 
 If the model is used to justify acting first and normalizing governance later, the doctrine is wrong.
 
@@ -427,6 +460,8 @@ This document should be used:
 - `decision-continuity-doctrine.md`
 - `report-structure-and-required-fields.md`
 - `external-action-governance.md`
+- `../interfaces/extension-agent-orchestration-model.md`
+- `../interfaces/extension-memory-and-continuity-model.md`
 - `../ecosystem/cross-system-boundaries.md`
 - `../interfaces/project-v-to-v-forge-handoff-interface.md`
 - `../interfaces/v-forge-to-project-v-return-to-planning-interface.md`
