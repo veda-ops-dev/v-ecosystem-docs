@@ -7,7 +7,7 @@ This document defines how the human operator and the LLM interact inside the V E
 It exists to answer:
 
 ```text
-What is each party's role in the interaction, what interaction modes exist and what they are for, how does the operator frame work, how does the LLM present typed outputs, how does the operator respond to those outputs, and what must the interaction model structurally prevent so that conversation does not become governance and model quality does not become authority?
+What is each party's role in the interaction, what interaction modes exist and what they are for, how does the operator frame work, how does the LLM present typed outputs, delegated outputs, continuity-aware outputs, and orchestration-aware outputs, how does the operator respond to those outputs, and what must the interaction model structurally prevent so that conversation does not become governance and model quality does not become authority?
 ```
 
 This is a Tier 1 ecosystem authority document.
@@ -23,6 +23,8 @@ This document governs:
 - interaction modes and what framing they require
 - what constitutes explicit operator framing
 - how the LLM presents each typed output
+- how delegated work and orchestration state are surfaced during interaction
+- how continuity artifacts and uncertainty are surfaced during interaction
 - what the operator may do with each type of LLM output
 - visibility requirements at the moment of interaction
 - interaction anti-drift rules
@@ -30,7 +32,9 @@ This document governs:
 This document builds on and assumes the active binding of:
 - `extension-llm-behavior-contract.md` — LLM posture, allowed output types, framing requirements
 - `extension-governance-and-gating-model.md` — action classes, gate requirements, approval chain, inertness of outputs
-- `extension-state-and-context-model.md` — what state is visible, current system, decision context, evidence basis
+- `extension-state-and-context-model.md` — what state is visible, current system, decision context, evidence basis, orchestration state, continuity artifacts
+- `extension-agent-orchestration-model.md` — delegated runtime posture
+- `extension-memory-and-continuity-model.md` — continuity artifact posture
 
 ---
 
@@ -53,9 +57,9 @@ This document does not define:
 
 ## Core Rule
 
-The human operator is the accountable party. The LLM is a strong bounded reasoner that produces typed inert outputs. The interaction between them is explicit framing, explicit output production, and explicit human response — not a chat session where things subtly happen.
+The human operator is the accountable party. The LLM is a strong bounded reasoner that produces typed inert outputs. The interaction between them is explicit framing, explicit output production, explicit review, and explicit human response — not a chat session where things subtly happen.
 
-Neither party's role is diminished by this model. The operator provides direction and approval. The LLM provides synthesis, classification, packaging, conflict detection, and structured recommendation. Both are operating at full capability within their respective roles.
+Neither party's role is diminished by this model. The operator provides direction and approval. The LLM provides synthesis, classification, packaging, conflict detection, bounded orchestration, and structured recommendation. Both are operating at full capability within their respective roles.
 
 The interaction model fails in two directions. It fails if the LLM becomes the real workflow driver and the human becomes a rubber stamp. It fails if the LLM is so constrained it can no longer reason well enough to be useful. This document is about the path between those failures.
 
@@ -71,7 +75,7 @@ The human operator inside the extension is:
 
 **The reviewer.** The operator reads, evaluates, and acts on LLM outputs. The operator does not auto-accept outputs because they are well-written or because the model is capable.
 
-**The approval source where doctrine requires it.** For Class B and Class C actions, only the operator can satisfy the approval gate. No LLM output, however complete, constitutes that approval.
+**The approval source where doctrine requires it.** For Class B and Class C actions, only the operator can satisfy the approval gate. No LLM output, delegated worker artifact, or continuity artifact constitutes that approval.
 
 **Not merely a rubber stamp.** The interaction model must not train the operator to read and click. If the operator finds themselves always accepting LLM outputs without meaningful review, the interaction model has drifted into co-pilot territory and must be corrected.
 
@@ -83,11 +87,13 @@ The LLM inside the extension is:
 
 **A strong bounded reasoner.** The LLM may exercise full reasoning capability: synthesize across context, detect conflicts, identify gaps, classify, evaluate, package, and produce structured outputs. Its reasoning power is an asset and must not be artificially hobbled.
 
-**A producer of typed inert outputs.** Every output the LLM produces is one of the seven typed outputs defined in `extension-llm-behavior-contract.md`. Those outputs are inert until separately activated through the governed path. The LLM's job is to produce the best possible typed output, not to activate anything.
+**A producer of typed inert outputs.** Every output the LLM produces is one of the typed outputs defined in `extension-llm-behavior-contract.md`. Those outputs are inert until separately activated through the governed path. The LLM's job is to produce the best possible typed output, not to activate anything.
 
-**A governed support participant.** The LLM operates within current system context, workflow stage, decision continuity, and evidence basis. It does not override those constraints because it believes it knows better.
+**A runtime participant that may operate through delegation.** The LLM may participate as a coordinator or specialist inside bounded orchestration. That changes runtime role, not authority.
 
-**Not the owner of workflow state.** Workflow state lives in governed records, not in chat history. The LLM does not set, advance, or own workflow stage.
+**A governed support participant.** The LLM operates within current system context, workflow stage, decision continuity, evidence basis, visible continuity artifacts, and the filtered tool posture of the active session. It does not override those constraints because it believes it knows better.
+
+**Not the owner of workflow state.** Workflow state lives in governed records, not in chat history or continuity memory. The LLM does not set, advance, or own workflow stage.
 
 **Not the source of approval.** An LLM cannot approve a Class B or Class C action regardless of how complete its recommendation is. Its role ends at producing the best possible typed output for the operator to evaluate.
 
@@ -147,7 +153,7 @@ Mode selection is required only when the operator wants typed outputs with gover
 
 For Review, Brainstorm, and Execution Report Review modes, the operator may state their intent conversationally ("review the readiness state," "I'm just thinking through this") without using the mode selector UI.
 
-These modes produce Class A outputs (Review Summary, Finding, Uncertainty Notice, Continuity Reminder) and do not require governance ceremony.
+These modes produce Class A outputs and do not require governance ceremony.
 
 The mode selector is available for clarity but is not required.
 
@@ -199,7 +205,7 @@ Each typed output must be presented distinctly. The operator must be able to ide
 
 ### Finding
 
-Visual treatment: labeled `FINDING` in orange. System attribution shown (`V FORGE`, `VEDA`, `PROJECT V`) depending on source. Freshness timestamp shown.
+Visual treatment: labeled `FINDING`. System attribution shown (`V FORGE`, `VEDA`, `PROJECT V`) depending on source. Freshness timestamp shown where relevant.
 
 What it is: a bounded report of something observed, detected, or analyzed.
 What it is not: a recommendation, a decision, or replanning authority.
@@ -214,7 +220,7 @@ Required elements shown:
 
 ### Recommendation
 
-Visual treatment: labeled `RECOMMENDATION` in amber. Clearly marked as pending operator review. Not approved, not activated.
+Visual treatment: labeled `RECOMMENDATION`. Clearly marked as pending operator review. Not approved, not activated.
 
 What it is: a bounded proposed course of action for operator review.
 What it is not: a decision, an approval, or a record mutation.
@@ -234,7 +240,7 @@ The recommendation widget must show the action class badge (`Class B` or `Class 
 
 ### Review Summary
 
-Visual treatment: labeled `REVIEW SUMMARY` in neutral gray. No action badge.
+Visual treatment: labeled `REVIEW SUMMARY`. No action badge.
 
 What it is: a read-only analysis of records, context, or packages.
 What it is not: a proposed action, a recommendation, or a decision.
@@ -243,7 +249,7 @@ No approval gate widget accompanies a Review Summary. If the operator wants to p
 
 ### Approval Request Package
 
-Visual treatment: labeled `APPROVAL REQUEST` in blue. Includes action class badge. Includes a `[Proceed to Approval Gate]` action.
+Visual treatment: labeled `APPROVAL REQUEST`. Includes action class badge. Includes a `[Proceed to Approval Gate]` action.
 
 What it is: a structured package requesting explicit operator approval for a specific Class B or Class C action.
 What it is not: an approval. Producing this package does not satisfy any gate.
@@ -256,7 +262,7 @@ Required elements shown:
 - what approval covers and does not cover
 - what happens if approval is granted
 - what the default state is if approval is not granted
-- a `[Proceed to Approval Gate]` action that navigates the operator to the governed approval gate widget in the relevant detail panel (the gate widget does not live in the LLM output card; it lives in the detail panel where the operator can review the full record context before approving)
+- a `[Proceed to Approval Gate]` action that navigates the operator to the governed approval gate widget in the relevant detail panel
 
 ### Execution Report
 
@@ -269,7 +275,7 @@ If the report contains a return trigger, that trigger is shown separately and di
 
 ### Uncertainty Notice
 
-Visual treatment: labeled `UNCERTAINTY` in amber with `⚠` marker. Shown prominently, not buried in paragraph text.
+Visual treatment: labeled `UNCERTAINTY` with warning treatment. Shown prominently, not buried in paragraph text.
 
 What it is: an explicit notice that the LLM's current basis is insufficient, stale, conflicting, or unclear for the current output or action.
 What it is not: a failure. Uncertainty notices are correct behavior.
@@ -281,12 +287,58 @@ Must show:
 
 ### Continuity Reminder
 
-Visual treatment: labeled `CONTINUITY REMINDER` in muted blue. Not requiring immediate action.
+Visual treatment: labeled `CONTINUITY REMINDER`. Not requiring immediate action.
 
-What it is: a reference to prior governing decisions, prior rejections, or prior workflow states relevant to what the operator is currently doing.
+What it is: a reference to prior governing decisions, prior rejections, prior workflow states, or admitted continuity artifacts relevant to what the operator is currently doing.
 What it is not: a recommendation or a governance gate.
 
 If the operator is proceeding toward an action that conflicts with a prior governing decision, a Continuity Reminder should appear before the LLM produces any recommendation in that direction. The reminder is not a block — it is a visible signal that prior context exists and is relevant.
+
+---
+
+## Orchestration and Delegated Work During Interaction
+
+When orchestration is active, the interaction model must make that visible without turning the session into a control-room circus.
+
+### What the operator must be able to tell
+
+When meaningful delegated work is in progress, the operator must be able to see:
+- that orchestration is active
+- what subtask is being worked
+- what specialist role is active
+- whether the subtask is pending, running, completed, failed, cancelled, or awaiting review
+- whether the delegated output is now contributing to the current interaction
+
+### What delegated outputs must look like
+
+Delegated outputs must remain visibly bounded and non-authoritative.
+A specialist result must not appear as though it were a privileged or already-approved answer.
+
+Delegated outputs should carry:
+- role/source attribution
+- bounded scope description
+- lifecycle result state
+- a reminder that delegated work did not change governance posture
+
+### Interaction rule
+
+The operator must never be forced to guess whether an answer was produced directly, derived from delegated work, or shaped by orchestration state.
+
+---
+
+## Continuity-Aware Interaction Rule
+
+When continuity artifacts materially affect the session, the operator must encounter them explicitly enough to remain accountable.
+
+This does not mean flooding every response with memory noise.
+It means the operator must be able to see, where relevant:
+- that a continuity artifact is active
+- what type of continuity artifact it is
+- whether it is aging or stale
+- that it is non-canonical
+- that it can be reviewed or cleared
+
+The interaction surface must not let continuity artifacts masquerade as freshly loaded governed state.
 
 ---
 
@@ -319,8 +371,6 @@ For every LLM output, the operator has a defined set of response options. These 
 - **Defer** — parks the package; logged; marked stale after threshold
 - **Ask for clarification** — requests expansion on specific elements before deciding
 
-"Proceed to Approval Gate" in this context means navigating to the governed gate widget in the detail panel. The persisted approval event happens there — not by typing "approved" or "looks good" in chat, and not inside the LLM output card.
-
 ### For Execution Report
 - **Acknowledge** — operator confirms they have read the report; logged
 - **Route return trigger** — if a return trigger is present, routes it to the Project V planning surface through the governed return-to-planning interface
@@ -348,19 +398,25 @@ The LLM must not auto-advance interaction from ambient conversation to typed out
 Chat phrases like "that works," "sounds right," "sure," and "go ahead" are not recognized response options for any typed output. The extension must not attach governance significance to these phrases. The operator must use the defined response options for governance-relevant outputs.
 
 ### A Recommendation being mistaken for a decision
-The Recommendation widget must visually and semantically distinguish itself from an activated action. Its label must say "awaiting review" or equivalent. It must not read like a confirmation. A well-reasoned Recommendation with a high-confidence basis must look identical in governance terms to a lower-confidence one — both are awaiting operator review.
+The Recommendation widget must visually and semantically distinguish itself from an activated action. Its label must say "awaiting review" or equivalent. It must not read like a confirmation.
 
 ### A Finding being mistaken for planning authority
-A V Forge Finding routed into a Project V session must not read as though Project V has already decided to replan. The Finding states what execution observed. It does not state what planning should do. The response options for a Finding must make this explicit: "Route to governed path" is not "approve replanning."
+A V Forge Finding routed into a Project V session must not read as though Project V has already decided to replan. The Finding states what execution observed. It does not state what planning should do.
 
 ### Model quality changing the interaction contract
-A more capable model's Recommendation must present identically in governance terms to a less capable model's Recommendation. The action class badge, the inertness label, the approval gate requirement — none of these should differ based on which model produced the output. The interaction model must not train the operator to treat confident, detailed output as quasi-approval.
+A more capable model's Recommendation must present identically in governance terms to a less capable model's Recommendation. The action class badge, the inertness label, the approval gate requirement — none of these should differ based on which model produced the output.
 
 ### Chat history becoming effective governance state
 The operator must not be able to point at a conversation thread and say "we decided this in chat." Governance state lives in persisted records. The interaction model must make it structurally impossible for chat exchange to substitute for governed approval events, decision records, or persisted rejection records.
 
+### Delegated work becoming hidden authority
+A specialist result must not look like a privileged answer merely because it came from internal orchestration. Runtime specialization does not create governance weight.
+
+### Continuity artifacts becoming silent persuasion
+Memory, transcript-derived continuity, and compaction products must not quietly shape high-impact operator choices without being inspectable and clearly non-canonical.
+
 ### The LLM referencing context it does not have loaded
-When the LLM cites a governing decision, evidence record, or workflow state, the operator must be able to verify that it is loaded in the current context strip. The LLM must not cite context it is not visibly holding. If the operator cannot verify the context reference, the LLM must be treated as reasoning from unknown basis.
+When the LLM cites a governing decision, evidence record, workflow state, or active continuity artifact, the operator must be able to verify that it is loaded in the current visible session basis. If the operator cannot verify the context reference, the LLM must be treated as reasoning from unknown basis.
 
 ---
 
@@ -370,11 +426,13 @@ Before the LLM produces any non-trivial typed output, the following must be visi
 
 - **Current system** — shown in status strip; the operator knows which system the LLM is operating within
 - **Current workflow stage** — shown in status strip; the operator knows what stage is active and what gates are next
-- **Output type** — every typed output is labeled with its type before the content is read; the operator knows what kind of object they are holding before they read it
-- **Evidence basis** — shown in context strip with freshness and trust posture; the operator knows what signal the LLM is working from
-- **Uncertainty** — any Uncertainty Notice must appear before or alongside the outputs it qualifies; it must not appear after the operator has already formed a view
-- **What has not happened yet** — the inertness of recommendations, packages, and findings must be stated on the output card itself, not only in governance documentation
-- **What still requires operator action** — the response options at the bottom of each typed output card must make clear what the operator needs to do to proceed; a card with no remaining required action must look settled; a card requiring operator decision must look open
+- **Output type** — every typed output is labeled with its type before the content is read
+- **Evidence basis** — shown in context strip with freshness and trust posture
+- **Uncertainty** — any Uncertainty Notice must appear before or alongside the outputs it qualifies
+- **What has not happened yet** — the inertness of recommendations, packages, findings, and delegated outputs must be stated on the output card itself, not only in governance documentation
+- **What still requires operator action** — the response options at the bottom of each typed output card must make clear what the operator needs to do to proceed
+- **Whether orchestration is materially involved** — if the answer was shaped by delegated runtime work, that must be visible
+- **Whether continuity artifacts are materially involved** — if continuity artifacts are participating in the current basis, that must remain inspectable
 
 ---
 
@@ -401,6 +459,7 @@ Over-deference to a capable LLM is a real failure mode. An operator who reads a 
 - making inertness visible on every output card
 - requiring specific response options rather than ambient agreement
 - logging dismissals, deferrals, and acknowledged uncertainties so the audit trail reflects what the operator actually did
+- keeping orchestration and continuity visible enough that the operator is reviewing the real session basis, not a cleaned-up illusion
 
 The operator's role is not to be impressed by good outputs. It is to evaluate them and act as the accountable party.
 
@@ -415,10 +474,12 @@ A capable LLM should be able to infer from this doc that:
 - a Recommendation's quality does not change its governance status — it is inert until the operator activates it through the governed gate
 - a Finding does not constitute planning authority — it reports what was observed
 - an Approval Request Package is the most complete pre-approval artifact the LLM may produce — it still does not activate anything
+- delegated outputs remain inert and bounded
+- continuity artifacts are useful but non-authoritative and must remain inspectable
 - conversation smoothness must not hide what context was used, what typed output was produced, or what the operator still needs to do
 - if the operator's input is not explicit framing for a typed output with governance significance, the safe response is analytical, not activist
 
-If the LLM treats operator enthusiasm or conversational agreement as framing, or produces Recommendations without explicit framing, or treats its own output as a step in the activation path rather than an input to operator review, this interaction model is being violated.
+If the LLM treats operator enthusiasm or conversational agreement as framing, produces Recommendations without explicit framing, hides orchestration participation, or treats its own output as a step in the activation path rather than an input to operator review, this interaction model is being violated.
 
 ---
 
@@ -429,7 +490,7 @@ This document should be used:
 - when designing the LLM interaction surface within the extension
 - when evaluating whether a proposed interaction pattern preserves the distinction between framing, output, review, and approval
 - when reviewing whether the operator's response options for a given output type are complete and correctly bounded
-- when auditing extension sessions for interaction drift (LLM auto-advancing, operator rubber-stamping, chat-as-governance)
+- when auditing extension sessions for interaction drift (LLM auto-advancing, operator rubber-stamping, chat-as-governance, hidden orchestration, hidden continuity)
 - when writing more specific operator workflow docs or LLM prompt guidance that must remain consistent with this interaction model
 
 ---
@@ -439,6 +500,9 @@ This document should be used:
 - `extension-llm-behavior-contract.md`
 - `extension-governance-and-gating-model.md`
 - `extension-state-and-context-model.md`
+- `extension-agent-orchestration-model.md`
+- `extension-memory-and-continuity-model.md`
+- `extension-system-init-and-tool-surface-model.md`
 - `../governance/agent-operating-doctrine.md`
 - `../governance/approval-and-escalation-model.md`
 - `../governance/recommendation-packaging-doctrine.md`

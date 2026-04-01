@@ -90,9 +90,12 @@ These define what crosses boundaries and what operator surfaces are supposed to 
 24. `C:\dev\v-ecosystem-docs\interfaces\extension-human-llm-interaction-model.md`
 25. `C:\dev\v-ecosystem-docs\interfaces\extension-vscode-surface-architecture.md`
 26. `C:\dev\v-ecosystem-docs\interfaces\extension-implementation-architecture.md`
+27. `C:\dev\v-ecosystem-docs\interfaces\extension-agent-orchestration-model.md`
+28. `C:\dev\v-ecosystem-docs\interfaces\extension-memory-and-continuity-model.md`
+29. `C:\dev\v-ecosystem-docs\interfaces\extension-system-init-and-tool-surface-model.md`
 
-These six docs are the extension doctrine spine.
-Do not code the extension until you understand all six.
+These extension docs are the extension doctrine spine.
+Do not code the extension until you understand the active doctrine set.
 
 ---
 
@@ -122,6 +125,24 @@ Re-read:
 - `extension-vscode-surface-architecture.md`
 - `extension-implementation-architecture.md`
 - `operator-surface-interfaces.md`
+
+### If you are working on orchestration or delegated runtime work
+Re-read:
+- `extension-agent-orchestration-model.md`
+- `extension-governance-and-gating-model.md`
+- `agent-operating-doctrine.md`
+
+### If you are working on memory, continuity, or compaction
+Re-read:
+- `extension-memory-and-continuity-model.md`
+- `extension-state-and-context-model.md`
+- `decision-continuity-doctrine.md`
+
+### If you are working on session bootstrap, init prompts, or tool-surface assembly
+Re-read:
+- `extension-system-init-and-tool-surface-model.md`
+- `extension-llm-behavior-contract.md`
+- `mcp-coordination-model.md`
 
 ### If you are working on cross-system reads or tool flows
 Re-read:
@@ -158,6 +179,7 @@ Temporary shortcuts become permanent doctrine leaks.
 Explicit framing matters.
 Current system matters.
 Workflow stage matters.
+Class A conversational framing does not change the current system. Only an explicit operator system switch does that.
 
 ### 6. Do not build around convenience if it weakens boundaries
 If the easiest implementation path collapses governance, the easy path is wrong.
@@ -165,6 +187,18 @@ If the easiest implementation path collapses governance, the easy path is wrong.
 ### 7. Do not duplicate gate logic everywhere
 Approval and activation logic must be centralized.
 Do not let multiple panels or commands each invent their own gate rules.
+
+### 8. Do not let orchestration become hidden governance
+Delegation does not create permission.
+A coordinator is not an approval source.
+A specialist worker must not become a secret mutation path.
+
+### 9. Do not let memory become fake authority
+Working memory, durable memory, transcripts, compaction products, and worker findings are continuity artifacts.
+They are not canonical decisions, approval records, evidence records, or system truth.
+
+### 10. Do not let compaction hide protected context
+If compaction drops current-system posture, approval state, decision continuity context, evidence basis markers, or other protected context, the runtime is wrong even if it still feels smooth.
 
 ---
 
@@ -174,10 +208,13 @@ Build in this order:
 
 1. project/session scope
 2. state/context spine
-3. typed output validation and rendering
-4. detail panels
-5. approval pipeline
-6. workflow-specific flows
+3. system init and session tool-surface assembly
+4. typed output validation and rendering
+5. detail panels
+6. approval pipeline
+7. memory and continuity safeguards
+8. workflow-specific flows
+9. orchestration and delegated runtime features
 
 Do not start with pretty UI.
 Do not start with clever agent behavior.
@@ -198,6 +235,11 @@ Stop coding and go back to the docs if you find yourself wanting to:
 - make V Forge alter planning decisions
 - skip persisted approval because “the operator is right there”
 - merge review, approval, and activation because it feels smoother
+- let memory records behave like decisions or approvals
+- treat transcripts as canonical state
+- let compaction silently remove protected context
+- let a delegated worker mutate governed state without the existing gate path
+- hide orchestration state because the UI feels cleaner without it
 
 If any of those feel tempting, you are drifting.
 
