@@ -364,6 +364,29 @@ They must not use them to bypass fresh canonical loading or governance verificat
 
 ---
 
+## Pre-Compaction Flush Principle
+
+A pre-compaction memory flush is a bounded governed action used to preserve non-authoritative working continuity before lossy compaction occurs.
+
+This action exists to reduce avoidable runtime context loss.
+It does not create canonical state.
+It does not create decisions.
+It does not create approvals.
+It does not create evidence records.
+
+A pre-compaction flush may write only to designated non-authoritative continuity artifacts allowed by the active runtime doctrine.
+Any such write must:
+
+- remain inside the current runtime scope
+- use observational, non-governing vocabulary
+- carry source attribution and timestamping where the continuity doctrine requires it
+- remain reviewable and removable under the applicable continuity rules
+
+A pre-compaction flush must not be used to smuggle governing force into memory artifacts before context is compacted.
+If the flush would create authority confusion, decision-language, approval-language, or evidence-substitute behavior, the flush is not in bounds.
+
+---
+
 ## Cross-System Session Principle
 
 When an agent can see multiple systems in one session, it must remain aware that:
@@ -427,6 +450,7 @@ A capable LLM should be able to infer from this doc that:
 - recommendation is not approval
 - delegation does not increase authority
 - continuity does not become authority
+- pre-compaction flush is bounded continuity support, not authority creation
 - system boundaries must remain intact
 - uncertainty must be preserved when it matters
 - reviewability is part of correctness
