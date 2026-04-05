@@ -1,7 +1,7 @@
 # ADR-008: One Unified VSCode Extension
 
 ## Status
-Accepted
+Superseded by ADR-011
 
 ## Date
 Earlier session — recorded here for ADR hygiene
@@ -29,5 +29,6 @@ The single extension is the operator's unified workspace for the entire ecosyste
 - The extension is a governance layer for project scope, not just a display surface
 
 ## Related Docs
+- `ADR-011-tauri-2-desktop-is-the-operator-host.md`
 - `../../interfaces/mcp-coordination-model.md`
 - `ADR-005-session-token-model-for-project-scope.md`

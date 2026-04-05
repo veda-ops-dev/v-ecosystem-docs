@@ -1,5 +1,12 @@
 # Extension VS Code Surface Architecture
 
+## Status
+Superseded by `desktop-surface-architecture.md`
+
+This document reflects the legacy VS Code extension host model.
+The Tauri 2 desktop application defined in ADR-011 is now the primary operator host.
+Use `desktop-surface-architecture.md` for active doctrine.
+
 ## Purpose
 
 This document defines the VS Code surface architecture for the V Ecosystem extension — the physical layout of surfaces, the placement of actions, the assignment of content to surfaces, and the absent-affordance rules that prevent the wrong actions from appearing in the wrong places.

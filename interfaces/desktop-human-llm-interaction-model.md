@@ -1,15 +1,8 @@
-# Extension Human–LLM Interaction Model
-
-## Status
-Superseded by `desktop-human-llm-interaction-model.md`
-
-This document reflects the legacy VS Code extension host model.
-The Tauri 2 desktop application defined in ADR-011 is now the primary operator host.
-Use `desktop-human-llm-interaction-model.md` for active doctrine.
+# Desktop Human–LLM Interaction Model
 
 ## Purpose
 
-This document defines how the human operator and the LLM interact inside the V Ecosystem VS Code extension so that the system remains powerful, usable, explicit, and governed.
+This document defines how the human operator and the LLM interact inside the V Ecosystem desktop application so that the system remains powerful, usable, explicit, and governed.
 
 It exists to answer:
 
@@ -37,11 +30,12 @@ This document governs:
 - interaction anti-drift rules
 
 This document builds on and assumes the active binding of:
-- `extension-llm-behavior-contract.md` — LLM posture, allowed output types, framing requirements
-- `extension-governance-and-gating-model.md` — action classes, gate requirements, approval chain, inertness of outputs
-- `extension-state-and-context-model.md` — what state is visible, current system, decision context, evidence basis, orchestration state, continuity artifacts
-- `extension-agent-orchestration-model.md` — delegated runtime posture
-- `extension-memory-and-continuity-model.md` — continuity artifact posture
+- `desktop-llm-behavior-contract.md`
+- `desktop-governance-and-gating-model.md`
+- `desktop-state-and-context-model.md`
+- `desktop-agent-orchestration-model.md`
+- `desktop-memory-and-continuity-model.md`
+- `desktop-surface-architecture.md`
 
 ---
 
@@ -74,7 +68,7 @@ The interaction model fails in two directions. It fails if the LLM becomes the r
 
 ## Human Operator Role
 
-The human operator inside the extension is:
+The human operator inside the desktop application is:
 
 **The accountable party.** The operator is responsible for the governed state of the project. What is planned, what is approved, what is handed off, and what is launched are all ultimately operator decisions. The LLM does not make those decisions.
 
@@ -90,11 +84,11 @@ The human operator inside the extension is:
 
 ## LLM Role
 
-The LLM inside the extension is:
+The LLM inside the desktop application is:
 
 **A strong bounded reasoner.** The LLM may exercise full reasoning capability: synthesize across context, detect conflicts, identify gaps, classify, evaluate, package, and produce structured outputs. Its reasoning power is an asset and must not be artificially hobbled.
 
-**A producer of typed inert outputs.** Every output the LLM produces is one of the typed outputs defined in `extension-llm-behavior-contract.md`. Those outputs are inert until separately activated through the governed path. The LLM's job is to produce the best possible typed output, not to activate anything.
+**A producer of typed inert outputs.** Every output the LLM produces is one of the typed outputs defined in `desktop-llm-behavior-contract.md`. Those outputs are inert until separately activated through the governed path. The LLM's job is to produce the best possible typed output, not to activate anything.
 
 **A runtime participant that may operate through delegation.** The LLM may participate as a coordinator or specialist inside bounded orchestration. That changes runtime role, not authority.
 
@@ -110,7 +104,7 @@ The LLM inside the extension is:
 
 Interaction modes are framing signals, not authority classes. A mode tells the LLM what kind of work is being requested so it can orient its reasoning and output type correctly. A mode does not override workflow gates, does not create approval authority, and does not widen what the LLM is permitted to do.
 
-The extension supports the following interaction modes. The operator selects or declares the mode before substantive LLM engagement where mode selection is required.
+The desktop application supports the following interaction modes. The operator selects or declares the mode before substantive LLM engagement where mode selection is required.
 
 ### Brainstorm
 The operator wants open-ended thinking without record creation or workflow advancement.
@@ -129,7 +123,7 @@ Framing examples: "Review the current readiness state for this initiative." / "T
 ### Intake
 The operator wants the LLM to classify a work item or opportunity and produce a structured intake classification for review.
 
-LLM behavior: produce a Recommendation typed as an intake classification. Must include all required recommendation elements: proposed classification, scope, basis, uncertainty, governance posture, acceptance/non-acceptance outcomes.
+LLM behavior: produce a Recommendation typed as an intake classification. Must include all required recommendation elements: proposed classification, scope, basis, uncertainty, governance posture, acceptance and non-acceptance outcomes.
 
 Framing examples: "Process this as an intake — classify and recommend." / "We have a new opportunity; run intake on it."
 
@@ -158,7 +152,7 @@ Framing examples: "Review this execution finding and tell me what it means." / "
 
 Mode selection is required only when the operator wants typed outputs with governance significance: Recommendation, Approval Request Package, Intake classification.
 
-For Review, Brainstorm, and Execution Report Review modes, the operator may state their intent conversationally ("review the readiness state," "I'm just thinking through this") without using the mode selector UI.
+For Review, Brainstorm, and Execution Report Review modes, the operator may state their intent conversationally, such as `review the readiness state` or `I'm just thinking through this`, without using a mode selector UI.
 
 These modes produce Class A outputs and do not require governance ceremony.
 
@@ -199,10 +193,10 @@ When the operator's input does not constitute explicit framing for a typed outpu
 
 The LLM must not:
 - auto-classify the input into an intake and begin producing a Recommendation
-- produce an Approval Request Package on the assumption that the operator "meant to" prepare one
+- produce an Approval Request Package on the assumption that the operator `meant to` prepare one
 - advance from conversational exchange into a typed activation path without explicit framing
 
-The extension may present a brief mode selector to the operator if input is ambiguous rather than requiring the LLM to guess.
+The desktop application may present a brief mode selector to the operator if input is ambiguous rather than requiring the LLM to guess.
 
 ---
 
@@ -212,7 +206,7 @@ Each typed output must be presented distinctly. The operator must be able to ide
 
 ### Finding
 
-Visual treatment: labeled `FINDING`. System attribution shown (`V FORGE`, `VEDA`, `PROJECT V`) depending on source. Freshness timestamp shown where relevant.
+Visual treatment: labeled `FINDING`. System attribution shown, such as `V FORGE`, `VEDA`, or `PROJECT V`, depending on source. Freshness timestamp shown where relevant.
 
 What it is: a bounded report of something observed, detected, or analyzed.
 What it is not: a recommendation, a decision, or replanning authority.
@@ -223,7 +217,7 @@ Required elements shown:
 - what was found
 - why it matters
 - what has NOT been done as a result of this finding
-- what the operator may do next (route to governed path / dismiss)
+- what the operator may do next, such as route to governed path or dismiss
 
 ### Recommendation
 
@@ -234,16 +228,16 @@ What it is not: a decision, an approval, or a record mutation.
 
 Required elements shown:
 - output type label: `RECOMMENDATION — awaiting review`
-- producer attribution (agent, current system context)
+- producer attribution, agent and current system context
 - proposed path
 - bounded scope
-- basis (evidence and decision references)
+- basis, including evidence and decision references
 - uncertainty and risk
-- governance posture (action class, what gate applies)
+- governance posture, including action class and what gate applies
 - if approved: what happens
 - if not approved: what the default state is
 
-The recommendation widget must show the action class badge (`Class B` or `Class C`) inline on the output card so the operator cannot mistake a governance-sensitive recommendation for a Class A interpretation.
+The recommendation widget must show the action class badge, such as `Class B` or `Class C`, inline on the output card so the operator cannot mistake a governance-sensitive recommendation for a Class A interpretation.
 
 ### Review Summary
 
@@ -261,15 +255,17 @@ Visual treatment: labeled `APPROVAL REQUEST`. Includes action class badge. Inclu
 What it is: a structured package requesting explicit operator approval for a specific Class B or Class C action.
 What it is not: an approval. Producing this package does not satisfy any gate.
 
+This output lives in the right interaction panel. It is the entry point into the center workspace review-and-gate flow. The approval event does not happen here. The operator uses this output card to navigate to the center review surface, complete their review, and then reach the gate widget.
+
 Required elements shown:
 - output type label: `APPROVAL REQUEST — [Class B / Class C]`
-- action being requested (specific, not vague)
+- action being requested, specific and not vague
 - scope the approval would cover
 - basis for the request
 - what approval covers and does not cover
 - what happens if approval is granted
 - what the default state is if approval is not granted
-- a `[Proceed to Approval Gate]` action that navigates the operator to the governed approval gate widget in the relevant detail panel
+- a `[Proceed to Approval Gate]` action that navigates the operator to the governed approval gate widget in the relevant center review surface; this action opens the center surface, it does not open a gate in the interaction panel
 
 ### Execution Report
 
@@ -278,7 +274,7 @@ Visual treatment: labeled `EXECUTION REPORT` with `V FORGE` system attribution. 
 What it is: a bounded account of execution state, findings, or completion.
 What it is not: a planning decision, a replanning authorization, or a signal transfer.
 
-If the report contains a return trigger, that trigger is shown separately and distinctly within the output card with a `RETURN TRIGGER` label, making clear that the trigger is a finding that may warrant routing to planning — not an automatic replanning event.
+If the report contains a return trigger, that trigger is shown separately and distinctly within the output card with a `RETURN TRIGGER` label, making clear that the trigger is a finding that may warrant routing to planning, not an automatic replanning event.
 
 ### Uncertainty Notice
 
@@ -322,7 +318,7 @@ Delegated outputs must remain visibly bounded and non-authoritative.
 A specialist result must not appear as though it were a privileged or already-approved answer.
 
 Delegated outputs should carry:
-- role/source attribution
+- role or source attribution
 - bounded scope description
 - lifecycle result state
 - a reminder that delegated work did not change governance posture
@@ -351,10 +347,10 @@ The interaction surface must not let continuity artifacts masquerade as freshly 
 
 ## Operator Response Options
 
-For every LLM output, the operator has a defined set of response options. These are the only recognized interaction outcomes. Conversational statements in the chat surface do not constitute any of these responses.
+For every LLM output, the operator has a defined set of response options. These are the only recognized interaction outcomes. Conversational statements in the interaction surface do not constitute any of these responses.
 
 ### For Finding
-- **Route to governed path** — sends the finding to the appropriate interface (e.g., return-to-planning, escalation)
+- **Route to governed path** — sends the finding to the appropriate interface, such as return-to-planning or escalation
 - **Dismiss** — closes the finding; logged as acknowledged-and-dismissed
 - **Ask for clarification** — requests the LLM to expand or clarify specific elements of the finding
 - **Defer** — marks the finding as deferred for later review; logged
@@ -372,7 +368,7 @@ For every LLM output, the operator has a defined set of response options. These 
 - **Dismiss** — closes the summary
 
 ### For Approval Request Package
-- **Proceed to Approval Gate** — navigates to the Class B or Class C gate widget in the relevant detail panel; the approval event is persisted there, not in the LLM panel
+- **Proceed to Approval Gate** — navigates to the Class B or Class C gate widget in the relevant center review surface; the approval event is persisted there, not in the interaction panel. The operator must be inside the center review surface and complete any required review before the gate widget is available. The Approval Request Package in the right panel is the route into that surface, not a substitute for it.
 - **Reject** — governed rejection; logged with optional reason; rejection record persisted
 - **Modify scope** — returns the package to the LLM for revision with stated changes; prior package is superseded
 - **Defer** — parks the package; logged; marked stale after threshold
@@ -402,10 +398,10 @@ For every LLM output, the operator has a defined set of response options. These 
 The LLM must not auto-advance interaction from ambient conversation to typed output to activation path without explicit framing at each step. A strong recommendation that the operator seems to agree with does not advance to an Approval Request Package unless the operator explicitly requests it. An Approval Request Package that the operator seems to favor does not advance to the approval gate unless the operator explicitly initiates it.
 
 ### Conversational statements being treated as responses
-Chat phrases like "that works," "sounds right," "sure," and "go ahead" are not recognized response options for any typed output. The extension must not attach governance significance to these phrases. The operator must use the defined response options for governance-relevant outputs.
+Chat phrases like `that works`, `sounds right`, `sure`, and `go ahead` are not recognized response options for any typed output. The desktop application must not attach governance significance to these phrases. The operator must use the defined response options for governance-relevant outputs.
 
 ### A Recommendation being mistaken for a decision
-The Recommendation widget must visually and semantically distinguish itself from an activated action. Its label must say "awaiting review" or equivalent. It must not read like a confirmation.
+The Recommendation widget must visually and semantically distinguish itself from an activated action. Its label must say `awaiting review` or equivalent. It must not read like a confirmation.
 
 ### A Finding being mistaken for planning authority
 A V Forge Finding routed into a Project V session must not read as though Project V has already decided to replan. The Finding states what execution observed. It does not state what planning should do.
@@ -414,7 +410,7 @@ A V Forge Finding routed into a Project V session must not read as though Projec
 A more capable model's Recommendation must present identically in governance terms to a less capable model's Recommendation. The action class badge, the inertness label, the approval gate requirement — none of these should differ based on which model produced the output.
 
 ### Chat history becoming effective governance state
-The operator must not be able to point at a conversation thread and say "we decided this in chat." Governance state lives in persisted records. The interaction model must make it structurally impossible for chat exchange to substitute for governed approval events, decision records, or persisted rejection records.
+The operator must not be able to point at a conversation thread and say `we decided this in chat.` Governance state lives in persisted records. The interaction model must make it structurally impossible for chat exchange to substitute for governed approval events, decision records, or persisted rejection records.
 
 ### Delegated work becoming hidden authority
 A specialist result must not look like a privileged answer merely because it came from internal orchestration. Runtime specialization does not create governance weight.
@@ -431,8 +427,8 @@ When the LLM cites a governing decision, evidence record, workflow state, or act
 
 Before the LLM produces any non-trivial typed output, the following must be visible:
 
-- **Current system** — shown in status strip; the operator knows which system the LLM is operating within
-- **Current workflow stage** — shown in status strip; the operator knows what stage is active and what gates are next
+- **Current system** — shown in top-level status; the operator knows which system the LLM is operating within
+- **Current workflow stage** — shown in status/context surfaces; the operator knows what stage is active and what gates are next
 - **Output type** — every typed output is labeled with its type before the content is read
 - **Evidence basis** — shown in context strip with freshness and trust posture
 - **Uncertainty** — any Uncertainty Notice must appear before or alongside the outputs it qualifies
@@ -453,7 +449,102 @@ Mode selection is only required when the operator wants typed outputs that have 
 
 For low-stakes analytical work, the interaction should feel like using a knowledgeable assistant. For governance-sensitive work, the interaction should feel like using a governed system where both parties know exactly what is happening.
 
-The extension must not impose ceremony on work that does not warrant it. It must impose structure on work that does. The mode system is the mechanism that distinguishes those cases — not by creating unnecessary friction, but by making the distinction explicit when it matters.
+The desktop application must not impose ceremony on work that does not warrant it. It must impose structure on work that does. The mode system is the mechanism that distinguishes those cases — not by creating unnecessary friction, but by making the distinction explicit when it matters.
+
+---
+
+## Context Invalidation and Mid-Session State Changes
+
+The interaction model does not operate in a static context. Governing decisions change, evidence goes stale, approvals complete, compaction events fire, return triggers arrive, and session tokens expire — sometimes while the operator is actively working and the LLM is mid-turn or between turns. This section defines what the interaction surface and the LLM must do when that happens.
+
+For the complete trigger-to-consequence mapping, see `desktop-invalidation-and-refresh-matrix.md`. This section defines the interaction-layer behavioral rules that apply across all trigger types.
+
+---
+
+### When a Blocking Invalidation Event Fires Mid-Turn
+
+A blocking invalidation event is one that requires acknowledgment or reload before further governance-sensitive outputs are produced. See `desktop-invalidation-and-refresh-matrix.md` for the full list and their blocking posture.
+
+If a blocking event fires while an LLM turn is in progress:
+
+- The turn completes normally. Generation is not interrupted.
+- The output is marked stale before it is rendered in the panel: `⚠ CONTEXT CHANGED — this output was produced while a context change was in progress. Review before acting.`
+- The blocking posture takes effect before the next turn begins.
+- The operator sees both the completed output and its staleness marker.
+
+The LLM must not be expected to detect a mid-turn context change from within the turn. The desktop application is responsible for applying the staleness marker on completion. The LLM is responsible for honoring the blocking posture on the next turn.
+
+---
+
+### When a Blocking Invalidation Event Fires Between Turns
+
+If a blocking event fires after a turn completes but before the next turn begins:
+
+- The desktop application applies the required consequences to the affected state categories and surfaces before the next interaction is enabled.
+- The interaction panel shows the event notification appropriate to its importance: inline banner for non-blocking events, modal for blocking events.
+- The LLM's next turn must begin with the updated context. The interaction surface must not present a new input field until the required acknowledgment or reload has occurred for blocking events.
+- If the operator attempts to send input before acknowledging a blocking event, the input is held pending acknowledgment.
+
+---
+
+### LLM Behavior After a Context Change
+
+On the turn following a context change — whether notified via a context strip update, an output card staleness marker, or an explicit panel banner — the LLM must:
+
+**If the changed context is now loaded and current:**
+- Operate from the updated context without referencing the prior state as still applicable.
+- Acknowledge the change if the operator's framing references the prior state: `Note: [decision/evidence/stage] has changed since my prior output. My current response reflects the updated context.`
+
+**If the changed context is unavailable or pending reload:**
+- Produce an Uncertainty Notice before producing any output that would depend on the missing context.
+- State specifically what context is missing and what outputs or actions are affected.
+- Do not proceed toward Class B or C outputs until the missing context is loaded.
+
+**If prior rendered outputs in the panel are now stale due to the change:**
+- The LLM must not reference those prior outputs as a valid basis for new outputs.
+- If the operator asks the LLM to build on a stale output, the LLM must first acknowledge the staleness and clarify what has changed before proceeding.
+
+---
+
+### Output Card Staleness Markers
+
+Rendered output cards in the interaction panel can receive staleness markers as a result of context change events. The following marker types apply:
+
+**`⚠ CONTEXT CHANGED — produced during context change`**
+Applied when a blocking event fired during the turn that produced the output.
+
+**`⚠ DECISION SUPERSEDED — [dec-id] replaced by [dec-id-new]`**
+Applied when a governing decision cited in the output has been superseded or invalidated.
+
+**`⚠ EVIDENCE STALE — [obs-id] is now stale`**
+Applied when evidence cited in the output has exceeded its validity window or been contradicted by newer evidence.
+
+**`⚠ BASIS CHANGED — prior approval invalidated`**
+Applied when a prior approval that the output assumed was valid has been invalidated.
+
+**`⚠ SYSTEM CHANGED — produced under [prior system] posture`**
+Applied when the current system has changed since the output was produced.
+
+**`⚠ CONTINUITY ARTIFACT CHANGED — [artifact] no longer in active basis`**
+Applied when a continuity artifact cited in the output has expired or been removed from the session basis.
+
+**`⚠ COMPACTION BOUNDARY — produced before this compaction cycle`**
+Applied to all output cards above a compaction boundary marker.
+
+Staleness markers are applied by the desktop application, not by the LLM. They are not deleted. They remain on the card until the operator dismisses the card or re-requests a fresh output. The operator's ability to see what was produced and when, and under what context, is a governance record — it must not be silently cleaned up.
+
+---
+
+### Session Error Posture
+
+When the session token expires or runtime scope is broken:
+
+- The interaction panel input is disabled immediately.
+- The current panel shows: `Session interrupted. Re-initialize to continue.`
+- Any turn in progress at the moment of expiry is marked incomplete on completion: `⚠ SESSION INTERRUPTED — this output was produced while the session was in an error state. Do not use for governance decisions.`
+- No further LLM outputs are enabled until re-initialization completes.
+- On re-initialization, all context categories are reloaded fresh. The prior session's in-memory state is not restored as current context.
+- The LLM must not reference prior session context as loaded or current after re-initialization until it has been explicitly reloaded and is visible in the context strip.
 
 ---
 
@@ -494,30 +585,33 @@ If the LLM treats operator enthusiasm or conversational agreement as framing, pr
 
 This document should be used:
 
-- when designing the LLM interaction surface within the extension
+- when designing the LLM interaction surface within the desktop application
 - when evaluating whether a proposed interaction pattern preserves the distinction between framing, output, review, and approval
 - when reviewing whether the operator's response options for a given output type are complete and correctly bounded
-- when auditing extension sessions for interaction drift (LLM auto-advancing, operator rubber-stamping, chat-as-governance, hidden orchestration, hidden continuity)
+- when auditing desktop sessions for interaction drift, including LLM auto-advancing, operator rubber-stamping, chat-as-governance, hidden orchestration, and hidden continuity
 - when writing more specific operator workflow docs or LLM prompt guidance that must remain consistent with this interaction model
 
 ---
 
 ## Related Docs
 
-- `extension-llm-behavior-contract.md`
-- `extension-governance-and-gating-model.md`
-- `extension-state-and-context-model.md`
-- `extension-agent-orchestration-model.md`
-- `extension-memory-and-continuity-model.md`
-- `extension-system-init-and-tool-surface-model.md`
+- `desktop-llm-behavior-contract.md`
+- `desktop-governance-and-gating-model.md`
+- `desktop-state-and-context-model.md`
+- `desktop-agent-orchestration-model.md`
+- `desktop-memory-and-continuity-model.md` or successor naming
+- `desktop-system-init-and-tool-surface-model.md` or successor naming
+- `desktop-surface-architecture.md`
 - `../governance/agent-operating-doctrine.md`
 - `../governance/approval-and-escalation-model.md`
 - `../governance/recommendation-packaging-doctrine.md`
 - `../governance/report-structure-and-required-fields.md`
 - `../governance/decision-continuity-doctrine.md`
-- `../interfaces/operator-surface-interfaces.md`
-- `../interfaces/mcp-coordination-model.md`
+- `operator-surface-interfaces.md`
+- `mcp-coordination-model.md`
 - `../workflows/handoff-workflow.md`
 - `../workflows/launch-readiness-workflow.md`
 - `../ecosystem/cross-system-boundaries.md`
 - `../ecosystem/vocabulary.md`
+- `../ecosystem/decisions/ADR-011-tauri-2-desktop-is-the-operator-host.md`
+- `desktop-invalidation-and-refresh-matrix.md`

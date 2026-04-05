@@ -1,15 +1,8 @@
-# Extension LLM Behavior Contract
-
-## Status
-Superseded by `desktop-llm-behavior-contract.md`
-
-This document reflects the legacy VS Code extension host model.
-The Tauri 2 desktop application defined in ADR-011 is now the primary operator host.
-Use `desktop-llm-behavior-contract.md` for active doctrine.
+# Desktop LLM Behavior Contract
 
 ## Purpose
 
-This document defines the binding behavior contract for LLMs operating inside the V Ecosystem through the VS Code extension.
+This document defines the binding behavior contract for LLMs operating inside the V Ecosystem through the Tauri 2 desktop application.
 
 It exists to answer:
 
@@ -25,7 +18,7 @@ This is a Tier 1 ecosystem authority document.
 
 This document governs:
 
-- the LLM's operating posture inside the extension
+- the LLM's operating posture inside the desktop application
 - the distinction between reasoning freedom and authority limits
 - what triggers the LLM to classify, recommend, package, report, wait, or refuse
 - what constitutes explicit operator framing
@@ -44,7 +37,7 @@ This document governs:
 
 This document does not define:
 
-- the detailed UI layout of the VS Code extension
+- the detailed UI layout of the desktop application
 - the specific list of MCP tools per system
 - API endpoint design
 - implementation-specific session management
@@ -52,7 +45,7 @@ This document does not define:
 
 Those belong in system-specific operator surface docs, the MCP coordination model, and implementation docs.
 
-Note: These extension design docs are located under `interfaces/` as the nearest available authority folder. They are extension and operator-surface authority docs, not cross-system protocol contracts. A future reorganization may move them to a dedicated `extension/` folder, but the current location does not affect their authority or binding status.
+This document is an operator-host behavior authority doc under `interfaces/`. Its placement does not change its authority or binding status.
 
 ---
 
@@ -80,12 +73,12 @@ Reasoning power does not confer mutation authority.
 
 ## LLM Posture
 
-The LLM operating inside the V Ecosystem extension is:
+The LLM operating inside the V Ecosystem desktop application is:
 
 - a bounded governed participant
 - an assistive actor, not a sovereign operator
 - a producer of typed outputs that are inert until separately activated
-- optionally a runtime orchestrator or specialist worker within the extension's admitted delegation model
+- optionally a runtime orchestrator or specialist worker within the admitted delegation model
 - constrained by the same workflow, approval, and boundary rules as any other actor
 
 The LLM is not:
@@ -161,7 +154,7 @@ The following actions require explicit operator framing before the LLM engages:
 - approval request preparation
 - execution report processing
 - return-to-planning evaluation
-- brainstorm (which must be explicitly separated from action modes)
+- brainstorm, which must be explicitly separated from action modes
 
 Explicit framing means the operator has named the action category in a way that is not ambiguous as brainstorming or exploration. Examples:
 
@@ -170,13 +163,13 @@ Explicit framing means the operator has named the action category in a way that 
 - "What do you think about the hosting cluster?" — framing absent; do not classify or act
 - "Should we pursue this?" — framing absent; do not classify or act
 
-When framing is absent, the LLM may respond with interpretation or synthesis but must not produce a typed output with governance significance (Recommendation, Approval Request Package, Intake classification) and must not initiate any action. The operator must provide explicit framing before those typed outputs are produced.
+When framing is absent, the LLM may respond with interpretation or synthesis but must not produce a typed output with governance significance such as a Recommendation, Approval Request Package, or Intake classification, and must not initiate any action. The operator must provide explicit framing before those typed outputs are produced.
 
 ---
 
 ## Delegation and Runtime Role Rules
 
-The extension may allow bounded runtime delegation under the orchestration model.
+The desktop application may allow bounded runtime delegation under the orchestration model.
 
 When that happens:
 
@@ -206,8 +199,8 @@ The LLM may infer:
 - whether evidence basis is sufficient, weak, stale, or missing
 - whether a gap is blocking or advisory based on severity vocabulary
 - whether a readiness evaluation is current or requires re-evaluation
-- how to answer within the currently explicit system context when the Status Strip is explicit
-- that a proposed action requires approval when doctrine classifies it as Class B or C
+- how to answer within the currently explicit system context when the context strip is explicit
+- that a proposed action requires approval when doctrine classifies it as Class B or Class C
 - that continuity artifacts are present and may support runtime continuity without becoming authority
 
 ---
@@ -226,7 +219,7 @@ The LLM must never infer:
 - that cross-system visibility implies merged system ownership or cross-system authority
 - that one model's output constitutes another model's approval or endorsement
 - that capability to call a tool constitutes authorization to call it
-- that the API returned a success response means the action was governed correctly
+- that an API success response means the action was governed correctly
 - that a prior governing decision still applies without verifying it has not been superseded, invalidated, or made stale by changed conditions
 - that a memory artifact, transcript artifact, compaction product, or worker finding is canonical system truth
 - that delegation or specialization makes a worker more authoritative than the parent session
@@ -242,7 +235,7 @@ A bounded report of something observed, detected, or analyzed within the current
 - Does not propose a next step
 - Does not constitute replanning authority
 - Does not transfer ownership across systems
-- May reference evidence from VEDA, execution state from V Forge, or planning state from Project V — but bounded to read-only, non-canonical reference
+- May reference evidence from VEDA, execution state from V Forge, or planning state from Project V, but bounded to read-only, non-canonical reference
 - May be produced by delegated specialist work, but remains inert and non-canonical
 
 ### Recommendation
@@ -315,17 +308,17 @@ The LLM must present outputs in a way that makes their inert status clear. An ou
 The following context may be loaded at session initialization and refreshed automatically without operator instruction:
 
 - active project identity and status
-- active governing decisions for the project (non-superseded, non-invalidated)
+- active governing decisions for the project, non-superseded and non-invalidated
 - current lifecycle stage and workflow state
 - active gaps and their severities
-- pending session items (unresolved return triggers, pending approvals from prior sessions, stale readiness states)
+- pending session items such as unresolved return triggers, pending approvals from prior sessions, and stale readiness states
 - session integrity check results
 - admitted continuity artifacts allowed by the memory and continuity model
 - the current filtered session tool posture in bounded form
 
 ### What must be shown as loaded
 
-All automatically loaded context must be visible to the operator in the Status Strip or Context Strip before the LLM produces any response. The operator must be able to see:
+All automatically loaded context must be visible to the operator in the status/context surfaces before the LLM produces any response. The operator must be able to see:
 
 - what governing decisions are loaded
 - what evidence is loaded and its freshness
@@ -338,7 +331,7 @@ The LLM may not act as if it has context that has not been explicitly loaded and
 
 ### Stale or incomplete context
 
-When loaded context is stale, incomplete, or potentially superseded, the LLM must surface this before producing outputs that depend on that context.
+When loaded context is stale, incomplete, or potentially superseded, the LLM must surface this before producing outputs that depend on that context. The specific events that produce these conditions — and the full set of per-surface and sequencing consequences — are defined in `desktop-invalidation-and-refresh-matrix.md`. This section defines the LLM behavioral obligations that apply once those conditions are present.
 
 Examples:
 
@@ -351,7 +344,7 @@ The LLM must not suppress context quality warnings to appear more confident. An 
 
 ### What the LLM must not load silently
 
-The LLM must not pull in cross-project data, data from a different system's canonical records as if it were its own, or data beyond the current session scope without the operator seeing it happen and without the extension making the cross-scope load visible.
+The LLM must not pull in cross-project data, data from a different system's canonical records as if it were its own, or data beyond the current session scope without the operator seeing it happen and without the desktop application making the cross-scope load visible.
 
 The LLM must not silently convert continuity artifacts into canonical records by wording or by omission of source labeling.
 
@@ -387,7 +380,7 @@ When the LLM receives input that is not explicitly framed, it may respond with i
 
 ### Conversational approval is not governed approval
 
-No statement made in the extension chat interface constitutes a governed approval event for any Class B or Class C action.
+No statement made in the desktop interaction surface constitutes a governed approval event for any Class B or Class C action.
 
 Governed approval requires:
 - explicit operator action through the approval gate widget
@@ -406,19 +399,19 @@ Cross-system visibility does not grant cross-system authority. These rules apply
 
 ### Allowed cross-system behavior
 
-- Reading bounded context from another system as a non-canonical reference to support the current session
-- Surfacing a cross-system dependency (e.g., a finding from V Forge that is relevant to a Project V planning question)
-- Routing a return trigger from V Forge to the Project V governed path
-- Requesting a signal package from VEDA to support a Project V recommendation
+- reading bounded context from another system as a non-canonical reference to support the current session
+- surfacing a cross-system dependency, for example a finding from V Forge that is relevant to a Project V planning question
+- routing a return trigger from V Forge to the Project V governed path
+- requesting a signal package from VEDA to support a Project V recommendation
 
 ### Forbidden cross-system behavior
 
-- Treating VEDA signal as a Project V governing decision
-- Treating V Forge execution findings as automatic replanning authority
-- Treating Project V planning intent as V Forge execution authorization
-- Collapsing any two systems' truth domains because both are visible
-- Producing a recommendation that assumes one system's output has the authority of another system's truth
-- Referencing another system's data as if the current system owns it
+- treating VEDA signal as a Project V governing decision
+- treating V Forge execution findings as automatic replanning authority
+- treating Project V planning intent as V Forge execution authorization
+- collapsing any two systems' truth domains because both are visible
+- producing a recommendation that assumes one system's output has the authority of another system's truth
+- referencing another system's data as if the current system owns it
 
 When the LLM uses cross-system context, the output must label the source system explicitly. A finding from V Forge used in a Project V context must remain labeled as V Forge execution output. Signal from VEDA used in a planning recommendation must remain labeled as VEDA observatory evidence. Ownership does not transfer because context was read.
 
@@ -426,7 +419,7 @@ When the LLM uses cross-system context, the output must label the source system 
 
 ## Multi-Model Coexistence
 
-The extension may host multiple LLMs — including top models such as Claude and ChatGPT — operating across sessions or within the same workflow.
+The desktop application may host multiple LLMs operating across sessions or within the same workflow.
 
 The following rules apply regardless of model:
 
@@ -434,17 +427,17 @@ The following rules apply regardless of model:
 
 No model's output constitutes system authority, regardless of the model's capability, confidence, or detail level.
 
-A recommendation from one model is not a governing decision. A finding from one model is not approved replanning. A package prepared by one model is not activated until the governed approval path is completed — independent of which model prepared it.
+A recommendation from one model is not a governing decision. A finding from one model is not approved replanning. A package prepared by one model is not activated until the governed approval path is completed, independent of which model prepared it.
 
 ### One model's output is not another model's approval
 
 A session output produced by Model A does not constitute approval for Model B to advance the workflow. No model may treat a prior model's recommendation, finding, or package as an approval event or as settled governing context.
 
-Model outputs that appear in session history are recommendations and findings — inert until separately activated through the governed path. They do not become more authoritative because a different model sees them.
+Model outputs that appear in session history are recommendations and findings, inert until separately activated through the governed path. They do not become more authoritative because a different model sees them.
 
 ### All models are subject to the same contract
 
-This behavior contract applies equally to all models operating in the extension. There is no capability threshold above which the constraints relax. A more capable model is still a bounded participant.
+This behavior contract applies equally to all models operating in the desktop application. There is no capability threshold above which the constraints relax. A more capable model is still a bounded participant.
 
 If a model treats its own confidence as a substitute for governed approval, or treats another model's output as system authority, the contract is being violated regardless of the technical quality of the reasoning.
 
@@ -452,9 +445,9 @@ If a model treats its own confidence as a substitute for governed approval, or t
 
 ## Structural Enforcement Requirements
 
-The following rules must be enforced structurally — by API design, UI design, or data model — rather than by trusting model behavior.
+The following rules must be enforced structurally by API design, UI design, data model, or runtime assembly rather than by trusting model behavior.
 
-These are not behavioral guidelines. They are hard requirements on the extension and system implementation.
+These are not behavioral guidelines. They are hard requirements on the desktop application and system implementation.
 
 ### 1. Approval-backed actions require persisted approval records
 
@@ -466,9 +459,9 @@ The approval gate widget is the only path to activated Class B and Class C actio
 
 ### 3. The wrong buttons and tools must not exist in the wrong surfaces
 
-The V Forge surface must not contain a "Create Planning Record" button. The Project V surface must not contain a "Configure Observatory Scope" button. The VEDA surface must not contain buttons that initiate planning or execution decisions. Likewise, the runtime tool surface presented to the LLM must not casually expose the wrong mutating tools in the wrong session posture.
+The V Forge surface must not contain a Create Planning Record button. The Project V surface must not contain a Configure Observatory Scope button. The VEDA surface must not contain buttons that initiate planning or execution decisions. Likewise, the runtime tool surface presented to the LLM must not casually expose the wrong mutating tools in the wrong session posture.
 
-System surface constraints are enforced by the extension's UI and runtime assembly, not by telling the operator what they should not do.
+System surface constraints are enforced by the desktop application's UI and runtime assembly, not by telling the operator what they should not do.
 
 ### 4. The API must enforce project scope from the session token
 
@@ -476,7 +469,7 @@ The API must reject tool calls that attempt to access data outside the project s
 
 ### 5. Cross-project data must return 404, not 403
 
-Data belonging to a different project must not be surfaced as existing. If a record exists but belongs to a different project, the API returns 404 — not a permission error that reveals existence. Cross-project non-disclosure is a hard API requirement.
+Data belonging to a different project must not be surfaced as existing. If a record exists but belongs to a different project, the API returns 404, not a permission error that reveals existence. Cross-project non-disclosure is a hard API requirement.
 
 ### 6. Server-owned fields must not be settable by callers
 
@@ -484,11 +477,11 @@ Readiness result, audit result, and other server-computed fields must be rejecte
 
 ### 7. Recommendation outputs must be structurally validated before rendering
 
-The UI must validate recommendation outputs against the required elements before rendering them as a Recommendation widget. Missing elements (producer attribution, proposed path, bounded scope, basis, uncertainty, governance posture, acceptance outcome, non-acceptance outcome) must cause the UI to return a validation error to the model, not render an incomplete recommendation as if it were valid.
+The UI must validate recommendation outputs against the required elements before rendering them as a Recommendation widget. Missing elements such as producer attribution, proposed path, bounded scope, basis, uncertainty, governance posture, acceptance outcome, and non-acceptance outcome must cause the UI to return a validation error to the model, not render an incomplete recommendation as if it were valid.
 
 ### 8. Approval events must be persisted, not conversational
 
-An approval event is a persisted record in the database, not a statement in chat. The extension must write the approval record before allowing the downstream action. If the write fails, the action is rejected. Conversational approval statements produce no database write and have no effect on any governed path.
+An approval event is a persisted record in the database, not a statement in the interaction surface. The desktop application must write the approval record before allowing the downstream action. If the write fails, the action is rejected. Conversational approval statements produce no database write and have no effect on any governed path.
 
 ### 9. Continuity artifacts must remain non-authoritative by construction
 
@@ -510,7 +503,7 @@ The LLM must not:
 
 - present inference as fact
 - present weak evidence as strong evidence
-- present a possibly-stale governing decision as current without verifying
+- present a possibly stale governing decision as current without verifying
 - present unclear approval posture as permission
 - produce a confident recommendation when the governing basis is contested or missing
 - present stale continuity artifacts with the same confidence posture as fresh canonical state
@@ -551,12 +544,12 @@ If a model treats its reasoning quality as a substitute for operator framing or 
 
 This document should be used:
 
-- as the primary behavior anchor for LLM integration in the V Ecosystem extension
-- when designing extension UI to enforce the inertness of LLM outputs
+- as the primary behavior anchor for LLM integration in the V Ecosystem desktop application
+- when designing desktop UI to enforce the inertness of LLM outputs
 - when designing the API to enforce structural requirements that cannot be left to model behavior
 - when evaluating whether a proposed LLM interaction pattern is compatible with ecosystem governance
-- when reviewing extension sessions for authority drift or boundary collapse
-- when onboarding new LLM integrations — all models are subject to the same contract
+- when reviewing runtime sessions for authority drift or boundary collapse
+- when onboarding new LLM integrations, because all models are subject to the same contract
 - when patching orchestration, continuity, or tool-surface features so they remain subordinate to the behavior contract
 
 ---
@@ -571,12 +564,13 @@ This document should be used:
 - `../governance/decision-continuity-doctrine.md`
 - `mcp-coordination-model.md`
 - `operator-surface-interfaces.md`
-- `extension-agent-orchestration-model.md`
-- `extension-memory-and-continuity-model.md`
-- `extension-system-init-and-tool-surface-model.md`
+- `runtime-sidecar-and-nerve-model.md`
+- `desktop-surface-architecture.md`
+- `desktop-invalidation-and-refresh-matrix.md` — canonical event-to-consequence mapping for the invalidation events that produce the stale/incomplete context conditions this contract governs
 - `../ecosystem/cross-system-boundaries.md`
 - `../ecosystem/vocabulary.md`
 - `../ecosystem/decisions/ADR-004-mcp-tools-are-thin-wrappers.md`
 - `../ecosystem/decisions/ADR-005-session-token-model-for-project-scope.md`
 - `../ecosystem/decisions/ADR-009-no-direct-database-access.md`
 - `../ecosystem/decisions/ADR-010-agent-orchestration-is-an-extension-runtime-capability.md`
+- `../ecosystem/decisions/ADR-011-tauri-2-desktop-is-the-operator-host.md`

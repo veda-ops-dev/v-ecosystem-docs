@@ -1,23 +1,16 @@
-# Extension Agent Orchestration Model
-
-## Status
-Superseded by `desktop-agent-orchestration-model.md`
-
-This document reflects the legacy VS Code extension host model.
-The Tauri 2 desktop application defined in ADR-011 is now the primary operator host.
-Use `desktop-agent-orchestration-model.md` for active doctrine.
+# Desktop Agent Orchestration Model
 
 ## Purpose
 
-This document defines how agent orchestration works inside the V Ecosystem VS Code extension.
+This document defines how agent orchestration works inside the V Ecosystem desktop application.
 
 It exists to answer:
 
 ```text
-How does the extension coordinate bounded delegated work, what roles do orchestrator and specialist agents play, what authority limits apply, what visibility is required, and how does orchestration increase capability without creating a fourth peer ecosystem system or a hidden governance path?
+How does the desktop application coordinate bounded delegated work, what roles do orchestrator and specialist agents play, what authority limits apply, what visibility is required, and how does orchestration increase capability without creating a fourth peer ecosystem system or a hidden governance path?
 ```
 
-This is a Tier 1 ecosystem authority document for the extension/runtime layer.
+This is a Tier 1 ecosystem authority document for the desktop/runtime layer.
 
 ---
 
@@ -37,12 +30,14 @@ This document governs:
 - anti-drift rules that prevent orchestration from becoming a shadow authority layer
 
 This document assumes the active binding of:
-- `extension-llm-behavior-contract.md`
-- `extension-governance-and-gating-model.md`
-- `extension-state-and-context-model.md`
-- `extension-human-llm-interaction-model.md`
-- `extension-vscode-surface-architecture.md`
+- `desktop-llm-behavior-contract.md`
+- `desktop-governance-and-gating-model.md`
+- `desktop-state-and-context-model.md` or successor naming
+- `desktop-human-llm-interaction-model.md` or successor naming
+- `desktop-surface-architecture.md`
+- `runtime-sidecar-and-nerve-model.md`
 - `../ecosystem/decisions/ADR-010-agent-orchestration-is-an-extension-runtime-capability.md`
+- `../ecosystem/decisions/ADR-011-tauri-2-desktop-is-the-operator-host.md`
 
 ---
 
@@ -70,9 +65,9 @@ Those belong in continuity, tool-surface, implementation, or system-specific doc
 
 ## Core Rule
 
-Agent orchestration is a bounded extension/runtime capability.
+Agent orchestration is a bounded desktop/runtime capability.
 
-It exists to coordinate admitted work inside the extension so the LLM can operate with greater specialization, continuity, and runtime usefulness.
+It exists to coordinate admitted work inside the desktop application so the LLM can operate with greater specialization, continuity, and runtime usefulness.
 
 It does not:
 - create a fourth peer ecosystem system
@@ -87,7 +82,7 @@ If orchestration makes the system feel more capable while making authority, appr
 
 ## Orchestration Definition
 
-Agent orchestration is the extension-runtime coordination of bounded work through:
+Agent orchestration is the desktop-runtime coordination of bounded work through:
 
 - an **agent orchestrator** that manages runtime flow
 - optional **specialist agents** that perform narrowly scoped delegated subtasks
@@ -177,7 +172,7 @@ At minimum, delegated work is meaningful when it:
 - introduces a failure, cancellation, or interruption state the operator may need to understand
 
 Meaningful delegated work must be operator-visible.
-It must not collapse into an anonymous spinner or disappear behind generic “thinking” language.
+It must not collapse into an anonymous spinner or disappear behind generic "thinking" language.
 
 ---
 
@@ -188,7 +183,7 @@ All delegated work inherits the parent session scope.
 This includes:
 - project scope
 - current-system posture
-- active approval/gating posture
+- active approval and gating posture
 - current workflow stage relevance where applicable
 - current evidence and decision-context boundaries
 
@@ -273,7 +268,7 @@ The operator must be able to determine, where relevant:
 
 Delegated work must not become hidden just because the runtime finds it convenient.
 
-If the operator cannot tell that the extension delegated meaningful work, the system is no longer reviewable enough.
+If the operator cannot tell that the desktop application delegated meaningful work, the system is no longer reviewable enough.
 
 ---
 
@@ -290,9 +285,9 @@ At minimum, delegated runtime tasks should support:
 
 Additional states such as `awaiting_review` or `awaiting_escalation` may be added if needed, but lifecycle posture must remain explicit and reviewable.
 
-The mechanical task modeling, lifecycle transitions, attribution, and output-handling rules that implement this posture are defined in `extension-task-lifecycle-implementation-design.md`.
+The mechanical task modeling, lifecycle transitions, attribution, and output-handling rules that implement this posture are defined in the task lifecycle implementation-design companion.
 
-The extension must not treat a vague spinner as sufficient lifecycle visibility for meaningful delegated work.
+The desktop application must not treat a vague spinner as sufficient lifecycle visibility for meaningful delegated work.
 
 ---
 
@@ -309,6 +304,8 @@ The runtime must also be able to stop delegated work when:
 
 Cancellation, failure, and interruption must be reflected in the visible runtime state.
 They must not disappear into logs only.
+
+This section defines the orchestration posture for when delegated work must stop. The full desktop-wide consequences of delegated task cancellation and failure — per-surface behavior, LLM consequences, blocking posture, and sequencing — are defined in `desktop-invalidation-and-refresh-matrix.md` (EVENT-13 — Delegated Task Failed or Cancelled).
 
 ---
 
@@ -350,19 +347,20 @@ The runtime must not become orchestration-heavy before the state/context spine, 
 
 ---
 
-## Relationship to Other Extension Docs
+## Relationship to Other Desktop Docs
 
 This doc defines the orchestration model.
 
 It relies on:
-- `extension-llm-behavior-contract.md` for bounded LLM posture
-- `extension-governance-and-gating-model.md` for action-class and approval rules
-- `extension-state-and-context-model.md` for what state must remain visible
-- `extension-human-llm-interaction-model.md` for how the operator encounters delegated work
-- `extension-vscode-surface-architecture.md` for where orchestration state is surfaced
-- `extension-memory-and-continuity-model.md` for protected context and continuity posture
-- `extension-system-init-and-tool-surface-model.md` for session basis and delegated tool-surface posture
-- `extension-task-lifecycle-implementation-design.md` for the mechanical lifecycle tracking that supports orchestration visibility and control
+- `desktop-llm-behavior-contract.md` for bounded LLM posture
+- `desktop-governance-and-gating-model.md` for action-class and approval rules
+- `desktop-state-and-context-model.md` for what state must remain visible
+- `desktop-human-llm-interaction-model.md` for how the operator encounters delegated work
+- `desktop-surface-architecture.md` for where orchestration state is surfaced
+- `desktop-memory-and-continuity-model.md` for protected context and continuity posture
+- `desktop-system-init-and-tool-surface-model.md` for session basis and delegated tool-surface posture
+- `desktop-invalidation-and-refresh-matrix.md` for the canonical event-to-consequence mapping that governs the full desktop consequences when delegated tasks complete, fail, or are cancelled (EVENT-12 and EVENT-13)
+- the task lifecycle implementation-design companion for the mechanical lifecycle tracking that supports orchestration visibility and control
 
 This doc must not be used to smuggle continuity doctrine, transcript doctrine, or tool-surface doctrine into an orchestration bucket just because those topics are adjacent.
 

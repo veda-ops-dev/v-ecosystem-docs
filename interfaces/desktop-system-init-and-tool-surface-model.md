@@ -1,23 +1,16 @@
-# Extension System Init and Tool Surface Model
-
-## Status
-Superseded by `desktop-system-init-and-tool-surface-model.md`
-
-This document reflects the legacy VS Code extension host model.
-The Tauri 2 desktop application defined in ADR-011 is now the primary operator host.
-Use `desktop-system-init-and-tool-surface-model.md` for active doctrine.
+# Desktop System Init and Tool Surface Model
 
 ## Purpose
 
-This document defines how the V Ecosystem VS Code extension constructs the system init message and assembles the session tool surface.
+This document defines how the V Ecosystem desktop application constructs the system init message and assembles the session tool surface.
 
 It exists to answer:
 
 ```text
-What context must be assembled at session start, what must the LLM be told about its role and constraints, how is the active tool surface built and filtered for the session, and how does the extension expose only the context and tools the runtime is currently entitled to use?
+What context must be assembled at session start, what must the LLM be told about its role and constraints, how is the active tool surface built and filtered for the session, and how does the desktop application expose only the context and tools the runtime is currently entitled to use?
 ```
 
-This is a Tier 1 ecosystem authority document for the extension/runtime layer.
+This is a Tier 1 ecosystem authority document for the desktop/runtime layer.
 
 ---
 
@@ -37,14 +30,17 @@ This document governs:
 - anti-drift rules that prevent the runtime from exposing tools or context it should not expose
 
 This document assumes the active binding of:
-- `extension-llm-behavior-contract.md`
-- `extension-governance-and-gating-model.md`
-- `extension-state-and-context-model.md`
-- `extension-agent-orchestration-model.md`
-- `extension-memory-and-continuity-model.md`
+- `desktop-llm-behavior-contract.md`
+- `desktop-governance-and-gating-model.md`
+- `desktop-state-and-context-model.md`
+- `desktop-agent-orchestration-model.md`
+- `desktop-memory-and-continuity-model.md`
+- `runtime-sidecar-and-nerve-model.md`
+- `local-first-architecture.md`
 - `../ecosystem/decisions/ADR-004-mcp-tools-are-thin-wrappers.md`
 - `../ecosystem/decisions/ADR-005-session-token-model-for-project-scope.md`
 - `../ecosystem/decisions/ADR-009-no-direct-database-access.md`
+- `../ecosystem/decisions/ADR-011-tauri-2-desktop-is-the-operator-host.md`
 
 ---
 
@@ -55,7 +51,7 @@ This document does not define:
 - exact MCP tool schemas for each system
 - exact backend API route contracts
 - exact prompt wording templates
-- exact webview UI rendering details
+- exact UI rendering details
 - exact implementation classes or storage engines
 - system-specific tool lists beyond posture rules
 
@@ -76,7 +72,7 @@ The LLM must only receive the context and tool surface it is currently entitled 
 The runtime must assemble the session basis deliberately.
 It must not rely on ad-hoc prompt stuffing, topic drift, or convenience exposure of tools that happen to exist.
 
-If the extension gives the LLM the wrong context or the wrong tools, every later governance rule is already weakened.
+If the desktop application gives the LLM the wrong context or the wrong tools, every later governance rule is already weakened.
 
 ---
 
@@ -95,16 +91,15 @@ It is a runtime assembly product that reflects:
 - behavior and governance constraints relevant to the session
 
 The init message is where doctrine becomes runtime behavior.
-If it is assembled casually, the rest of the extension cannot be trusted to behave consistently.
+If it is assembled casually, the rest of the desktop application cannot be trusted to behave consistently.
 
-The mechanical ordered assembly, filtering, publication, and refresh of the active tool surface are defined in `extension-tool-surface-implementation-design.md`.
-That companion operationalizes the posture defined here.
+The mechanical ordered assembly, filtering, publication, and refresh of the active tool surface are defined in the tool-surface implementation-design companion. That companion operationalizes the posture defined here.
 
 ---
 
 ## Session Init Assembly Rule
 
-At session start, the extension must construct the runtime basis in a deliberate sequence.
+At session start, the desktop application must construct the runtime basis in a deliberate sequence.
 
 At minimum, the sequence must establish:
 
@@ -169,7 +164,7 @@ What stage the active work is in, what approvals are active or required, and whe
 A bounded summary of loaded decision continuity and evidence basis relevant to the current work.
 
 ### 5. Continuity artifacts admitted to the session
-The admitted memory/continuity items allowed to participate, with the non-authority boundary preserved.
+The admitted memory and continuity items allowed to participate, with the non-authority boundary preserved.
 
 ### 6. Tool surface summary
 What tools are available, in what posture, and what kinds of actions are not admitted.
@@ -193,7 +188,7 @@ It is assembled from admitted MCP surfaces and filtered according to:
 The session tool surface must be treated as a deliberate assembly product.
 It must not simply mirror every tool the runtime could theoretically access.
 
-The mechanical registry, filtering stages, delegated narrowing model, execution gate, and refresh mechanics for the active surface are defined in `extension-tool-surface-implementation-design.md`.
+The mechanical registry, filtering stages, delegated narrowing model, execution gate, and refresh mechanics for the active surface are defined in the tool-surface implementation-design companion.
 
 ---
 
@@ -264,7 +259,7 @@ The tool-surface implementation companion must enforce referenced-system posture
 
 ## Absent-Affordance Runtime Rule
 
-The extension must enforce absent affordances not just in the visible UI, but in the runtime tool surface presented to the LLM.
+The desktop application must enforce absent affordances not just in the visible UI, but in the runtime tool surface presented to the LLM.
 
 If the LLM should not perform or even propose a direct tool path in the current session posture, the runtime should avoid exposing that path as casually available.
 
@@ -272,7 +267,7 @@ This means the wrong tools must be absent from the LLM's effective tool surface,
 
 A runtime that exposes too many tools and relies on the LLM to choose well is not actually bounded.
 
-Structural filtering in `extension-tool-surface-implementation-design.md` exists specifically to make this rule enforceable rather than aspirational.
+Structural filtering in the tool-surface implementation-design companion exists specifically to make this rule enforceable rather than aspirational.
 
 ---
 
@@ -315,7 +310,9 @@ But the operator must not be left guessing what basis the model is currently ope
 
 The runtime must refresh the session basis when relevant conditions change materially.
 
-Examples include:
+The canonical enumeration of the events that trigger these conditions — and their full per-surface, LLM, and sequencing consequences — is defined in `desktop-invalidation-and-refresh-matrix.md`. This section defines the session-basis refresh posture: what the runtime must do when those events fire. It does not define the events themselves or their propagation order.
+
+From a session-basis perspective, the conditions that require a refresh include:
 - project scope change
 - current-system change
 - workflow-stage change that affects gating or context needs
@@ -324,7 +321,7 @@ Examples include:
 - meaningful continuity change after compaction or resume
 - delegated work completion that changes the admitted continuity set
 
-A stale init basis must not be allowed to linger just because the chat session is still open.
+A stale init basis must not be allowed to linger just because the interaction session is still open.
 
 A material active-tool-surface rebuild counts as a session-basis change and may require bounded system-init re-assembly.
 
@@ -347,7 +344,7 @@ When a material refresh occurs, the runtime must:
 - identify the categories that changed
 - ensure the active tool posture and admitted continuity posture are recomputed as needed
 
-The implementation companion defines the rebuild and invalidation mechanics that support this refresh posture.
+For how those changes propagate to desktop surfaces, the LLM, and the interaction layer, see `desktop-invalidation-and-refresh-matrix.md`. The implementation companion defines the rebuild and invalidation mechanics that support this refresh posture.
 
 ---
 
@@ -388,17 +385,18 @@ Delegated workers must not gain broader tool access than the parent session or b
 
 ---
 
-## Relationship to Other Extension Docs
+## Relationship to Other Desktop Docs
 
 This doc defines how the session basis and tool surface are assembled.
 
 It relies on:
-- `extension-llm-behavior-contract.md` for bounded model posture
-- `extension-governance-and-gating-model.md` for action-class and approval rules
-- `extension-state-and-context-model.md` for what must remain visible and current
-- `extension-agent-orchestration-model.md` for delegated-runtime posture
-- `extension-memory-and-continuity-model.md` for what continuity artifacts may participate
-- `extension-tool-surface-implementation-design.md` for the mechanical filtering, publication, execution-gate, and refresh model that enforces the posture defined here
+- `desktop-llm-behavior-contract.md` for bounded model posture
+- `desktop-governance-and-gating-model.md` for action-class and approval rules
+- `desktop-state-and-context-model.md` for what must remain visible and current
+- `desktop-agent-orchestration-model.md` for delegated-runtime posture
+- `desktop-memory-and-continuity-model.md` for what continuity artifacts may participate
+- `desktop-invalidation-and-refresh-matrix.md` for the canonical event-to-consequence mapping that governs when session-basis refresh is triggered and how those events propagate across surfaces and to the LLM
+- the tool-surface implementation-design companion for the mechanical filtering, publication, execution-gate, and refresh model that enforces the posture defined here
 
 This doc must not be used to bury governance decisions in prompt engineering.
 It exists to make the admitted runtime surface explicit and controlled.
