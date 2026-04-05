@@ -501,4 +501,4 @@ This document should be used:
 - `decision-continuity-doctrine.md`
 - `../interfaces/v-forge-to-project-v-return-to-planning-interface.md`
 - `../interfaces/project-v-to-v-forge-handoff-interface.md`
-- `testing-and-verification-doctrine.md` *(planned)*
+- `testing-and-verification-doctrine.md`

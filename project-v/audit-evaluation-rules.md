@@ -38,7 +38,7 @@ This document does not define:
 - controlled vocabulary values (see `controlled-vocabularies.md`)
 - how audit state couples to readiness (see `readiness-evaluation-rules.md`)
 - schema field details (see `schema-authority.md`)
-- audit-and-gap model shape (see `schema-authority.md` — AuditRun and AuditGap sections)
+- audit-and-gap model shape (see `schema-authority.md` ΓÇö AuditRun and AuditGap sections)
 
 ---
 
@@ -96,25 +96,25 @@ Not every project must use every audit type on day one. But the rule set must de
 
 Evaluate in this strict order for every audit run.
 
-### Step 1 — Scope validity
+### Step 1 ΓÇö Scope validity
 If the target entity is missing, invalid, or out of project scope, fail the request rather than producing an audit result. Return `400 Bad Request` or `404 Not Found` as appropriate.
 
-### Step 2 — Audit applicability
+### Step 2 ΓÇö Audit applicability
 If the requested audit type does not apply to the target entity or lifecycle stage, fail the request rather than producing fake output. Return `422 Unprocessable Entity`.
 
-### Step 3 — Required-basis validity
+### Step 3 ΓÇö Required-basis validity
 If the audit lacks the minimum required basis to ask its questions honestly, return `fail` and create gaps where appropriate.
 
-### Step 4 — Hard-failure conditions
+### Step 4 ΓÇö Hard-failure conditions
 If one or more hard-failure rules are true, return `fail`.
 
-### Step 5 — Warning conditions
+### Step 5 ΓÇö Warning conditions
 If no hard-failure rule is true but one or more warning conditions are true, return `warning`.
 
-### Step 6 — Pass condition
+### Step 6 ΓÇö Pass condition
 If no hard-failure rule or warning condition is true, return `pass`.
 
-### Step 7 — Staleness
+### Step 7 ΓÇö Staleness
 `stale` is not a normal first-run result. It is a later invalidation state applied when the original audit basis is no longer trustworthy. See Staleness / Invalidation Rules.
 
 ---
@@ -265,15 +265,15 @@ First-pass cross-artifact checks must include at least the following, bound to t
 
 | Check | Applies To Audit Types |
 |---|---|
-| `schema-authority` ↔ `controlled-vocabularies` | `planning`, `implementation_readiness`, `hygiene` |
-| `controlled-vocabularies` ↔ implementation | `planning`, `implementation_readiness`, `hygiene` |
-| API contracts ↔ `schema-authority` | `implementation_readiness`, `code_alignment`, `hygiene` |
-| `status-transitions` ↔ explicit status-route expectations | `planning`, `implementation_readiness`, `hygiene` |
-| External linkage rules ↔ `implementation-traceability` rules | `code_alignment`, `handoff` |
+| `schema-authority` Γåö `controlled-vocabularies` | `planning`, `implementation_readiness`, `hygiene` |
+| `controlled-vocabularies` Γåö implementation | `planning`, `implementation_readiness`, `hygiene` |
+| API contracts Γåö `schema-authority` | `implementation_readiness`, `code_alignment`, `hygiene` |
+| `status-transitions` Γåö explicit status-route expectations | `planning`, `implementation_readiness`, `hygiene` |
+| External linkage rules Γåö `implementation-traceability` rules | `code_alignment`, `handoff` |
 
 ### Applicability note on API contracts
 
-API contract docs are deferred output in the documentation roadmap. Until they exist, the API contracts ↔ schema check cannot run. When running `implementation_readiness` or `code_alignment` audits before API docs exist, the audit must note the absence as an advisory gap rather than treating it as a blocking cross-artifact contradiction.
+Project V API family docs now exist under project-v/api/. Cross-artifact checks must run when docs are present; absence is an advisory gap, not a hard failure.
 
 ### Contradiction severity
 
@@ -292,7 +292,7 @@ First-pass ambiguity detection must flag terms such as:
 
 Flagging a term triggers a classification decision.
 
-### Material ambiguity — must fail the audit
+### Material ambiguity ΓÇö must fail the audit
 
 Ambiguity is material when it affects any of the following:
 
@@ -303,11 +303,11 @@ Ambiguity is material when it affects any of the following:
 - a constraint or validation rule that the hammer suite would probe
 
 Examples:
-- "set a **reasonable** timeout" in a schema spec → material; a timeout value is a hard rule, not a preference
-- "use **appropriate** credentials" in a security doc → material; authentication rules are implementation gates
-- "**TBD**: decide retry behavior" in an API contract → material; missing contract terms block safe implementation
+- "set a **reasonable** timeout" in a schema spec ΓåÆ material; a timeout value is a hard rule, not a preference
+- "use **appropriate** credentials" in a security doc ΓåÆ material; authentication rules are implementation gates
+- "**TBD**: decide retry behavior" in an API contract ΓåÆ material; missing contract terms block safe implementation
 
-### Advisory ambiguity — may produce a warning or minor gap
+### Advisory ambiguity ΓÇö may produce a warning or minor gap
 
 Ambiguity is advisory when it appears in:
 
@@ -317,8 +317,8 @@ Ambiguity is advisory when it appears in:
 - areas where the adjacent concrete rule makes the intent sufficiently recoverable
 
 Examples:
-- "this pattern is generally **sufficient** for most projects" in a rationale paragraph → advisory
-- "**TODO**: add examples here" in an explanatory section that already has governing rules → advisory
+- "this pattern is generally **sufficient** for most projects" in a rationale paragraph ΓåÆ advisory
+- "**TODO**: add examples here" in an explanatory section that already has governing rules ΓåÆ advisory
 
 ### Ambiguity detection is a classification step, not a blanket pass/fail
 
@@ -426,7 +426,7 @@ The hammer suite must verify at least:
 A capable LLM should be able to infer from this doc that:
 
 - audit results are server-owned and not caller-settable
-- evaluation runs in a strict order: scope → applicability → basis → hard-fail → warning → pass
+- evaluation runs in a strict order: scope ΓåÆ applicability ΓåÆ basis ΓåÆ hard-fail ΓåÆ warning ΓåÆ pass
 - `stale` is a later invalidation state, not a first-run result
 - cross-artifact consistency checks are required for specific audit type combinations
 - ambiguity detection classifies material vs advisory before deciding result impact
@@ -455,3 +455,4 @@ This document should be used:
 - `implementation-traceability.md`
 - `../governance/decision-continuity-doctrine.md`
 - `../governance/testing-and-verification-doctrine.md`
+

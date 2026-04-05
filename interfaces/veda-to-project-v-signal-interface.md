@@ -76,7 +76,7 @@ A signal transfer is valid only when:
 - the transfer is limited to planning-relevant signal rather than open-ended observability state
 - the minimum signal-interface semantics required by this interface are present
 
-Signal with significant source-trust concerns or high provenance uncertainty should not be treated as planning-ready signal without clearly flagging that uncertainty in the transfer and following the source-trust governance path.
+Signal with significant source-trust concerns or high provenance uncertainty should not be treated as planning-ready signal without clearly flagging that uncertainty in the transfer and following the evidence-continuity and provider-governance posture.
 
 This document does not define the full source-trust or approval model.
 But a signal transfer must not be treated as valid if these conditions are not met.
@@ -262,6 +262,7 @@ This document should be used:
 - `../project-v/project-v.md`
 - `../veda/veda.md`
 - `project-v-to-v-forge-handoff-interface.md`
-- `../workflows/project-intake-workflow.md` *(planned)*
-- `../governance/approval-and-escalation-model.md` *(planned)*
-- `../governance/source-trust-and-evidence-quality-doctrine.md` *(planned)*
+- `../workflows/project-intake-workflow.md`
+- `../governance/approval-and-escalation-model.md`
+- `../governance/evidence-continuity-model.md`
+- `../ecosystem/external-provider-integration-doctrine.md`

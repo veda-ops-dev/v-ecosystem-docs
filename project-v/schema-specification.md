@@ -443,7 +443,7 @@ Explicit readiness deficiency or blocker.
 - index on `(projectId, resolved, severity, createdAt desc, id)`
 
 ### Resolved toggle rule
-`resolved` may be set from `false` to `true` by a caller through the governed PATCH route. Setting `resolved` back to `false` is also allowed in the first pass — there is no one-way lifecycle on this field yet.
+`resolved` may be set from `false` to `true` by a caller through the governed PATCH route. Setting `resolved` back to `false` is also allowed in the first pass ΓÇö there is no one-way lifecycle on this field yet.
 
 ### Allowed mutations
 - create
@@ -861,3 +861,4 @@ This document should be used:
 - `../governance/decision-continuity-doctrine.md`
 - `../ecosystem/cross-system-boundaries.md`
 - `../ecosystem/vocabulary.md`
+

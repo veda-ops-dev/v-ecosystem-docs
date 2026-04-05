@@ -115,6 +115,16 @@ Return-to-planning does not transfer all execution state.
 It transfers the bounded planning-relevant subset of execution-side truth needed for Project V to reconsider planning.
 V Forge is responsible for determining what execution-side information is included in the return and for ensuring that only planning-relevant findings cross the interface.
 
+### Finding Boundary Constraint
+
+Execution findings returned through this interface must not be presented as:
+
+- VEDA signal
+- governing Project V planning decisions
+
+Execution findings are bounded execution outputs that may inform planning reconsideration.
+They do not carry independent planning authority and must be interpreted within the governance rules defined in `../governance/report-structure-and-required-fields.md`.
+
 ---
 
 ## What Return-to-Planning Does Not Transfer
@@ -257,6 +267,6 @@ This document should be used:
 - `../ecosystem/vocabulary.md`
 - `../project-v/project-v.md`
 - `../v-forge/v-forge.md`
-- `../workflows/maintenance-and-replanning-workflow.md` *(planned)*
-- `../governance/approval-and-escalation-model.md` *(planned)*
-- `../governance/report-structure-and-required-fields.md` *(planned)*
+- `../workflows/maintenance-and-replanning-workflow.md`
+- `../governance/approval-and-escalation-model.md`
+- `../governance/report-structure-and-required-fields.md`

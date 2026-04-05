@@ -242,7 +242,7 @@ This document should be used:
 - `../ecosystem/cross-system-boundaries.md`
 - `../project-v/project-v.md`
 - `../v-forge/v-forge.md`
-- `v-forge-to-project-v-return-to-planning-interface.md` *(planned)*
-- `../workflows/handoff-workflow.md` *(planned)*
-- `../governance/approval-and-escalation-model.md` *(planned)*
-- `../governance/recommendation-packaging-doctrine.md` *(planned)*
+- `v-forge-to-project-v-return-to-planning-interface.md`
+- `../workflows/handoff-workflow.md`
+- `../governance/approval-and-escalation-model.md`
+- `../governance/recommendation-packaging-doctrine.md`

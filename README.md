@@ -2,98 +2,75 @@
 
 ## Purpose
 
-This directory is the **authoritative documentation root** for the V Ecosystem.
+This repository is the **single source of truth** for the V Ecosystem.
 
-It defines:
-- system roles
-- boundaries
-- workflows
-- interfaces
-- governance
-- onboarding
-- extension runtime doctrine
-
-The goal is:
-
-> If only these docs existed, a capable LLM should be able to reconstruct the V Ecosystem correctly.
+It exists to:
+- define system boundaries
+- define governance rules
+- define shared vocabulary
+- define workflows and interfaces
+- provide enough structured context for LLMs and engineers to operate without relying on tribal knowledge
 
 ---
 
 ## Authority Model
 
-### Ecosystem Authority
-Docs that define cross-system behavior and rules.
+### Tier 1 — Core Authority
+- `ecosystem/`
+- `governance/`
+- `interfaces/`
+- `workflows/`
 
-### Project Authority
-Docs that define the core role and behavior of:
-- Project V
-- VEDA
-- V Forge
+These define system-wide law and must not be bypassed.
 
-### Extension Runtime Authority
-Docs under `interfaces/` that define the governed VS Code extension, including:
-- behavior contract
-- gating and approval posture
-- state and context visibility
-- human–LLM interaction
-- VS Code surface architecture
-- implementation architecture
-- agent orchestration
-- memory and continuity
-- system init and tool-surface posture
+### Tier 2 — System Authority
+- `project-v/`
+- `veda/`
+- `v-forge/`
+
+These define system-specific behavior within the ecosystem boundaries.
+
+### Strategy Authority
+- `strategy/`
+
+Defines evaluation models, scoring systems, and long-term ecosystem direction.
+
+### Tier 3 — Implementation Support
+- `interfaces/*-implementation-design.md`
+- `EXTENSION-CODING-README.md`
+
+These support implementation but do not override Tier 1 or Tier 2 authority.
+
+### Nerve (Runtime Support Layer)
+- `nerve/`
+
+Runtime implementation planning and reference layer.
+Contains:
+- runtime roadmap
+- ambiguity checklists
+- source-mapped reference material
+
+Used during extension/runtime implementation work.
 
 ### Archive
-Docs that are:
-- historical
-- bootstrap-era
-- superseded
+- `archive/`
 
-Archive docs are **not authority**.
+Historical material. Not active authority.
 
 ---
 
-## Folder Overview
+## Entry Points
 
-### ecosystem
-Top-level ecosystem rules, boundaries, and cooperation model.
+Start here for orientation:
 
-### project-v
-Authoritative Project V planning and doctrine.
+1. `ecosystem/v-ecosystem-overview.md`
+2. `ecosystem/cross-system-boundaries.md`
+3. `ecosystem/vocabulary.md`
 
-### veda
-Authoritative VEDA planning and doctrine.
-
-### v-forge
-Authoritative V Forge planning and doctrine.
-
-### interfaces
-Cross-system interfaces, extension/runtime doctrine, and operator-surface architecture.
-
-### governance
-Approvals, reporting, agent rules, and control.
-
-### workflows
-End-to-end system workflows.
-
-### strategy
-Scoring, evaluation, and long-term direction.
-
-### onboarding
-How new projects join the ecosystem.
-
-### archive
-Non-authoritative historical material.
+Then load governance and system docs as needed.
 
 ---
 
-## Core Rule
+## Rule
 
-Every document should answer:
-
-- What does this enable?
-- What decisions does this support?
-- What behavior does this constrain?
-- What system or runtime layer does this belong to?
-- How will it be used?
-
-If it does not affect behavior, it is not needed.
+If something important is not documented here, it is not part of the governed system.

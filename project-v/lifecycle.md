@@ -486,7 +486,7 @@ This document should be used:
 - `system-invariants.md`
 - `operational-workflow.md`
 - `multi-project-doctrine.md`
-- `byda-in-project-v.md` *(planned)*
+- `byda-in-project-v.md`
 - `v-forge-integration.md`
 - `../workflows/project-intake-workflow.md`
 - `../interfaces/project-v-to-v-forge-handoff-interface.md`
