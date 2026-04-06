@@ -1,4 +1,4 @@
-# ADR-010 — Agent Orchestration Is an Extension Runtime Capability
+# ADR-010 — Agent Orchestration Is a Desktop Runtime Capability
 
 ## Status
 Accepted
@@ -12,8 +12,10 @@ The V Ecosystem has three core systems:
 New runtime capabilities (orchestration, memory, compaction, etc.) must be integrated without creating a new system.
 
 ## Decision
-Agent orchestration is an extension/runtime capability.
+Agent orchestration is a desktop/runtime capability.
 It is not a fourth peer system and does not introduce new truth ownership.
+
+This decision aligns with ADR-011, which establishes the Tauri 2 desktop application as the primary operator host.
 
 ## Core Rule
 Orchestration coordinates bounded runtime behavior. It does not create authority.
@@ -25,5 +27,10 @@ Orchestration coordinates bounded runtime behavior. It does not create authority
 - Delegation does not increase authority
 
 ## Consequences
-- Requires new extension runtime doctrine docs
-- Requires updates to extension readme and execution plan
+- Requires desktop runtime doctrine docs
+- Requires updates to desktop readme and execution plan
+
+## Related Docs
+
+- `../../interfaces/desktop-agent-orchestration-model.md`
+- `ADR-011-tauri-2-desktop-is-the-operator-host.md`

@@ -356,6 +356,20 @@ This document should be used:
 
 ---
 
+## Relationship to Approval and Escalation Model
+
+This matrix defines which action classes are permitted, require authorization, require human involvement, or are forbidden. It must be read together with `approval-and-escalation-model.md`.
+
+The matrix alone does not replace approval posture. An action classified as Permitted or Requires Authorization in this matrix may still be governed by the approval class rules in the escalation model. In particular:
+
+- a Permitted action that crosses an approval-sensitive threshold (Class B, C, or D) requires the approval posture defined in `approval-and-escalation-model.md` before it may be activated
+- a Requires Authorization action must follow the approval class and escalation path defined in the escalation model
+- the escalation model governs when a Permitted action still triggers human review requirements
+
+Do not read this matrix as the only governing constraint. Both docs apply.
+
+---
+
 ## Related Docs
 
 - `agent-operating-doctrine.md`

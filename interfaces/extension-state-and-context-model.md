@@ -1,5 +1,12 @@
 # Extension State and Context Model
 
+## Status
+Superseded by `desktop-state-and-context-model.md`
+
+This document reflects the legacy VS Code extension host model.
+The Tauri 2 desktop application defined in ADR-011 is now the primary operator host.
+Use `desktop-state-and-context-model.md` for active doctrine.
+
 ## Purpose
 
 This document defines what state and context must be visible, loaded, synchronized, bounded, freshness-aware, and reviewable for the human operator and the LLM inside the V Ecosystem VS Code extension.
@@ -116,7 +123,7 @@ What working memory, durable memory, transcript-derived continuity, compact-boun
 Required visibility: visible in the context strip or equivalent continuity surface when active. Non-canonical continuity artifacts must remain distinguishable from canonical loaded state.
 
 ### 9. Session Tool-Surface Posture
-The current admitted tool posture for the session: what major system surface is primary, whether referenced-system read posture is active, whether delegated workers are operating on narrowed tool surfaces, and whether the session basis has been refreshed materially.
+The current admitted tool posture for the session: what major system surface is primary, whether referenced-system read posture is active, whether delegated workers are operating on narrowed tool surfaces, whether the session basis has been refreshed materially, and whether compaction or refresh changed the currently active runtime basis.
 
 Required visibility: visible in bounded form so the operator is not guessing what the runtime has made available to the LLM.
 
@@ -383,6 +390,8 @@ Meaningful delegated work must not collapse into a generic spinner. At minimum, 
 Orchestration state is runtime state, not canonical system state.
 It is visible because the operator needs to understand how the current session is functioning, not because orchestration owns any truth domain.
 
+The mechanical task modeling, lifecycle transitions, attribution, and cancellation posture that support this runtime visibility are defined in `extension-task-lifecycle-implementation-design.md`.
+
 ---
 
 ## Continuity Artifact State
@@ -425,9 +434,12 @@ The extension must surface the current admitted tool posture in bounded form.
 - whether the session basis was materially refreshed
 - whether delegated workers are operating on narrowed tool surfaces
 - whether the runtime is currently operating under restricted posture due to missing context, stale context, or gating state
+- whether compaction or other refresh events changed the currently active runtime basis
 
 The operator does not need a raw dump of every tool constantly.
 But the operator must not be left guessing whether the model is operating on a broad or narrow tool basis.
+
+The mechanical rebuild and publication of this posture are defined in `extension-tool-surface-implementation-design.md`.
 
 ---
 
@@ -492,6 +504,8 @@ This same rule applies to:
 - orchestration-state changes that affect operator review
 - session-basis refresh after invalidation
 - current-system change
+- active-tool-surface rebuilds that materially change runtime posture
+- meaningful compaction events that change the active session basis
 
 ### Conflict between surfaces
 
@@ -569,8 +583,19 @@ The following events must invalidate the relevant context category and require a
 - a meaningful compaction event occurs → continuity state and visible session basis must refresh
 - a delegated worker completes with admitted findings → continuity/orchestration state must refresh
 - current-system posture changes → tool-surface posture and session basis must refresh
+- the active tool surface is rebuilt materially → session tool-surface posture and visible session basis must refresh
 
 Context invalidation events must surface to both the operator and the LLM. The LLM must not continue responding in the prior context frame after an invalidation event without acknowledging the change.
+
+### Per-category validation rule
+
+Validation and freshness must remain per category.
+The runtime must not collapse state validity into one coarse session-valid/session-invalid boolean.
+
+A session may be valid in one category and stale, missing, conflicted, or blocked in another.
+The extension must preserve that distinction visibly.
+
+The compaction implementation companion relies on this rule for post-compaction per-category validation and refresh behavior.
 
 ---
 
@@ -658,6 +683,7 @@ A capable LLM should be able to infer from this doc that:
 - session history and continuity artifacts are not canonical state and must not be cited as governing basis
 - orchestration state is runtime state, not system ownership
 - the extension will surface what the LLM does not know — the LLM must honor those boundaries rather than paper over them
+- post-compaction state validity is per category, not a single yes/no session claim
 
 If the LLM treats the richness of its loaded context as authorization to act, or cites prior session outputs or continuity artifacts as governing evidence, this state model is being violated.
 
@@ -675,6 +701,7 @@ This document should be used:
 - when designing the session start sequence and session integrity check
 - when designing orchestration visibility and continuity visibility surfaces
 - when writing interaction-model docs that depend on explicit current context
+- when implementing post-compaction validation and refresh so they remain per-category rather than collapsing into coarse session-valid claims
 
 ---
 
@@ -685,6 +712,10 @@ This document should be used:
 - `extension-agent-orchestration-model.md`
 - `extension-memory-and-continuity-model.md`
 - `extension-system-init-and-tool-surface-model.md`
+- `extension-compaction-implementation-design.md`
+- `extension-tool-surface-implementation-design.md`
+- `extension-transcript-persistence-design.md`
+- `extension-task-lifecycle-implementation-design.md`
 - `../governance/decision-continuity-doctrine.md`
 - `../governance/evidence-continuity-model.md`
 - `../governance/approval-and-escalation-model.md`

@@ -493,6 +493,29 @@ Page can later add experiment_id and variant_id when A/B testing is in scope.
 This is explicitly a future extension per `v-forge.md` and must not be designed
 into base schema.
 
+### Surface execution condition
+Surface execution condition is a recognized future extension hook for representing
+the current operational condition, readiness, or execution-state posture of a
+specific operated surface when V Forge needs more than static surface metadata or
+periodic snapshots.
+
+This hook is intentionally not first-pass schema.
+It is acknowledged because some future V Forge workflows may need a governed way
+to represent statements such as:
+- this surface is ready for routine execution
+- this surface is blocked by a surface-local condition
+- this surface is under temporary execution constraint
+- this surface requires heightened handling before certain execution actions
+
+If admitted later, this hook must:
+- remain execution-side operational truth, not planning truth
+- remain surface-local rather than becoming a generic orchestration layer
+- avoid duplicating release state, maintenance state, or planning readiness where existing records already cover the need
+- be introduced through governed schema expansion rather than speculative pre-build
+
+The current design anchor for this hook is `surface-execution-state-design-note.md`.
+That design note is not schema authority by itself. It is the preserved design thread for future governed expansion.
+
 ### Advanced content graph features
 Entity relationships beyond page-entity junctions, semantic clustering, topic
 hierarchy depth beyond one level. These can extend naturally from existing
@@ -625,6 +648,14 @@ If execution intelligence outputs are stored in a record family that
 resembles VEDA observatory tables — with raw signal data, observation
 timestamps, and provider attribution — rather than as bounded execution
 findings with clear V Forge provenance, the schema has drifted.
+
+### 9. Surface execution condition becomes a shadow orchestration layer
+If a future surface execution condition hook is implemented in a way that:
+- duplicates planning readiness or planning-side gating
+- becomes a generalized cross-surface workflow engine
+- overrides release, maintenance, or return posture rather than complementing them
+- stores speculative future posture rather than current execution-side condition
+then the schema has drifted.
 
 ---
 
@@ -803,6 +834,7 @@ A capable LLM should be able to infer from this doc that:
 - VEDA signal is consumed through the governed interface, not owned in V Forge schema
 - execution intelligence is a query pattern, not a stored record family
 - extension hooks exist but must not be pre-built
+- surface execution condition is a recognized future extension hook, not a first-pass schema feature
 - schema expansion requires governed review, not implementation convenience
 
 If schema design makes V Forge broader, more planning-shaped, more
@@ -829,10 +861,14 @@ This document should be used:
 - `v-forge.md`
 - `system-invariants.md`
 - `operational-model.md`
+- `surface-execution-state-design-note.md`
 - `vs-project-v.md`
 - `vs-veda.md`
 - `human-in-the-loop-doctrine.md`
 - `reporting-and-approval-model.md`
+- `operator-surfaces/vscode-extension.md`
+- `hammer-doctrine.md`
+- `hammer-plan.md`
 - `../ecosystem/v-ecosystem-overview.md`
 - `../ecosystem/cross-system-boundaries.md`
 - `../ecosystem/vocabulary.md`

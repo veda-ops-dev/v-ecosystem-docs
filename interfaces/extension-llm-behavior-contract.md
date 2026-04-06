@@ -1,5 +1,12 @@
 # Extension LLM Behavior Contract
 
+## Status
+Superseded by `desktop-llm-behavior-contract.md`
+
+This document reflects the legacy VS Code extension host model.
+The Tauri 2 desktop application defined in ADR-011 is now the primary operator host.
+Use `desktop-llm-behavior-contract.md` for active doctrine.
+
 ## Purpose
 
 This document defines the binding behavior contract for LLMs operating inside the V Ecosystem through the VS Code extension.

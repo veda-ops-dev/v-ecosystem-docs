@@ -1,5 +1,12 @@
 # Extension Human–LLM Interaction Model
 
+## Status
+Superseded by `desktop-human-llm-interaction-model.md`
+
+This document reflects the legacy VS Code extension host model.
+The Tauri 2 desktop application defined in ADR-011 is now the primary operator host.
+Use `desktop-human-llm-interaction-model.md` for active doctrine.
+
 ## Purpose
 
 This document defines how the human operator and the LLM interact inside the V Ecosystem VS Code extension so that the system remains powerful, usable, explicit, and governed.

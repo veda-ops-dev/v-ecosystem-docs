@@ -1,5 +1,12 @@
 # Extension Memory and Continuity Model
 
+## Status
+Superseded by `desktop-memory-and-continuity-model.md`
+
+This document reflects the legacy VS Code extension host model.
+The Tauri 2 desktop application defined in ADR-011 is now the primary operator host.
+Use `desktop-memory-and-continuity-model.md` for active doctrine.
+
 ## Purpose
 
 This document defines how memory, continuity, transcripts, and compaction work inside the V Ecosystem VS Code extension.
@@ -205,6 +212,9 @@ Transcript artifacts are not:
 A transcript artifact may help a later reviewer understand what happened.
 It must not be cited as a substitute for the governing record that should have been created elsewhere.
 
+The mechanical persistence, metadata, labeling, retrieval, and recall posture for transcript artifacts are defined in `extension-transcript-persistence-design.md`.
+That companion implements transcript handling without changing the non-authority rule defined here.
+
 ---
 
 ## Protected Context Rule
@@ -226,6 +236,8 @@ It must not be silently dropped.
 
 If compaction removes protected context, the runtime has violated continuity doctrine even if the session still appears usable.
 
+The mechanical implementation design for preserving protected context, freezing protected context before lossy compaction, and validating protected-context survival after compaction is defined in `extension-compaction-implementation-design.md`.
+
 ---
 
 ## Compaction Rule
@@ -239,6 +251,8 @@ Compaction is allowed only when it preserves:
 - the distinction between continuity artifacts and canonical state
 
 Compaction must not be treated as a magic summarization event that silently rewrites the session basis.
+
+The mechanical trigger model, eligibility checks, flush integration point, compact-boundary construction, and post-compaction validation mechanics are defined in `extension-compaction-implementation-design.md`.
 
 ---
 
@@ -270,6 +284,8 @@ A bounded replacement of prior narrative history with a compacted continuity pro
 
 This is the highest-risk compaction class and must be visibly marked with a compact boundary.
 
+The implementation must map these doctrinal compaction classes into distinct mechanical execution paths rather than one generic compaction blob.
+
 ---
 
 ## Compaction Blocking Rule
@@ -290,6 +306,8 @@ When compaction is blocked, the runtime must prefer:
 
 It must not silently compact anyway and hope for the best.
 
+The runtime implementation must perform an explicit eligibility check against these blocking rules before a lossy compaction cycle proceeds.
+
 ---
 
 ## Compaction Failure Posture
@@ -302,6 +320,8 @@ In that case, the runtime must:
 - preserve the session in a review-required posture until the operator or runtime resolves the condition
 
 The correct fallback is not to drop protected context and continue pretending continuity remains sound.
+
+The implementation companion doc defines the mechanical halt, refresh, and per-category validation posture that should follow a failed or incomplete compaction cycle.
 
 ---
 
@@ -317,6 +337,8 @@ The compact boundary exists so the operator and the LLM can both understand:
 
 A compact boundary improves continuity transparency.
 It does not convert compaction output into canonical state.
+
+The compact-boundary artifact is mechanically defined in `extension-compaction-implementation-design.md`, but its non-canonical posture is governed here.
 
 ---
 
@@ -473,6 +495,8 @@ It relies on:
 - `extension-governance-and-gating-model.md` for approval boundaries
 - `extension-agent-orchestration-model.md` for delegated-work posture
 - `extension-system-init-and-tool-surface-model.md` for how continuity is loaded at session start
+- `extension-compaction-implementation-design.md` for the mechanical compaction lifecycle that enforces the doctrine defined here
+- `extension-transcript-persistence-design.md` for the mechanical transcript persistence, labeling, and recall posture that stays subordinate to the continuity rules defined here
 
 This doc must not be used to blur canonical state boundaries just because continuity makes the system feel smarter.
 

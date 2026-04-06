@@ -458,7 +458,7 @@ This document should be used:
 - `lifecycle.md`
 - `v-forge-integration.md`
 - `data-boundaries.md`
-- `schema-authority.md` *(planned)*
+- `schema-authority.md`
 - `../workflows/project-intake-workflow.md`
 - `../interfaces/project-v-to-v-forge-handoff-interface.md`
 - `../interfaces/v-forge-to-project-v-return-to-planning-interface.md`

@@ -171,6 +171,16 @@ This is a cooperation model, not shared ownership.
 
 ---
 
+## Operator Access Layer
+
+The V Ecosystem is primarily surfaced to operators through one unified Tauri 2 desktop application.
+
+That desktop application is an operator-facing governance and runtime layer, not a fourth peer ecosystem system.
+It presents bounded access to Project V, VEDA, and V Forge while preserving their separate truth domains.
+The desktop runtime behavior, orchestration posture, and tool-surface rules are governed by the desktop doctrine docs under `../interfaces/`, not by this overview doc.
+
+---
+
 ## Human-In-The-Loop Principle
 
 The V Ecosystem is not designed around unrestricted autonomy.
@@ -240,4 +250,6 @@ This document should be used:
 - `../project-v/project-v.md`
 - `../veda/veda.md`
 - `../v-forge/v-forge.md`
+- `../interfaces/desktop-surface-architecture.md`
+- `../interfaces/desktop-agent-orchestration-model.md`
 - `../governance/agent-operating-doctrine.md`

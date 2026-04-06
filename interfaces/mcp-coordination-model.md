@@ -24,7 +24,7 @@ This document governs:
 - cross-project contamination prevention
 - MCP tool design rules
 - what MCP tools may and may not do
-- the relationship between the VSCode extension and MCP session initialization
+- the relationship between the desktop application and MCP session initialization
 
 ---
 
@@ -35,7 +35,7 @@ This document does not define:
 - the specific list of MCP tools for each system
 - provider-specific API details
 - credential or secrets management beyond the scope model
-- UI design for the VSCode extension beyond the scope selector
+- UI design for the desktop application beyond the scope selector
 - transport-level MCP protocol mechanics
 
 Those belong in system-specific operator surface docs, interface docs, or implementation docs.
@@ -123,12 +123,12 @@ The correct model moves project scope out of LLM control entirely.
 
 ### How session initialization works
 
-The human operator selects the active project in the VSCode extension.
-The extension calls the MCP server's session initialization endpoint with the project UUID selected by the operator.
-The project UUID comes from the project list the extension loaded through the API — not from direct database access.
+The human operator selects the active project in the desktop application.
+The desktop application calls the MCP server's session initialization endpoint with the project UUID selected by the operator.
+The project UUID comes from the project list the desktop application loaded through the API — not from direct database access.
 The MCP server creates a session record bound to that project UUID server-side.
-The MCP server returns an opaque session token to the extension.
-The extension stores the session token for the duration of the session.
+The MCP server returns an opaque session token to the desktop application.
+The desktop application stores the session token for the duration of the session.
 Every subsequent MCP tool call includes the session token automatically — not the project ID.
 The MCP server resolves the project scope from the token server-side before forwarding the request to the API.
 The LLM never sees the project ID. The LLM only sees the session token.
@@ -145,8 +145,8 @@ The LLM cannot:
 ### How project switching works
 
 Project switching is a deliberate human action.
-The operator selects a different project in the extension.
-The extension initializes a new session with the new project UUID.
+The operator selects a different project in the desktop application.
+The desktop application initializes a new session with the new project UUID.
 A new session token is issued.
 The prior session token is invalidated.
 The new session is bound to the new project.
@@ -158,28 +158,30 @@ If the MCP server receives a tool call with an invalid, expired, or unrecognized
 - reject the tool call with a governed error response — not silently proceed
 - not attempt to infer a project scope from other context
 - not fall back to a default project
-- surface the error clearly so the extension or operator can reinitialize the session
+- surface the error clearly so the desktop application or operator can reinitialize the session
 
 An expired or invalid session token is not a degraded permission level. It is an absent session. The correct response is rejection and re-initialization, not best-effort continuation.
 
 ---
 
-## The VSCode Extension as Governance Layer
+## The Desktop Application as Governance Layer
 
-The extension is not just a display surface.
+The desktop application is not just a display surface.
 It is an active governance layer for project scope.
 
-The extension:
+The desktop application:
 
 - presents the active project selector to the human operator
 - initializes sessions with the MCP server when the operator selects a project
 - stores the session token for the active session
 - passes the session token automatically on every tool call
-- displays the active project name visibly at all times in the status bar
+- displays the active project name visibly at all times
 - invalidates the prior session when the operator switches projects
 
-The operator glances at the status bar and always knows which project the LLM is operating on.
+The operator can always see which project the LLM is operating on.
 If it ever looks wrong, the operator can correct it before any tool call happens.
+
+Within the Tauri 2 desktop application, MCP session management — including session initialization calls to the MCP server, session token storage, and token forwarding on tool calls — is the responsibility of the sidecar/runtime layer, not the frontend (React/TypeScript) layer. The frontend invokes session management through the sidecar. The sidecar owns the actual communication with the MCP server. This preserves the implementation boundary established in `runtime-sidecar-and-nerve-model.md` and `desktop-implementation-architecture.md`.
 
 ---
 
@@ -255,7 +257,7 @@ MCP does not own system truth. It exposes capabilities owned by the systems it w
 
 The session initialization endpoint must:
 
-- accept the project UUID from the extension
+- accept the project UUID from the desktop application
 - validate that the project exists and is active
 - create a server-side session record binding the token to the project UUID
 - return an opaque session token
@@ -350,7 +352,7 @@ The human switches the project.
 The LLM operates within the scope the human set.
 
 No LLM action through MCP can change which project is active.
-That control belongs exclusively to the human operator through the extension.
+That control belongs exclusively to the human operator through the desktop application.
 
 ---
 
@@ -378,7 +380,7 @@ This document should be used:
 - when designing the session initialization endpoint
 - when reviewing whether an MCP tool follows the required structure
 - when evaluating whether cross-project contamination prevention is structurally sound
-- when building the VSCode extension's project scope selector and session management
+- when building the desktop application's project scope selector and session management
 
 ---
 

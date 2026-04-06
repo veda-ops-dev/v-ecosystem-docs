@@ -26,7 +26,7 @@ This document governs:
 - what kinds of operator actions are permitted through each surface
 - what operator actions require governed approval before they become active
 - what operators must not do directly that must instead route through a governed path
-- how the VSCode extension serves as the primary operator surface across all three systems
+- how the desktop application serves as the primary operator surface across all three systems
 - the boundary posture operators must preserve when using ecosystem surfaces
 
 ---
@@ -65,23 +65,20 @@ happens. It is not a bypass of governance.
 
 ---
 
-## Primary Operator Surface: VSCode Extension
+## Primary Operator Surface: Desktop Application
 
-The unified VSCode extension is the primary operator interface for the V Ecosystem.
+The unified Tauri 2 desktop application is the primary operator interface for the V Ecosystem.
 
-Governed by ADR-008 (one unified extension) and ADR-005 (session token model),
-the extension provides:
+Governed by ADR-011 (Tauri 2 desktop as operator host) and ADR-005 (session token model),
+the desktop application provides:
 
 - a project selector that establishes the active project scope for the session
 - a status bar element showing the active project at all times
 - system-specific panels for Project V, VEDA, and V Forge
 - the mechanism through which LLM sessions are scoped to a specific project
 
-The extension is a governance layer, not merely a display surface.
-The session token it creates binds all MCP tool calls in the session to the
-selected project. The LLM never sees the project UUID — it sees only the
-opaque session token. This prevents cross-project contamination at the
-tool-call level.
+The desktop application is a governance layer, not merely a display surface.
+Through its sidecar/runtime layer, it initializes a session with the MCP server when the operator selects a project; the MCP server issues an opaque session token bound to that project. All MCP tool calls within the session carry that token automatically. The LLM never sees the project UUID — it sees only the opaque session token. This prevents cross-project contamination at the tool-call level.
 
 The MCP coordination model is defined in:
 `../interfaces/mcp-coordination-model.md`
@@ -165,7 +162,7 @@ Paid data pull governance is defined in:
 - view current execution state for active handed-off work
 - review execution findings and bounded execution reports
 - approve or reject launch-sensitive execution actions that require operator authorization
-- initiate or approve return-to-planning when execution findings warrant it
+- initiate or approve return-to-planning when execution findings warrant it; operators must distinguish between findings that can be resolved within existing approved scope as maintenance activity and findings that warrant governed return-to-planning and potential replanning — routing a maintenance finding as though it were a replanning trigger is a governance error, and the V Forge surface must support that distinction through clearly differentiated response paths
 - review pre-launch verification status
 - approve launch activation for approval-gated launches
 - review the content graph for handed-off projects

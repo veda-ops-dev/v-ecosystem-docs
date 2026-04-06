@@ -2,12 +2,14 @@
 
 ## Purpose
 
-This document defines the cross-system workflow by which approved Project V work becomes active execution responsibility in V Forge inside the V Ecosystem.
+This document defines the governed workflow by which approved Project V work becomes active execution responsibility in V Forge.
 
 It exists to answer:
 
 ```text
-How does planning-ready work move from Project V into active V Forge execution, what stages govern that transition, and what responsibilities remain bounded on each side?
+What stages does the handoff workflow move through, what event causes each transition,
+what pending state applies at each stage, when may Project V proceed and when may it
+not, and what happens when delivery fails, approval is rejected, or basis changes?
 ```
 
 This is a Tier 1 ecosystem authority document.
@@ -18,12 +20,14 @@ This is a Tier 1 ecosystem authority document.
 
 This document governs:
 
-- the workflow from Project V readiness into active V Forge execution responsibility
-- the main stages of handoff from planning-side preparation through execution-side acceptance
-- which systems are responsible at each stage
-- the boundary posture operators and LLMs should use during handoff
-- when a prepared handoff is not yet an active handoff
-- when execution should not begin even if planning work is substantially complete
+- the concrete stage sequence from planning readiness through V Forge receipt confirmation
+- entry conditions and handoff validity posture
+- approval gate behavior and canonical pending state
+- push delivery and receipt confirmation as distinct phases
+- degraded-mode and interruption handling
+- re-entry and recovery rules
+- adjacent interface routing (recall, clarification, scope update, return-to-planning)
+- activity-trail obligations for handoff events
 
 ---
 
@@ -31,13 +35,16 @@ This document governs:
 
 This document does not define:
 
-- the detailed Project V internal planning workflow
-- the detailed V Forge internal execution workflow
-- the full approval policy for every handoff case
-- the detailed transport or storage format of handoff packages
-- the detailed return-to-planning workflow after execution has already begun
-
-Those belong in Project V docs, V Forge docs, interface docs, governance docs, and later workflow docs.
+- the handoff interface data contract — that belongs in
+  `interfaces/project-v-to-v-forge-handoff-interface.md`
+- full approval class definitions and escalation principles — those belong in
+  `governance/approval-and-escalation-model.md` and
+  `governance/approval-mechanics-seam-model.md`
+- Project V internal planning or readiness workflow
+- V Forge internal execution workflow
+- return-to-planning workflow after execution has begun — that belongs in
+  `workflows/maintenance-and-replanning-workflow.md`
+- transport or storage implementation details
 
 ---
 
@@ -47,267 +54,442 @@ Those belong in Project V docs, V Forge docs, interface docs, governance docs, a
 
 ---
 
+## Relationship to Governing Interface Docs
+
+This workflow governs sequencing and transition rules. The interface contract governs
+what the handoff package must carry.
+
+- `interfaces/project-v-to-v-forge-handoff-interface.md` — defines the handoff package
+  semantics, validity conditions, delivery model, and boundary rules. This workflow must
+  remain consistent with that contract.
+- `governance/approval-mechanics-seam-model.md` — defines the shared seam-level
+  approval mechanics pattern used at Stage 3. This workflow carries the seam-specific
+  facts; the mechanics doc carries the shared pattern.
+- `ecosystem/activity-trail-integration-map.md` — defines the canonical action type
+  mapping for all activity-trail records produced by this workflow.
+
+---
+
 ## Core Rule
 
-Handoff is the governed workflow by which execution responsibility moves from Project V to V Forge for approved work.
+Approval, delivery, and receipt confirmation are three distinct required phases.
+None may substitute for or imply the others.
 
-Planning readiness does not automatically become execution.
-Handoff preparation does not automatically become active handoff.
-Execution must not begin from a fuzzy “basically ready” state.
+- **Approval** authorizes Project V to initiate the push delivery
+- **Delivery** transfers the handoff package to V Forge
+- **Receipt confirmation** completes the transfer and makes execution responsibility active
 
-The handoff workflow exists to preserve the boundary between planning truth and execution truth while still allowing work to move forward.
-
----
-
-## Workflow Definition
-
-The handoff workflow is the bounded cross-system workflow that moves from:
-
-- Project V readiness determination
-- bounded handoff preparation
-- approval or activation satisfaction where required
-
-through:
-
-- governed handoff activation
-- V Forge receipt and execution-side assumption of responsibility
-
-into:
-
-- active V Forge execution responsibility for the handed-off scope
-
-This workflow exists so that the ecosystem can move from planning to execution deliberately rather than by implication.
+Execution must not begin until all three phases are complete.
 
 ---
 
-## Workflow Preconditions
+## Entry Conditions
 
-The handoff workflow should begin only when:
+The handoff workflow may enter Stage 1 only when all of the following are true:
 
-- Project V has determined that the work is ready for handoff at the planning level
-- the execution target and approved scope are bounded enough for execution
-- the minimum handoff semantics required by the handoff interface are present
-- the applicable approval, activation, or release posture is either already satisfied or has been explicitly identified as still pending
+- Project V has determined that the work is planning-ready for handoff
+- the execution target is V Forge
+- the execution scope is bounded and specific enough for V Forge to act within
+- the handoff package contains at minimum the semantic fields required by the interface
+  contract: handoff identity, originating planning context, approved execution scope,
+  constraints, readiness basis, evidence references, expected outcome, and
+  return-to-planning trigger conditions
+- the evidence and planning basis referenced in the package are not materially stale
+  or superseded at entry time
+- no active governance-sensitive change is in flight that would invalidate the
+  readiness basis before approval can be obtained
 
-The handoff workflow must not begin from:
-
-- incomplete or unbounded planning interpretation
-- informal execution intent without governed planning readiness
-- a recommendation that has not become a planning-side handoff-ready outcome
-- execution pressure alone
-- an assumption that V Forge can “figure out the rest” from partial planning
-
----
-
-## Primary Workflow Stages
-
-## Stage 1 — Handoff Readiness Determined
-
-### Description
-Project V determines that work is planning-ready for handoff.
-
-This means Project V has concluded, at the level required for bounded execution, that:
-
-- the work is real
-- the scope is sufficiently bounded
-- the execution objective is sufficiently clear
-- known planning-side blockers have been handled, deferred explicitly, or surfaced as constraints
-- the work should move toward execution rather than remain in planning
-
-### Responsibility
-- Project V owns readiness determination
-
-### Boundary Rule
-Readiness determination is still planning truth.
-At this stage, execution responsibility has not moved.
-V Forge does not determine whether Project V is ready to hand off.
+If any of these conditions are not met, the workflow must not enter Stage 1. Work
+remains in Project V planning state until conditions are satisfied.
 
 ---
 
-## Stage 2 — Handoff Package Preparation
+## Workflow Stages
 
-### Description
-Project V prepares the bounded handoff package required for execution.
+### Stage 1 — Handoff Package Prepared
 
-This includes, at minimum, preserving the semantic meaning of:
+**Entry event:** Project V readiness evaluation concludes that work is handoff-ready.
 
-- what work is being handed off
-- why it is ready
-- what scope is approved
-- what constraints apply
-- what evidence references matter
-- what outcomes or execution behavior are expected at a high level
-- what conditions should trigger return-to-planning behavior
+**What happens at this stage:**
+Project V prepares the bounded handoff package. The package assembles the
+execution-facing planning subset: approved scope, constraints, readiness basis,
+evidence references, expected outcomes, and return-to-planning trigger conditions.
+The handoff identity is assigned. Package revision posture is established.
 
-### Responsibility
-- Project V owns handoff package preparation
+**Pending state:** None — this stage is an active preparation stage, not a pending stage.
 
-### Boundary Rule
-Handoff package preparation is not execution.
-It is also not permission to widen scope casually.
-Project V prepares the execution-facing planning subset, not a full dump of all planning state.
+**Exit condition → Stage 2:** Package is complete and meets the validity conditions
+in the interface contract.
 
----
+**Fallback:** If the package cannot be completed to meet validity conditions, work
+returns to Project V planning / readiness evaluation. The incomplete package must
+not be activated.
 
-## Stage 3 — Approval or Activation Check
-
-### Description
-The ecosystem determines whether the handoff may become active now or must remain pending.
-
-Depending on the case, this may include:
-
-- human approval
-- governance confirmation
-- release-condition satisfaction
-- confirmation that no materially relevant change has invalidated the pending handoff basis
-
-### Responsibility
-- Project V owns the planning-side awaiting state
-- governance rules determine whether approval or escalation is required
-- human operators may provide required approval where applicable
-
-### Boundary Rule
-A prepared handoff is not an active handoff if approval or activation is still pending.
-No one gets to squint at a nearly finished package and declare victory.
-Pending is pending.
+**Boundary rule:** Handoff package preparation is planning truth. Execution responsibility
+has not moved. V Forge is not yet involved.
 
 ---
 
-## Stage 4 — Handoff Activation
+### Stage 2 — Approval Request Generated
 
-### Description
-The handoff becomes active through the governed Project V to V Forge handoff path.
+**Entry event:** Handoff package passes validity check and is ready for activation.
 
-At this point, the handoff is no longer merely prepared or awaiting activation.
-It is now the active transfer of execution responsibility for the bounded approved scope.
+**What happens at this stage:**
+Project V generates the activation approval request. The request must contain
+the minimum semantic contents required by the approval mechanics model: the action
+being requested (handoff activation), the execution scope, the readiness basis, the
+approval class, the conditions, and what happens on each outcome. The request is
+delivered to the human operator or governed approval surface.
 
-### Responsibility
-- Project V owns the planning-side activation of the handoff
-- the cross-system transfer occurs through the governed handoff interface
+**Pending state:** `awaiting_approval` — begins immediately on request generation.
 
-### Boundary Rule
-Handoff activation transfers execution responsibility, not planning ownership.
-Project V remains the owner of planning and orchestration truth.
-VEDA remains the owner of signal, evidence, and observability truth.
+**Approval class:** Class B or Class C depending on execution scope, risk, launch
+sensitivity, and external action implications. Determined per the Tier 1 approval model.
 
----
+**Activity trail:** `approval.request` record produced by Project V. Required fields
+from `ecosystem/activity-trail-integration-map.md` Section 5a: `entity_type: handoff`,
+`entity_id: <handoff identity>`, `approval_class`, `execution_scope_id`,
+`readiness_basis_ref`.
 
-## Stage 5 — V Forge Receipt and Execution-Side Acceptance
+**Exit condition → Stage 3:** A governed approval decision is received.
+**Exit condition → Stage 5 (degraded):** Approval becomes expired or stale.
+**Exit condition → Stage 7 (escalation):** Approval is escalated.
 
-### Description
-V Forge receives the active handoff and assumes execution responsibility for the handed-off scope.
-
-This means V Forge accepts the bounded execution-facing package as the basis for execution activity within the approved scope and constraints.
-
-### Responsibility
-- V Forge owns execution responsibility after valid handoff receipt
-- Project V remains the owner of planning truth for the handed-off work
-
-### Boundary Rule
-V Forge receipt does not mean V Forge becomes the planner.
-It means V Forge now owns execution truth for the handed-off scope.
-If the handoff is invalid, materially incomplete, or cannot be acted on within scope, the correct response is governed interruption or return, not improvisational planning takeover.
+**Boundary rule:** While in `awaiting_approval`, the handoff is not active. V Forge
+must not begin execution. Project V must not treat the handoff as delivered.
 
 ---
 
-## Stage 6 — Post-Handoff Boundary Stabilization
+### Stage 3 — Approval Decision Received
 
-### Description
-After handoff activation and receipt, each system must continue behaving according to its role.
+**Entry event:** Human operator or governed approval surface reaches a decision.
 
-This means:
+**Decision outcomes and workflow consequences:**
 
-- Project V preserves planning continuity and does not pretend to be the active execution ledger
-- V Forge executes within bounded scope and does not casually redefine planning
+| Outcome | Workflow action |
+|---|---|
+| `approved` | Proceed to Stage 4 (delivery) |
+| `rejected` | Handoff does not proceed. Return handoff to Stage 1 or Project V planning. Rejection is a governed outcome — preserve reason and scope. |
+| `escalated` | Enter Stage 7 (escalation handling). Handoff remains in `awaiting_approval`. |
+| `expired` | Prior approval cannot be silently reused. Re-evaluate basis per Stage 8 (basis change handling). |
+
+**Activity trail:** `approval.decide` record at decision time. Required fields from
+integration map Section 5a: `entity_type: handoff`, `entity_id: <handoff identity>`,
+`approval_class`, `decision` (`approved`, `rejected`, or `expired`), `decision_scope`.
+
+**Boundary rule:** Approval authorizes delivery. It does not constitute delivery.
+The handoff is not active after approval — delivery and receipt confirmation are still
+required.
+
+---
+
+### Stage 4 — Delivery Initiated
+
+**Entry event:** Activation approval received (`approved` outcome from Stage 3).
+
+**What happens at this stage:**
+Project V initiates the push delivery of the handoff package to V Forge through
+`interfaces/project-v-to-v-forge-handoff-interface.md`. The handoff identity is
+stable across all delivery attempts for this package. A delivery-initiated event
+is produced.
+
+**Activity trail:** `handoff.create` record produced by Project V. Required fields
+from integration map Section 2: `entity_type: handoff`, `entity_id: <handoff identity>`,
+`source_planning_entity_ref`, `execution_scope_id`, `package_version_posture`.
+
+**Exit condition → Stage 5:** V Forge confirms receipt.
+**Exit condition → Stage 6a (degraded):** V Forge unavailable or confirmation not returned.
+**Exit condition → Stage 6b (invalid):** V Forge identifies a validity failure on receipt.
+
+**Boundary rule:** Delivery is not confirmed until V Forge receipt is returned.
+Project V must not treat delivery as complete until Stage 5 is reached.
+
+---
+
+### Stage 5 — Receipt Confirmed / Handoff Active
+
+**Entry event:** V Forge confirms receipt of the handoff package.
+
+**What happens at this stage:**
+V Forge confirms receipt through the governed path. Execution responsibility transfers
+to V Forge for the approved bounded scope. The handoff is now active. V Forge may begin
+execution within the scope and constraints defined in the package.
+
+**Activity trail:** `handoff.confirmed` record produced by V Forge. Required fields
+from integration map Section 2: `entity_type: handoff`, `entity_id: <handoff identity>`,
+`receipt_confirmed_at`.
+
+**Exit condition:** The handoff workflow is complete. Post-handoff governance applies
+(see Post-Handoff Boundary Stabilization below).
+
+**Adjacent paths that may now apply:**
+- VEDA startup signal delivery to V Forge is a related but distinct layer that
+  may activate at this point — see Adjacent Interface Routing.
+- Execution clarification, scope update, and return-to-planning become the
+  governing paths for any subsequent changes or findings.
+
+**Boundary rule:** Receipt confirmation transfers execution responsibility. It does
+not transfer planning ownership. Project V remains the planning system of record.
+V Forge owns execution truth for the handed-off scope.
+
+---
+
+### Stage 6a — Degraded / Delivery Failed
+
+**Entry event:** Delivery attempted but V Forge is unavailable, or receipt confirmation
+not returned within the expected window.
+
+**What happens at this stage:**
+Project V retains the package and records the delivery failure. The handoff identity
+is preserved for re-delivery. V Forge must not assume the handoff has been received.
+
+**Handling rules:**
+- VEDA must not treat startup signal delivery as applicable until handoff receipt is confirmed
+- Project V may attempt re-delivery using the same handoff identity
+- If re-delivery is attempted, a re-delivery-initiated record is produced
+- If delivery fails repeatedly or conditions change materially, proceed to Stage 8
+  (basis change / voiding assessment)
+
+**Activity trail:** `handoff.failed` record produced by Project V. On re-delivery:
+`handoff.create` record with `is_retry: true` and `prior_delivery_id` in `details`.
+
+**Exit condition → Stage 5:** V Forge confirms receipt on re-delivery.
+**Exit condition → Stage 8:** Basis has materially changed during delivery failure window.
+
+---
+
+### Stage 6b — Package Invalid at Receipt
+
+**Entry event:** V Forge receives the package but identifies a validity failure
+(missing required fields, invalid scope, or basis contradiction).
+
+**What happens at this stage:**
+V Forge must not begin execution. V Forge surfaces the validity failure through
+the governed interruption path. Project V receives the interruption.
+
+**Handling rules:**
+- Project V assesses whether the package can be corrected and re-delivered, or
+  whether the readiness basis must be re-evaluated
+- If the package is correctable: revise, regenerate (new handoff identity with
+  reference to prior package as superseded), and return to Stage 2
+- If the basis is invalid: return to Stage 1 or Project V planning
+
+**Activity trail:** `handoff.failed` record. If package is voided/superseded:
+`handoff.reject` record with `superseded_by_ref` and `void_reason`.
+
+---
+
+### Stage 7 — Escalation Handling
+
+**Entry event:** Approval escalated at Stage 3.
+
+**What happens at this stage:**
+The handoff remains in `awaiting_approval`. No delivery may proceed. The escalation
+is preserved. The governing escalation path defined in the approval mechanics model
+applies.
+
+**Activity trail:** `approval.escalate` record produced by Project V. Required fields
+from integration map Section 5a: `entity_type: handoff`, `entity_id: <handoff identity>`,
+`approval_class`, `escalation_reason`.
+
+**Exit condition:** Escalation resolves. Outcome re-enters Stage 3 as a governed
+decision outcome.
+
+**Boundary rule:** Escalation is a named pending state, not a stall. Work must not
+proceed while escalated.
+
+---
+
+### Stage 8 — Basis Change / Approval Expiry Assessment
+
+**Entry event:** Conditions materially change while in `awaiting_approval` or during
+a delivery failure window; or an approval expires.
+
+**What happens at this stage:**
+Project V assesses whether the original handoff basis remains valid given the
+changed conditions. A stale `awaiting_approval` state is not authorization to proceed.
+
+**Assessment outcomes:**
+
+| Assessment | Workflow action |
+|---|---|
+| Basis still valid | Re-confirm basis and re-enter Stage 2 (new approval request if expired) |
+| Basis requires revision | Return to Stage 1 (package re-preparation with updated basis) |
+| Basis is no longer valid | Return to Project V planning / readiness evaluation |
+
+**Activity trail:** If package is voided before confirmation: `handoff.reject` record
+with `void_reason` referencing the change in basis.
+
+**Boundary rule:** A changed basis does not automatically invalidate a handoff, but
+it must be assessed explicitly. The ecosystem must not silently continue under a basis
+that would not survive scrutiny.
+
+---
+
+## Post-Handoff Boundary Stabilization
+
+After Stage 5 (receipt confirmed):
+
+- Project V preserves planning continuity and does not act as the active execution ledger
+- V Forge executes within the bounded approved scope and does not casually redefine
+  planning — if scope is insufficient, the governed paths (clarification, scope update,
+  return-to-planning) apply
 - VEDA remains the signal and observability system of record
-- later execution findings that affect planning must use the return-to-planning path rather than informal cross-system mutation
+- Handoff is a transfer of responsibility, not a boundary collapse
 
-### Responsibility
-- Project V owns continued planning continuity
-- V Forge owns continued execution truth
-- governance and interface rules continue to constrain both sides
-
-### Boundary Rule
-Handoff is a transfer of responsibility, not a boundary collapse.
-If post-handoff behavior turns into shared fuzzy ownership, the workflow has drifted.
+If post-handoff behavior produces shared fuzzy ownership, the workflow has drifted.
 
 ---
 
-## Handoff Outcome Semantics
+## Transition Summary Table
 
-A valid handoff workflow outcome should be interpretable as answering:
-
-- what work was handed off
-- why handoff was justified
-- what scope was approved for execution
-- whether approval or activation was required and satisfied
-- when execution responsibility actually transferred
-- what constraints remained active at transfer time
-- what kinds of findings should trigger return-to-planning behavior later
-
-These semantics may later be represented through specific workflow states, records, or packages, but the semantic contract comes first.
-
----
-
-## Awaiting State Principle
-
-A key handoff distinction must remain explicit:
-
-- handoff-prepared
-- awaiting approval or activation
-- actively handed off
-
-These are not the same state.
-
-Work that is prepared but still awaiting approval, release, or activation must not be treated as though execution has already begun.
-If conditions materially change while the handoff is waiting, the pending handoff basis may need replanning or renewed approval rather than automatic continuation.
-
-If a pending handoff's planning basis is materially invalidated by changed conditions while awaiting approval or activation — including changed evidence, changed readiness assessment, changed scope, or changed approval authority — the pending handoff must not be activated on the original basis.
-The correct response is to return the handoff to Stage 2 preparation or Stage 1 readiness evaluation with the changed conditions explicitly preserved.
-A stale awaiting-approval state is not authorization to proceed.
-
-This distinction is one of the main places where planning-to-execution drift otherwise sneaks in.
+| From stage | Event | To stage |
+|---|---|---|
+| Entry conditions met | — | Stage 1 |
+| Stage 1 complete | Package passes validity | Stage 2 |
+| Stage 1 blocked | Cannot complete package | Return to planning |
+| Stage 2 | Approval request generated, decision pending | Stage 3 |
+| Stage 3 | `approved` | Stage 4 |
+| Stage 3 | `rejected` | Stage 1 or planning |
+| Stage 3 | `escalated` | Stage 7 |
+| Stage 3 | `expired` | Stage 8 |
+| Stage 4 | Receipt confirmed | Stage 5 |
+| Stage 4 | Delivery failed / no confirmation | Stage 6a |
+| Stage 4 | Package invalid at receipt | Stage 6b |
+| Stage 5 | — | Workflow complete |
+| Stage 6a | Receipt confirmed on re-delivery | Stage 5 |
+| Stage 6a | Basis materially changed | Stage 8 |
+| Stage 6b | Package correctable | Stage 2 (revised package) |
+| Stage 6b | Basis invalid | Stage 1 or planning |
+| Stage 7 | Escalation resolves | Stage 3 |
+| Stage 8 | Basis still valid | Stage 2 |
+| Stage 8 | Basis requires revision | Stage 1 |
+| Stage 8 | Basis no longer valid | Planning |
 
 ---
 
-## Execution Entry Principle
+## Adjacent Interface Routing
 
-Execution should begin only after valid handoff activation and V Forge receipt.
+When adjacent governed paths become relevant, route to them — do not fold their
+semantics into this workflow.
 
-Execution must not begin because:
+### Handoff Recall (`interfaces/project-v-handoff-recall-interface.md`)
 
-- the work looks obvious
-- the package is almost complete
-- the operator expects it probably to go through
-- the same kind of work was approved before
-- delay feels inefficient
+Applies: before Stage 5 (before V Forge has materially acted on the handoff).
 
-The handoff workflow exists partly to stop “probably fine” from becoming doctrine.
+Use when: an operator-directed recall is needed for a transferred but not-yet-acted
+handoff.
+
+Distinct from: return-to-planning (which applies when execution is already underway
+and findings require planning reconsideration).
+
+This workflow ends; the recall interface governs the recall event.
+
+### VEDA Startup Signal Delivery (`interfaces/veda-to-v-forge-signal-interface.md`)
+
+Applies: at or around Stage 5 receipt confirmation, as V Forge is initializing
+execution intelligence context for the handed-off scope.
+
+Distinct from: the handoff itself. Startup signal delivery is a related but separate
+VEDA-initiated push layer. It does not replace or substitute for handoff receipt.
+The handoff must be confirmed before VEDA startup signal delivery is applicable.
+
+### Execution Clarification (`interfaces/project-v-to-v-forge-execution-clarification-interface.md`)
+
+Applies: after Stage 5, during active execution.
+
+Use when: V Forge has raised a bounded ambiguity that Project V can resolve without
+triggering return-to-planning or issuing a new handoff.
+
+Distinct from: a new handoff (which would require re-entering this workflow from Stage 1).
+
+### Scope Update (`interfaces/project-v-to-v-forge-scope-update-interface.md`)
+
+Applies: after Stage 5, following a governed replanning event.
+
+Use when: governed replanning has produced revised scope or constraints that must
+be communicated to V Forge for an active execution context.
+
+Distinct from: a new handoff. If the replanning outcome requires fundamentally
+different execution scope, re-enter this workflow from Stage 1.
+
+### Return-to-Planning (`interfaces/v-forge-to-project-v-return-to-planning-interface.md`)
+
+Applies: after Stage 5, when V Forge encounters blocked, failed, or changed execution
+conditions that cannot be resolved within the approved scope.
+
+Distinct from: all other adjacent paths. Return-to-planning is V Forge-initiated and
+delivers bounded execution findings to Project V for planning reconsideration.
+
+This workflow ends at Stage 5. Return-to-planning and its subsequent replanning cycle
+is governed by `workflows/maintenance-and-replanning-workflow.md`.
 
 ---
 
-## Insufficient Handoff Principle
+## Activity Trail Requirements
 
-If a proposed handoff lacks the minimum semantics required for bounded execution, the correct result is not forced activation.
+All handoff workflow events must produce activity trail records using the canonical
+action types from `ecosystem/activity-trail-integration-map.md` Section 2 and
+Section 5a.
 
-The correct response may include:
+| Workflow event | Action type | Producing system |
+|---|---|---|
+| Approval request generated (Stage 2) | `approval.request` | Project V |
+| Approval decision received (Stage 3) | `approval.decide` | Operator / approval surface |
+| Approval escalated (Stage 7) | `approval.escalate` | Project V |
+| Delivery initiated (Stage 4) | `handoff.create` | Project V |
+| Receipt confirmed (Stage 5) | `handoff.confirmed` | V Forge |
+| Delivery failed (Stage 6a) | `handoff.failed` | Project V |
+| Re-delivery initiated (Stage 6a retry) | `handoff.create` with `is_retry: true` | Project V |
+| Package voided / superseded (Stage 6b, 8) | `handoff.reject` | Project V |
 
-- remain in Project V handoff preparation
-- return to readiness evaluation
-- remain awaiting approval
-- escalate
-- reject activation
-- preserve blocked transition state
+Activity records that are not produced are not governed events. Implementations
+must not skip activity-trail logging for any of the events above.
 
-Weak handoff packages should not be rescued by execution-side guesswork.
+See `ecosystem/activity-trail-integration-map.md` for the minimum required fields
+per event. See `ecosystem/activity-trail-model.md` for base required fields that
+apply to every record.
+
+---
+
+## Approval Gate: Seam-Specific Facts
+
+Handoff activation is an approval-sensitive event. This section carries the
+seam-specific facts. The shared mechanics pattern is governed by
+`governance/approval-mechanics-seam-model.md`.
+
+| Fact | Value |
+|---|---|
+| Initiating system | Project V |
+| Canonical pending state | `awaiting_approval` |
+| Approval class | Class B or Class C (scope- and risk-dependent) |
+| Approval does not equal delivery | True — approval authorizes delivery initiation only |
+| Stale approval reuse | Not permitted — basis must be re-evaluated if conditions have materially changed |
+
+For the full mechanics — request contents, decision re-entry rules, escalation path,
+activity trail obligations — see `governance/approval-mechanics-seam-model.md`
+Section A (Handoff Activation).
+
+---
+
+## Decision Continuity
+
+The handoff workflow must preserve continuity across the planning-to-execution transition:
+
+- readiness basis must remain traceable into the handoff package
+- whether approval was pending or satisfied must be preserved
+- active handoff must remain distinguishable from prepared or recommended handoff
+- later return-to-planning events must be understandable in relation to the prior handoff
+
+If the transition cannot be reconstructed from activity trail records later, the
+workflow was not governed strongly enough.
 
 ---
 
 ## Human-In-The-Loop Principle
 
-Handoff is a governance-sensitive workflow because it changes which system is responsible for active work.
-
-Human review or approval may be required depending on:
+Handoff activation is governance-sensitive because it changes which system is
+responsible for active work. Human review or approval may be required depending on:
 
 - project sensitivity
 - execution risk
@@ -316,44 +498,11 @@ Human review or approval may be required depending on:
 - launch sensitivity
 - cost or paid-action implications
 
-The approval and escalation posture is defined in `../governance/approval-and-escalation-model.md`.
+The approval class and mechanics are defined in `governance/approval-and-escalation-model.md`
+and `governance/approval-mechanics-seam-model.md`.
 
-Before handoff activation, the pre-action verification obligations defined in `../governance/testing-and-verification-doctrine.md` apply — including Class V1 precondition verification and Class V4 approval verification.
-Activation without verified preconditions is activation on unconfirmed assumptions.
-
----
-
-## Decision Continuity Principle
-
-The handoff workflow must preserve continuity across the planning-to-execution transition.
-
-This means:
-
-- readiness basis must remain traceable into handoff
-- approval-sensitive handoffs must preserve whether approval was pending or satisfied
-- active handoff must remain distinguishable from recommended or prepared handoff
-- later return-to-planning events must be understandable in relation to the prior handoff
-
-If the transition cannot be reconstructed later, the workflow was not governed strongly enough.
-
----
-
-## Failure and Interruption Principle
-
-When the handoff workflow cannot legitimately progress, the interruption must remain explicit.
-
-Depending on the case, the correct response may be:
-
-- remain in preparation
-- remain awaiting approval or activation
-- preserve blocked handoff state
-- escalate
-- return to planning readiness evaluation
-- invalidate the proposed handoff basis
-
-The workflow must not silently convert interruption into execution start.
-
-Failure handling should remain consistent with `../governance/failure-and-recovery-doctrine.md`.
+Pre-activation verification obligations from `governance/testing-and-verification-doctrine.md`
+apply — including precondition verification and approval verification.
 
 ---
 
@@ -361,15 +510,19 @@ Failure handling should remain consistent with `../governance/failure-and-recove
 
 A capable LLM should be able to infer from this doc that:
 
-- handoff is a multi-stage governed workflow, not a single state flip
-- readiness, preparation, approval waiting, activation, and V Forge receipt are distinct
-- execution responsibility transfers only at active handoff
-- Project V remains the planning system of record after handoff
-- V Forge becomes the execution system of record for the handed-off scope
-- weak or pending handoffs must not be treated as active execution
-- return-to-planning later exists for cases where execution findings require reconsideration
+- the handoff workflow has eight distinct named stages with concrete transitions
+- approval, delivery, and receipt confirmation are three separate required phases
+- `awaiting_approval` is the canonical pending state while approval is unresolved
+- execution must not begin until Stage 5 (receipt confirmed) is reached
+- a rejected, expired, or escalated approval does not proceed to delivery
+- a delivery failure does not mean the handoff is active
+- basis changes while pending must be assessed explicitly, not silently ignored
+- activity trail records are required for every named workflow event
+- adjacent paths (recall, clarification, scope update, return-to-planning) each have
+  specific entry conditions and must not be conflated with each other or with this workflow
 
-If the workflow is implemented as “Project V finished thinking, so execution probably starts now,” the doctrine is wrong.
+If the workflow is implemented as "Project V finished preparing, so execution starts
+when V Forge gets around to it," the doctrine is wrong.
 
 ---
 
@@ -377,12 +530,13 @@ If the workflow is implemented as “Project V finished thinking, so execution p
 
 This document should be used:
 
-- when designing workflow states around handoff
-- when deciding whether planning-ready work may actually move into execution
-- when checking whether a proposed handoff is still pending or truly active
-- when reviewing whether Project V and V Forge are preserving boundary discipline during transition
-- when writing more detailed Project V, V Forge, or maintenance workflow docs
-- when evaluating whether execution has begun without a legitimate governed handoff
+- when implementing the Project V → V Forge handoff workflow states and transitions
+- when deciding whether a handoff is in preparation, pending approval, delivered,
+  or confirmed
+- when reviewing whether approval, delivery, and receipt are being treated as distinct
+- when evaluating whether degraded delivery or a changed basis requires re-entry
+- when routing to adjacent interfaces (recall, clarification, scope update, return-to-planning)
+- when auditing whether the activity trail covers all required workflow events
 
 ---
 
@@ -390,12 +544,18 @@ This document should be used:
 
 - `../interfaces/project-v-to-v-forge-handoff-interface.md`
 - `../interfaces/v-forge-to-project-v-return-to-planning-interface.md`
-- `../ecosystem/v-ecosystem-overview.md`
-- `../ecosystem/cross-system-boundaries.md`
-- `../project-v/project-v.md`
-- `../project-v/operational-workflow.md`
-- `../v-forge/v-forge.md`
+- `../interfaces/project-v-handoff-recall-interface.md`
+- `../interfaces/project-v-to-v-forge-execution-clarification-interface.md`
+- `../interfaces/project-v-to-v-forge-scope-update-interface.md`
+- `../interfaces/veda-to-v-forge-signal-interface.md`
 - `../governance/approval-and-escalation-model.md`
+- `../governance/approval-mechanics-seam-model.md`
 - `../governance/failure-and-recovery-doctrine.md`
 - `../governance/testing-and-verification-doctrine.md`
+- `../governance/decision-continuity-doctrine.md`
+- `../ecosystem/activity-trail-model.md`
+- `../ecosystem/activity-trail-integration-map.md`
+- `../ecosystem/cross-system-boundaries.md`
+- `../project-v/project-v.md`
+- `../v-forge/v-forge.md`
 - `maintenance-and-replanning-workflow.md`

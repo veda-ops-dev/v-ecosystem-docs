@@ -400,7 +400,7 @@ This document should be used:
 - `system-invariants.md`
 - `operational-workflow.md`
 - `lifecycle.md`
-- `byda-in-project-v.md` *(planned)*
+- `byda-in-project-v.md`
 - `v-forge-integration.md`
 - `../governance/decision-continuity-doctrine.md`
 - `../governance/approval-and-escalation-model.md`

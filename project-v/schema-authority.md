@@ -87,6 +87,9 @@ Schema authority must not be inferred from:
 
 If a proposed record family is not clearly justified here or in an explicitly subordinate schema-specification doc, it is not yet governed schema.
 
+The detailed companion specification for exact columns, relations, constraints, and index posture lives in `schema-specification.md`.
+That companion remains subordinate to this authority doc and must not weaken the ownership and boundary rules defined here.
+
 ---
 
 ## Scope Classification Rule
@@ -454,12 +457,13 @@ Represents recoverable status history for meaningful planning and orchestration 
 - referenced entity must belong to the same project
 - state/history alignment must be enforceable by application logic and transaction boundaries
 - status history must not exist for a project-scoped entity in another project
-- status history should be generated only for record families with meaningful state-change governance consequences; first-pass candidates include `Objective`, `Initiative`, `WorkItem`, `Handoff`, `ReadinessEvaluation`, and `AuditRun`
+- status history should be generated only for record families with meaningful state-change governance consequences; first-pass candidates include `Objective`, `Initiative`, `WorkItem`, `Handoff`, and `AuditRun`
 - thin linkage records such as `EvidenceLink` and `ExternalLink` do not require status history in the first pass
 - adding a new entity type to status-history tracking is a schema governance event
 
 ### Notes
 This record family exists because workflow and invariants require recoverable history around meaningful Project V state changes. It does not make Project V the owner of downstream execution history.
+ReadinessEvaluation records are superseded by new evaluations, not transitioned. No StatusHistory is written for them.
 
 ---
 
@@ -547,6 +551,7 @@ Represents a thin, explicit external reference used for planning-side traceabili
 ### Notes
 `ExternalLink` is not part of Project V canonical planning truth in the same way that `Project`, `DecisionRecord`, or `ReadinessEvaluation` are. It is a governed Project V record family for bounded external reference and traceability support. It exists because Project V may preserve thin external linkage, not because the referenced foreign truth has become Project V-owned truth.
 This record family intentionally replaces heavier GitHub-specific assumptions. Project V may keep bounded external references, but it must not normalize rich execution modeling inside its own schema before V Forge-side receiving and execution boundary doctrine is clearer.
+The concrete first-pass shape and constraints for this family are defined in `schema-specification.md`, while the GitHub-specific boundary posture and rationale live in `github-integration.md`.
 
 ---
 
@@ -700,6 +705,9 @@ It must not silently replace or override it.
 
 Record families or concepts still under refoundation pressure should be narrowed or deferred before being hardened into detailed first-pass specification.
 
+This companion-spec conversion is now carried by `schema-specification.md` for the current first-pass retained families.
+Further expansion should patch that companion doc rather than re-opening authority posture here unless ownership, scope, or schema-family meaning changes.
+
 ---
 
 ## Human-In-The-Loop Principle
@@ -747,6 +755,8 @@ This document should be used:
 
 - `project-v.md`
 - `system-invariants.md`
+- `schema-specification.md`
+- `github-integration.md`
 - `byda-in-project-v.md`
 - `implementation-traceability.md`
 - `data-boundaries.md`

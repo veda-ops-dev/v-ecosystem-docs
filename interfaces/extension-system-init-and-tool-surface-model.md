@@ -1,5 +1,12 @@
 # Extension System Init and Tool Surface Model
 
+## Status
+Superseded by `desktop-system-init-and-tool-surface-model.md`
+
+This document reflects the legacy VS Code extension host model.
+The Tauri 2 desktop application defined in ADR-011 is now the primary operator host.
+Use `desktop-system-init-and-tool-surface-model.md` for active doctrine.
+
 ## Purpose
 
 This document defines how the V Ecosystem VS Code extension constructs the system init message and assembles the session tool surface.
@@ -89,6 +96,9 @@ It is a runtime assembly product that reflects:
 
 The init message is where doctrine becomes runtime behavior.
 If it is assembled casually, the rest of the extension cannot be trusted to behave consistently.
+
+The mechanical ordered assembly, filtering, publication, and refresh of the active tool surface are defined in `extension-tool-surface-implementation-design.md`.
+That companion operationalizes the posture defined here.
 
 ---
 
@@ -183,6 +193,8 @@ It is assembled from admitted MCP surfaces and filtered according to:
 The session tool surface must be treated as a deliberate assembly product.
 It must not simply mirror every tool the runtime could theoretically access.
 
+The mechanical registry, filtering stages, delegated narrowing model, execution gate, and refresh mechanics for the active surface are defined in `extension-tool-surface-implementation-design.md`.
+
 ---
 
 ## Tool Surface Assembly Rule
@@ -207,6 +219,8 @@ Mutation-capable tools must remain subordinate to the existing governance and ga
 Delegated workers or bounded flows may receive narrower tool surfaces than the parent session.
 
 If the runtime cannot explain why a tool is available in the session, that tool should not be in the session tool surface.
+
+The implementation must enforce these filters structurally before the LLM reasons over the active surface, not merely at the moment of tool execution.
 
 ---
 
@@ -244,6 +258,8 @@ Referenced-system read posture must remain:
 
 Referenced-system read posture must not become an implementation excuse for casual cross-system mutation.
 
+The tool-surface implementation companion must enforce referenced-system posture as a narrower runtime exposure state rather than as equal membership in the active current-system surface.
+
 ---
 
 ## Absent-Affordance Runtime Rule
@@ -255,6 +271,8 @@ If the LLM should not perform or even propose a direct tool path in the current 
 This means the wrong tools must be absent from the LLM's effective tool surface, not just hidden behind a nicer interface.
 
 A runtime that exposes too many tools and relies on the LLM to choose well is not actually bounded.
+
+Structural filtering in `extension-tool-surface-implementation-design.md` exists specifically to make this rule enforceable rather than aspirational.
 
 ---
 
@@ -273,6 +291,8 @@ Delegated tool surfaces should be filtered by:
 
 Delegation may reduce tool exposure.
 It must not expand it.
+
+The implementation companion must model delegated narrowing as an explicit filtering stage, not as a best-effort side effect.
 
 ---
 
@@ -306,6 +326,8 @@ Examples include:
 
 A stale init basis must not be allowed to linger just because the chat session is still open.
 
+A material active-tool-surface rebuild counts as a session-basis change and may require bounded system-init re-assembly.
+
 ---
 
 ## Refresh Implementation Posture
@@ -324,6 +346,8 @@ When a material refresh occurs, the runtime must:
 - surface that the session basis changed
 - identify the categories that changed
 - ensure the active tool posture and admitted continuity posture are recomputed as needed
+
+The implementation companion defines the rebuild and invalidation mechanics that support this refresh posture.
 
 ---
 
@@ -374,6 +398,7 @@ It relies on:
 - `extension-state-and-context-model.md` for what must remain visible and current
 - `extension-agent-orchestration-model.md` for delegated-runtime posture
 - `extension-memory-and-continuity-model.md` for what continuity artifacts may participate
+- `extension-tool-surface-implementation-design.md` for the mechanical filtering, publication, execution-gate, and refresh model that enforces the posture defined here
 
 This doc must not be used to bury governance decisions in prompt engineering.
 It exists to make the admitted runtime surface explicit and controlled.

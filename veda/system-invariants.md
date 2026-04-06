@@ -222,7 +222,7 @@ Time must remain first-class where observation history matters.
 VEDA observatory records fall into two distinct time-handling patterns:
 
 - governance records, such as monitoring targets and bounded configuration objects, may be updated over time
-- observation records, such as snapshot captures, performance captures, and event logs, are append-friendly and must not have their historical state silently overwritten
+- observation records, such as snapshot captures, performance captures, and event logs, are append-only and must not have their historical state silently overwritten
 
 A new observation about the same entity is a new record, not an update to the prior record.
 

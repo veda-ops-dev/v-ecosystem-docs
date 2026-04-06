@@ -1,5 +1,12 @@
 # Extension Agent Orchestration Model
 
+## Status
+Superseded by `desktop-agent-orchestration-model.md`
+
+This document reflects the legacy VS Code extension host model.
+The Tauri 2 desktop application defined in ADR-011 is now the primary operator host.
+Use `desktop-agent-orchestration-model.md` for active doctrine.
+
 ## Purpose
 
 This document defines how agent orchestration works inside the V Ecosystem VS Code extension.
@@ -283,6 +290,8 @@ At minimum, delegated runtime tasks should support:
 
 Additional states such as `awaiting_review` or `awaiting_escalation` may be added if needed, but lifecycle posture must remain explicit and reviewable.
 
+The mechanical task modeling, lifecycle transitions, attribution, and output-handling rules that implement this posture are defined in `extension-task-lifecycle-implementation-design.md`.
+
 The extension must not treat a vague spinner as sufficient lifecycle visibility for meaningful delegated work.
 
 ---
@@ -353,6 +362,7 @@ It relies on:
 - `extension-vscode-surface-architecture.md` for where orchestration state is surfaced
 - `extension-memory-and-continuity-model.md` for protected context and continuity posture
 - `extension-system-init-and-tool-surface-model.md` for session basis and delegated tool-surface posture
+- `extension-task-lifecycle-implementation-design.md` for the mechanical lifecycle tracking that supports orchestration visibility and control
 
 This doc must not be used to smuggle continuity doctrine, transcript doctrine, or tool-surface doctrine into an orchestration bucket just because those topics are adjacent.
 

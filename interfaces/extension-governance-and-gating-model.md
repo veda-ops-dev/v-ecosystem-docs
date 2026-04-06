@@ -1,5 +1,12 @@
 # Extension Governance and Gating Model
 
+## Status
+Superseded by `desktop-governance-and-gating-model.md`
+
+This document reflects the legacy VS Code extension host model.
+The Tauri 2 desktop application defined in ADR-011 is now the primary operator host.
+Use `desktop-governance-and-gating-model.md` for active doctrine.
+
 ## Purpose
 
 This document defines how governance-sensitive actions, approvals, gating, activation, blocking, and persisted approval state work inside the V Ecosystem VS Code extension.

@@ -1,5 +1,12 @@
 # Extension Implementation Architecture
 
+## Status
+Superseded by `desktop-implementation-architecture.md`
+
+This document reflects the legacy VS Code extension host model.
+The Tauri 2 desktop application defined in ADR-011 is now the primary operator host.
+Use `desktop-implementation-architecture.md` for active doctrine.
+
 ## Purpose
 
 This document defines the implementation-facing architecture for the V Ecosystem VS Code extension.

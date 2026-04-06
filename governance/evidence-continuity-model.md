@@ -299,6 +299,7 @@ that created it.
 Evidence stored only in session context, only in ephemeral compute, or only
 in a location not accessible through the governed system that owns it does
 not satisfy the durability requirement.
+Durable preservation is consistent with the doctrine-vs-operational-state split: evidence records are operational state and belong in the database, not in session context or doc files. See `../ecosystem/doctrine-vs-operational-state.md`.
 Where VEDA owns the evidence, VEDA's storage is the authoritative preservation
 location.
 Evidence referenced by Project V or V Forge must remain retrievable through

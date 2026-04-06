@@ -442,6 +442,19 @@ If the model is used to justify acting first and normalizing governance later, t
 
 ---
 
+## Relationship to Allowed Agent Actions Matrix
+
+This document defines approval classes, escalation triggers, and approval posture rules. It must be read together with `allowed-agent-actions-matrix.md`.
+
+The approval and escalation model defines when approval is required and what approval state must exist. The allowed agent actions matrix defines which action classes are permitted, require authorization, or are forbidden across each system context. Both constraints apply simultaneously:
+
+- the matrix determines the permission status of an action class
+- this model determines whether that action may be activated without additional approval posture
+
+An action that is Permitted in the matrix may still require Class B or Class C approval posture under this model before it becomes active. An action that Requires Authorization in the matrix must follow the approval class and escalation path defined here.
+
+---
+
 ## Usage
 
 This document should be used:
@@ -457,11 +470,10 @@ This document should be used:
 ## Related Docs
 
 - `agent-operating-doctrine.md`
+- `allowed-agent-actions-matrix.md`
 - `decision-continuity-doctrine.md`
 - `report-structure-and-required-fields.md`
 - `external-action-governance.md`
-- `../interfaces/extension-agent-orchestration-model.md`
-- `../interfaces/extension-memory-and-continuity-model.md`
 - `../ecosystem/cross-system-boundaries.md`
 - `../interfaces/project-v-to-v-forge-handoff-interface.md`
 - `../interfaces/v-forge-to-project-v-return-to-planning-interface.md`
