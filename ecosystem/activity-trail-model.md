@@ -191,6 +191,33 @@ These cover VEDA-initiated push delivery and V Forge-initiated return delivery �
 - `execution.return.failed` — V Forge delivery attempt to Project V produced no confirmation within the expected window.
 - `execution.return.voided` — A return package was superseded or voided before review.
 
+### Planning intake outcome actions
+
+These cover the governed intake outcome events produced by Project V at the conclusion
+of the project intake workflow (Stage 5 and Stage 7 closures). They are `state_change`
+class events scoped to Project V's planning authority.
+
+- `intake.defer` — Project V records a governed deferral of an intake item: valid but not sufficiently prioritized relative to current planning posture. Decision continuity must be preserved.
+- `intake.hold` — Project V records a governed hold on an intake item: valid but timing is not right; conditions may change. Decision continuity must be preserved.
+- `intake.reject` — Project V records a governed rejection of an intake item: not a fit for project creation. Rejection continuity must be preserved per `governance/decision-continuity-doctrine.md`.
+- `intake.close` — Project V closes an intake item that could not proceed due to a degraded or insufficient basis (Stage 7 closure). The closure reason must be recorded durably. Distinct from defer/hold/reject — this is a closure on insufficient basis, not a governed planning-posture decision.
+
+**Note:** `project.create` remains the canonical action type for the positive intake outcome (project creation). The intake action family covers the four non-creation terminal outcomes.
+
+### Post-launch observation actions
+
+These cover the governed observation-cycle, classification, and assessment events produced
+during the post-launch observation workflow. They are `state_change` class events.
+
+- `observation.cycle` — A post-launch observation cycle has completed and the outcome (continue-observation, maintenance, return-to-planning, or escalation) has been recorded. Produced at Stage 6a (continue-observation cycle) and as a summary record at other terminal stages. Each cycle completion must be durably recorded.
+- `observation.classify` — Project V or V Forge has produced a classification of post-launch signal (Stage 4 completion). Records the signal-maturity assessment, classification outcome, and the signal basis. Distinct from `observation.cycle` — classification is the Stage 4 interpretation event, not the full-cycle completion.
+- `observation.assess` — Project V and V Forge have completed a reconsideration assessment and produced a governed assessment outcome (Stage 5 completion). Records the threshold determination and the routed outcome. Must be produced before the workflow routes to Stage 6a/b/c/d.
+
+**Important constraints:**
+- `observation.cycle` is the durable cycle-completion record. `observation.classify` and `observation.assess` are the stage-specific records within a cycle. All three should be produced within a full observation cycle.
+- Do not create observation action types for every sub-step within signal capture or observatory activation. These three types cover the governance-meaningful events.
+- Signal delivery records for post-launch observation use `signal.delivery` / `signal.delivery.confirmed` per the existing delivery action family, not observation action types.
+
 ### State change actions
 
 - `project.create`, `project.update`, `project.archive`
@@ -256,6 +283,8 @@ The `entity_type` field on activity records must use terms from this governed li
 - `scope_update` — a post-replanning scope update delivery record
 - `execution_clarification` — a mid-execution clarification delivery record
 - `evidence_request` — a Project V bounded evidence request record (used for Project V → VEDA evidence request events per AD-03; see `interfaces/project-v-to-veda-evidence-request-interface.md`)
+- `intake_outcome` — a Project V intake outcome record (used for `intake.defer`, `intake.hold`, `intake.reject`, and `intake.close` events; scoped to a specific intake item within a project)
+- `observation_record` — a post-launch observation record (used for `observation.cycle`, `observation.classify`, and `observation.assess` events; scoped to a specific project and observation cycle)
 
 For the integration map reference showing which entity types apply to which seam events, see `activity-trail-integration-map.md`.
 

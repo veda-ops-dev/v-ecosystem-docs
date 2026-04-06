@@ -29,7 +29,7 @@ This document governs:
 - transition triggers for continue-observation, maintenance, return-to-planning,
   and escalation outcomes
 - degraded-mode and interruption handling
-- activity-trail obligations or honest limits where canon is thin
+- activity-trail obligations for governed observation events
 - re-entry after a maintenance or replanning cycle
 
 ---
@@ -310,10 +310,9 @@ scope based on signal type maturity windows and observatory configuration. A def
 interval prevents the observation phase from becoming either a background noise
 accumulator or an ad hoc event-triggered-only loop.
 
-**Activity trail:** Assessment outcomes must be recorded durably. Use `state_change`
-action types appropriate to the assessment record being updated, with `details`
-capturing the classification outcome and reasoning. This prevents assessment history
-from existing only in session memory.
+**Activity trail:** The classification outcome must be durably recorded using the
+`observation.classify` action type per `ecosystem/activity-trail-integration-map.md`
+Section 10. This prevents classification history from existing only in session memory.
 
 ---
 
@@ -557,19 +556,18 @@ Activity trail coverage for post-launch observation events:
 |---|---|---|
 | Signal delivery confirmed (Stage 3, Project V) | `signal.delivery.confirmed` | Project V |
 | Signal delivery confirmed (Stage 3, V Forge) | `signal.delivery.confirmed` | V Forge |
+| Classification produced (Stage 4) | `observation.classify` | Project V and/or V Forge |
+| Assessment completed (Stage 5) | `observation.assess` | Project V |
+| Observation cycle completed (Stage 6a) | `observation.cycle` | Project V |
 | Return-to-planning delivery initiated (Stage 6c) | `execution.return` | V Forge |
 | Return-to-planning receipt confirmed (Stage 6c) | `execution.return.confirmed` | Project V |
 | Escalation initiated (Stage 6d) | `approval.escalate` | Project V |
 
-Per `ecosystem/activity-trail-integration-map.md` Sections 1, 3, and 4.
+Per `ecosystem/activity-trail-integration-map.md` Sections 1, 3, 4, and 10.
 
-**Limitation — observation cycle records:** The current canonical action vocabulary
-does not include explicit action types for post-launch observation cycle completion,
-classification outcomes, or reconsideration assessment records. Do not invent them.
-For these events, use `state_change` action types appropriate to the planning or
-assessment record being updated, with the `details` field capturing the cycle outcome,
-classification, and reasoning. If observation-specific action types are later added
-to `ecosystem/activity-trail-model.md`, defer to those.
+For the full field-level mapping detail for observation events — including required
+entity references, minimum additional fields, and cycle identity guidance — see
+integration map Section 10.
 
 Activity records must be produced durably. An assessment that exists only in session
 memory is not a governed record.
@@ -612,8 +610,9 @@ A capable LLM should be able to infer from this doc that:
 - each action route (maintenance, return-to-planning, escalation) activates its own
   governed workflow — this workflow ends at the handoff point
 - project intake for new opportunities is a separate workflow, not part of this one
-- activity trail records are required for governed events; observation cycle records
-  use state_change types until observation-specific canon exists
+- activity trail records are required for governed events; observation cycle events
+  use `observation.classify`, `observation.assess`, and `observation.cycle` canonical
+  action types per integration map Section 10
 
 If post-launch observation is implemented as a passive quiet period where signal
 informally accumulates until someone decides to replan, or as a loop where any

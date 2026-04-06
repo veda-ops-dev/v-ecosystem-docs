@@ -256,13 +256,12 @@ If human review is required:
 - Project V generates a review request; outcome does not activate until review returns
 - review decision outcomes follow the mechanics in the seam-approval model
 
-**Activity trail:** Intake outcomes must be durably recorded. Use existing
-`state_change` action types (e.g., `project.create` for project creation outcomes)
-where the activity trail model provides coverage. For defer/hold/reject outcomes,
-use `state_change` action types appropriate to the planning record being updated.
-If a review gate is required, use `approval.request` and `approval.decide` action
-types per `ecosystem/activity-trail-integration-map.md` Section 5b posture
-(closest applicable mapping for planning-side review).
+**Activity trail:** Intake outcomes must be durably recorded. Use `project.create`
+for the project creation outcome. For defer, hold, and reject outcomes, use the
+canonical action types `intake.defer`, `intake.hold`, and `intake.reject` respectively,
+per `ecosystem/activity-trail-integration-map.md` Section 9. If a review gate is
+required, use `approval.request` and `approval.decide` action types per integration
+map Section 5b posture (closest applicable mapping for planning-side review).
 
 **Exit condition → Stage 8 (outcome routing):** Outcome is produced and active;
 workflow routes to the appropriate next governed path.
@@ -521,16 +520,16 @@ Intake events must produce activity trail records using canonical action types f
 |---|---|---|
 | Signal delivery confirmed (Stage 1) | `signal.delivery.confirmed` | Project V |
 | Project creation outcome (Stage 5) | `project.create` | Project V |
+| Defer outcome (Stage 5) | `intake.defer` | Project V |
+| Hold outcome (Stage 5) | `intake.hold` | Project V |
+| Reject outcome (Stage 5) | `intake.reject` | Project V |
+| Degraded closure (Stage 7) | `intake.close` | Project V |
 | Review request generated (Stage 5, if review required) | `approval.request` | Project V |
 | Review decision received | `approval.decide` | Operator / review surface |
 | Review escalated | `approval.escalate` | Project V |
 
-**Limitation for defer/hold/reject outcomes:** The current canonical action vocabulary
-does not include explicit `intake.defer`, `intake.hold`, or `intake.reject` action
-types. For these outcomes, use `state_change` action types appropriate to the
-planning record being updated, with the `details` field capturing the outcome type
-and reason. If intake-specific action types are later added to `activity-trail-model.md`,
-defer to those.
+For the full field-level mapping detail — including required entity references and minimum
+additional fields — see `ecosystem/activity-trail-integration-map.md` Section 9.
 
 **Evidence request activities:** The evidence request leg (Stage 6 outbound) uses
 the `evidence.request` action type per integration map Section 7. The VEDA delivery

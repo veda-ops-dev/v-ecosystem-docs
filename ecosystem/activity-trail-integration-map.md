@@ -276,9 +276,11 @@ Do not create separate action types for the response leg.
 ## Section 8 — Mapping Gaps Status
 
 All action type extensions and entity type extensions identified in this map have
-been applied to `activity-trail-model.md`. This includes the `evidence.request` action
-type and `evidence_request` entity type added to support the Project V → VEDA evidence
-request interface (Section 7 above).
+been applied to `activity-trail-model.md`. This includes:
+
+- `evidence.request` action type and `evidence_request` entity type (Section 7, Project V → VEDA evidence request interface)
+- `intake.defer`, `intake.hold`, `intake.reject`, `intake.close` action types and `intake_outcome` entity type (Section 9, project intake workflow outcomes)
+- `observation.cycle`, `observation.classify`, `observation.assess` action types and `observation_record` entity type (Section 10, post-launch observation workflow events)
 
 **Residual notes:**
 
@@ -295,6 +297,51 @@ request interface (Section 7 above).
   model. Use `signal.delivery.startup` specifically for the VEDA → V Forge startup
   push layer (tied to a handoff ref). Use `signal.delivery` for VEDA → Project V
   delivery events. Do not interchange them.
+
+---
+
+## Section 9 — Project Intake Workflow Outcomes
+
+Source: `workflows/project-intake-workflow.md`
+
+This covers the terminal intake outcome events produced at Stage 5 (governed outcome) and
+Stage 7 (degraded closure) of the project intake workflow. The positive project-creation
+outcome uses the existing `project.create` action type; the table below covers the four
+non-creation terminal outcomes.
+
+| Event family | Canonical action type | Producing system | Target system | Required entity reference | Minimum additional fields | Notes |
+|---|---|---|---|---|---|---|
+| Intake item deferred | `intake.defer` | Project V | — (internal) | `entity_type: intake_outcome`, `entity_id: <intake item identity>` | `deferral_reason`, `re_evaluation_conditions`, `signal_basis_ref` | Action class: `state_change`. Decision continuity must be preserved. |
+| Intake item held | `intake.hold` | Project V | — (internal) | `entity_type: intake_outcome`, `entity_id: <intake item identity>` | `hold_reason`, `triggering_conditions_for_reconsideration`, `signal_basis_ref` | Action class: `state_change`. Decision continuity must be preserved. |
+| Intake item rejected | `intake.reject` | Project V | — (internal) | `entity_type: intake_outcome`, `entity_id: <intake item identity>` | `rejection_reason`, `rejection_scope`, `signal_basis_ref` | Action class: `state_change`. Rejection continuity required per `decision-continuity-doctrine.md`. |
+| Intake item closed (insufficient basis) | `intake.close` | Project V | — (internal) | `entity_type: intake_outcome`, `entity_id: <intake item identity>` | `closure_reason`, `degraded_condition` | Action class: `state_change`. Stage 7 closure only. Distinct from reject — closed on insufficient basis, not on planning-posture decision. |
+
+**Note on project creation:** `project.create` (existing canonical type) is used for the positive intake outcome. Use `project.create` with `details` capturing the signal basis and planning context reference.
+
+**Note on review gate:** When project creation requires a governance review, use `approval.request` / `approval.decide` per Section 5b posture (closest applicable mapping). The `intake_outcome` entity type is used for the non-creation outcomes above; the `project` entity type applies to the `project.create` event.
+
+---
+
+## Section 10 — Post-Launch Observation Workflow Events
+
+Source: `workflows/post-launch-observation-workflow.md`
+
+This covers the governance-meaningful observation, classification, and assessment events
+produced during the post-launch observation workflow. Signal delivery events in this
+workflow use the existing Section 1 and Section 4 mappings. Return-to-planning
+activation uses Section 3. This section covers the observation-specific records.
+
+| Event family | Canonical action type | Producing system | Target system | Required entity reference | Minimum additional fields | Notes |
+|---|---|---|---|---|---|---|
+| Classification produced (Stage 4) | `observation.classify` | Project V and/or V Forge | — (internal) | `entity_type: observation_record`, `entity_id: <observation cycle identity>` | `signal_maturity_assessment` (`mature` or `immature`), `classification_outcome`, `signal_basis_ref`, `producing_system` | Action class: `state_change`. Must be produced before the workflow exits Stage 4. If signal is immature, `classification_outcome: continue_observation`. |
+| Assessment completed (Stage 5) | `observation.assess` | Project V | — (internal) | `entity_type: observation_record`, `entity_id: <observation cycle identity>` | `threshold_determination`, `routed_outcome` (`continue_observation`, `maintenance`, `return_to_planning`, `escalation`), `assessment_basis_summary` | Action class: `state_change`. Must be produced before the workflow routes to Stage 6a/b/c/d. |
+| Observation cycle completed (Stage 6a) | `observation.cycle` | Project V | — (internal) | `entity_type: observation_record`, `entity_id: <observation cycle identity>` | `cycle_outcome` (`continue_observation`, `maintenance`, `return_to_planning`, `escalation`), `cycle_number`, `next_cycle_trigger` | Action class: `state_change`. Durable cycle-completion record. Must be produced at every terminal cycle outcome. |
+
+**On cycle identity:** Each observation cycle should carry a stable cycle identity that links the `observation.classify`, `observation.assess`, and `observation.cycle` records for that cycle. This allows governance replay across a multi-cycle observation history.
+
+**On signal delivery records:** Post-launch signal delivery events use `signal.delivery.confirmed` per Section 1 (Project V receipt) and Section 4 (V Forge receipt). Do not use observation action types for signal delivery.
+
+**On return-to-planning activation:** When Stage 6c (return-to-planning) is triggered, V Forge produces an `execution.return` record per Section 3. The `observation.cycle` record captures that the assessment outcome was `return_to_planning`; the Section 3 records cover the delivery mechanics.
 
 ---
 
@@ -353,3 +400,5 @@ governed extension path (add to `activity-trail-model.md` first, then this map).
 - `../interfaces/project-v-to-v-forge-scope-update-interface.md`
 - `../governance/approval-mechanics-seam-model.md`
 - `../governance/approval-and-escalation-model.md`
+- `../workflows/project-intake-workflow.md`
+- `../workflows/post-launch-observation-workflow.md`
