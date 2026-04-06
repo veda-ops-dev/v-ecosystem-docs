@@ -1,0 +1,9 @@
+Pass 3 Findings — Interface Completeness
+Doc audited: desktop-agent-orchestration-model.md
+Date: 2026-04-05
+Score: 2 of 21 PASS — 8 PARTIAL — 11 FAIL
+The score matches desktop-human-llm-interaction-model.md exactly (2/8/11), which is fitting — both are the most governance-complete runtime-behavior docs after desktop-governance-and-gating-model.md, and both fail on the same implementation gaps.
+Both PASSes come from governance class inheritance: AP-1 (Governance Preservation Rule is unambiguous — "if a Class B, C, or D action would require persisted approval without delegation, it still requires persisted approval with delegation") and AP-2 (six Anti-Drift Rules, explicit binding to desktop-governance-and-gating-model.md, EVENT-12/EVENT-13 referenced for consequence mapping).
+The 8 PARTIALs: QM-3/SR-1/SR-2 (lifecycle state enumeration, six required subtask properties, delegated output type taxonomy — real structure, not formal schemas); DG-1/DG-2/DG-3 (defined behavior for internal failure cases with explicit delegation to EVENT-13 for full consequences); AL-1 (Visibility and Traceability Rule requires knowing "when" subtasks fail — implies logging, but not connected to activity trail).
+The 11 FAILs: QM-1/QM-2/QM-4/QM-5 (no orchestration query interface); FR-1/FR-2/FR-3 (context staleness triggers cancellation but no threshold or timestamp fields defined); AL-2/AL-3 (no agent.* activity trail vocabulary despite governing the exact events those action types cover); CA-1/CA-2/CA-3 (no cost accounting for specialist LLM calls despite activity-trail-model.md requiring budget.cost_event records for cost-incurring actions).
+Most significant gap: AL-2/AL-3 — this doc governs agent starts, completions, failures, and cancellations, which are exactly the events the activity-trail-model.md defines mandatory records for. No activity trail connection exists, making orchestrated sessions unreplayable from the governance record alone.
