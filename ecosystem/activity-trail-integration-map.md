@@ -294,6 +294,7 @@ been applied to `activity-trail-model.md`. This includes:
 - `evidence.request` action type and `evidence_request` entity type (Section 7, Project V → VEDA evidence request interface)
 - `intake.defer`, `intake.hold`, `intake.reject`, `intake.close` action types and `intake_outcome` entity type (Section 9, project intake workflow outcomes)
 - `observation.cycle`, `observation.classify`, `observation.assess` action types and `observation_record` entity type (Section 10, post-launch observation workflow events)
+- `observatory.scope_change.*` action type family (7 types) and `observatory_scope_change` entity type (Section 11, operator-to-VEDA observatory scope expansion interface)
 
 **Residual notes:**
 
@@ -358,6 +359,31 @@ activation uses Section 3. This section covers the observation-specific records.
 
 ---
 
+## Section 11 — Operator → VEDA Observatory Scope Expansion
+
+Source: `interfaces/operator-to-veda-observatory-scope-expansion-interface.md`
+
+Producing system differs by event: the operator surface or Project V (acting with
+documented operator approval) produces the request initiation record; VEDA produces
+all response and implementation records.
+
+| Event family | Canonical action type | Producing system | Target system | Required entity reference | Minimum additional fields | Notes |
+|---|---|---|---|---|---|---|
+| Scope change request initiated | `observatory.scope_change.request` | Operator surface or Project V (on operator’s behalf) | VEDA | `entity_type: observatory_scope_change`, `entity_id: <request identity>` | `initiating_actor_surface` (`operator_direct` or `project_v_mediated`), `operator_approval_ref`, `change_type`, `target_scope_summary`, `originating_context_ref` (if applicable) | `operator_approval_ref` is required; a record without it is not a valid governed event. Action class: `state_change`. |
+| Request received / accepted | `observatory.scope_change.accepted` | VEDA | Operator surface or Project V | `entity_type: observatory_scope_change`, `entity_id: <request identity>` | `operator_approval_ref`, `change_type`, `target_scope_summary` | VEDA will proceed with implementation. |
+| Request narrowed | `observatory.scope_change.narrowed` | VEDA | Operator surface or Project V | `entity_type: observatory_scope_change`, `entity_id: <request identity>` | `operator_approval_ref`, `narrowing_reason`, `accepted_subset_summary` | VEDA accepts a bounded subset; the narrowing must be communicated explicitly. |
+| Request deferred | `observatory.scope_change.deferred` | VEDA | Operator surface or Project V | `entity_type: observatory_scope_change`, `entity_id: <request identity>` | `deferral_reason`, `reentry_posture` | VEDA cannot currently implement. Must not be held silently without re-validation. |
+| Request rejected | `observatory.scope_change.rejected` | VEDA | Operator surface or Project V | `entity_type: observatory_scope_change`, `entity_id: <request identity>` | `rejection_reason` | Covers validity failure, missing authority reference, or out-of-bounds scope. |
+| Implementation completed | `observatory.scope_change.implemented` | VEDA | — (internal completion, notified to initiating surface) | `entity_type: observatory_scope_change`, `entity_id: <request identity>` | `operator_approval_ref`, `change_type`, `implemented_scope_summary` | Records what specifically changed in VEDA’s observatory. |
+| Request voided / superseded | `observatory.scope_change.voided` | Operator surface or Project V | VEDA | `entity_type: observatory_scope_change`, `entity_id: <original request identity>` | `void_reason`, `superseded_by_ref` (if superseded by a new request) | Must be issued before VEDA acts if the governance context changes. |
+
+**Boundary notes:**
+- V Forge never produces records on this interface. V Forge surfaces signal gap needs through `execution.return` (Section 3). The operator decides whether a scope change is warranted. V Forge is not the initiating actor on `observatory.scope_change.*` events under any conditions.
+- `observatory.scope_change.*` events are distinct from `evidence.request` events (Section 7). Evidence requests seek a bounded evidence package for a specific planning question. Scope change requests change what VEDA observes going forward. Do not conflate them.
+- A `observatory.scope_change.accepted` record does not mean the scope change is in effect. `observatory.scope_change.implemented` is the record that confirms the change is in effect in VEDA’s observatory.
+
+---
+
 ## Usage
 
 This document should be used:
@@ -411,6 +437,7 @@ governed extension path (add to `activity-trail-model.md` first, then this map).
 - `../interfaces/project-v-to-v-forge-execution-clarification-interface.md`
 - `../interfaces/project-v-handoff-recall-interface.md`
 - `../interfaces/project-v-to-v-forge-scope-update-interface.md`
+- `../interfaces/operator-to-veda-observatory-scope-expansion-interface.md`
 - `../governance/approval-mechanics-seam-model.md`
 - `../governance/approval-and-escalation-model.md`
 - `../workflows/project-intake-workflow.md`

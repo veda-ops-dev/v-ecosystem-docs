@@ -218,6 +218,27 @@ during the post-launch observation workflow. They are `state_change` class event
 - Do not create observation action types for every sub-step within signal capture or observatory activation. These three types cover the governance-meaningful events.
 - Signal delivery records for post-launch observation use `signal.delivery` / `signal.delivery.confirmed` per the existing delivery action family, not observation action types.
 
+### Observatory scope change actions
+
+These cover the governed operator-to-VEDA observatory scope change events defined in
+`interfaces/operator-to-veda-observatory-scope-expansion-interface.md`. They span
+both the request-initiation side (operator surface or Project V acting with operator
+approval) and the VEDA response/implementation side.
+
+- `observatory.scope_change.request` — A governed scope change request has been initiated by an operator (direct) or by Project V on behalf of an operator (with documented operator approval). Records the request identity, change type, target scope, and operator approval reference. Action class: `state_change`.
+- `observatory.scope_change.accepted` — VEDA has determined the request is valid and will proceed with implementation. Records that VEDA's acceptance has been produced.
+- `observatory.scope_change.narrowed` — VEDA accepts a bounded subset of the requested scope change and communicates the narrowing explicitly. The narrowing reason and the accepted subset must be recorded.
+- `observatory.scope_change.deferred` — VEDA cannot currently implement the request and has communicated a deferral reason. The deferral reason and re-entry posture must be recorded.
+- `observatory.scope_change.rejected` — VEDA has rejected the request due to a validity failure, missing authority reference, or out-of-bounds scope. The rejection reason must be recorded.
+- `observatory.scope_change.implemented` — VEDA confirms that the scope change has been implemented in the observatory. Records what specifically changed.
+- `observatory.scope_change.voided` — The request has been withdrawn or superseded before VEDA acted on it. The void reason and any superseding request reference must be recorded.
+
+**Important constraints:**
+- The `observatory.scope_change.request` record must carry the `operator_approval_ref` field in `details`. A request record without a resolvable approval reference is not a valid governed event.
+- `observatory.scope_change.accepted` and `observatory.scope_change.implemented` are distinct events. Accepted means VEDA will proceed; implemented means the scope change is in effect. Both must be recorded.
+- Do not create action types for VEDA-internal observatory configuration steps below the governance level. These seven types cover the governance-meaningful events at the seam.
+- The producing system differs by event: operator surface or Project V produces the request record; VEDA produces all response and implementation records.
+
 ### State change actions
 
 - `project.create`, `project.update`, `project.archive`
@@ -285,6 +306,7 @@ The `entity_type` field on activity records must use terms from this governed li
 - `evidence_request` — a Project V bounded evidence request record (used for Project V → VEDA evidence request events per AD-03; see `interfaces/project-v-to-veda-evidence-request-interface.md`)
 - `intake_outcome` — a Project V intake outcome record (used for `intake.defer`, `intake.hold`, `intake.reject`, and `intake.close` events; scoped to a specific intake item within a project)
 - `observation_record` — a post-launch observation record (used for `observation.cycle`, `observation.classify`, and `observation.assess` events; scoped to a specific project and observation cycle)
+- `observatory_scope_change` — an operator-to-VEDA observatory scope change request record (used for `observatory.scope_change.*` events; carries the request identity, change type, and operator approval reference)
 
 For the integration map reference showing which entity types apply to which seam events, see `activity-trail-integration-map.md`.
 
