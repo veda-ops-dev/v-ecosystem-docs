@@ -165,17 +165,55 @@ The activity trail uses a dot-namespaced action vocabulary. This prevents term d
 
 ### Cross-system access actions
 
-- `evidence.query` — V Forge querying VEDA evidence.
-- `signal.query` — Project V querying VEDA signal.
-- `execution.query` — Project V reading V Forge execution results.
+- `evidence.query` — V Forge querying VEDA evidence (V Forge-initiated pull; active query layer per AD-02).
+- `evidence.request` — Project V issuing a bounded evidence request to VEDA (AD-03 request-for-package model). This is the request leg only. The response returns through the VEDA → Project V push delivery path and is recorded with `signal.delivery` / `signal.delivery.confirmed` action types. Do not use `signal.query` for this event; the evidence request is a bounded push-request, not a pull.
+- `signal.query` — Project V querying VEDA signal (pull model). **Note:** Do not use for VEDA-initiated push delivery events; use `signal.delivery` for those. Do not use for evidence requests; use `evidence.request` for those.
+- `execution.query` — Project V reading V Forge execution results (pull model). **Note:** Do not use for V Forge-initiated return-to-planning push events; use `execution.return` for those.
+
+### Cross-system delivery actions
+
+These cover VEDA-initiated push delivery and V Forge-initiated return delivery — governed transfer events where the source-owning system initiates.
+
+**VEDA → Project V signal delivery:**
+- `signal.delivery` — VEDA initiates push delivery of a bounded signal package to Project V (proactive or request-response trigger).
+- `signal.delivery.confirmed` — Project V confirms receipt of a signal delivery from VEDA.
+- `signal.delivery.failed` — VEDA delivery attempt to Project V produced no confirmation within the expected window.
+- `signal.delivery.voided` — A signal package was superseded or voided before confirmation.
+
+**VEDA → V Forge startup signal delivery:**
+- `signal.delivery.startup` — VEDA initiates push delivery of a bounded baseline execution-startup signal package to V Forge, tied to a specific confirmed handoff scope.
+
+*(For receipt confirmation and failure events on the V Forge startup delivery, use `signal.delivery.confirmed` and `signal.delivery.failed` respectively, with the producing system set to the appropriate side.)*
+
+**V Forge → Project V return-to-planning delivery:**
+- `execution.return` — V Forge initiates push delivery of bounded execution findings to Project V for planning reconsideration.
+- `execution.return.confirmed` — Project V confirms receipt of a return-to-planning package from V Forge.
+- `execution.return.failed` — V Forge delivery attempt to Project V produced no confirmation within the expected window.
+- `execution.return.voided` — A return package was superseded or voided before review.
 
 ### State change actions
 
 - `project.create`, `project.update`, `project.archive`
 - `task.create`, `task.assign`, `task.start`, `task.complete`, `task.fail`, `task.cancel`
 - `evidence.create`, `evidence.update`, `evidence.expire`
-- `handoff.create`, `handoff.approve`, `handoff.reject`
+- `handoff.create` — Project V initiates handoff delivery to V Forge.
+- `handoff.confirmed` — V Forge confirms receipt of a delivered handoff package.
+- `handoff.failed` — Handoff delivery attempt produced no confirmation.
+- `handoff.reject` — A handoff package was voided or superseded before confirmation. **Note:** This covers delivery-state rejection only. Use `approval.decide` with `decision: rejected` for approval-decision events.
+- `handoff.recall` — Operator-directed recall of a transferred handoff before V Forge has materially acted.
+- `handoff.recall.confirmed` — V Forge confirms receipt of a handoff recall.
 - `content.create`, `content.update`, `content.publish`
+
+**Clarification on `handoff.approve` / `handoff.reject`:** These terms may appear in some existing docs but are ambiguous between approval-decision events and delivery-state events. Use `approval.decide` (with `details.decision: approved | rejected`) for approval-decision events. Use `handoff.confirmed` for successful delivery receipt. Use `handoff.reject` only for voided-package state.
+
+### Execution-seam actions (ungated stub interfaces)
+
+These action types cover the stub-level governed interfaces and should be treated as bounded posture until those interfaces are upgraded to full contracts.
+
+- `execution.clarification` — Project V delivers a bounded execution clarification to V Forge during active execution.
+- `execution.clarification.confirmed` — V Forge confirms receipt of an execution clarification.
+- `execution.scope_update` — Project V delivers a post-replanning scope or constraint update to V Forge.
+- `execution.scope_update.confirmed` — V Forge confirms receipt of a scope update.
 
 ### Approval actions
 
@@ -198,7 +236,28 @@ The activity trail uses a dot-namespaced action vocabulary. This prevents term d
 
 - `system.startup`, `system.shutdown`, `system.error`, `system.recovery`
 
-This vocabulary is extensible. New action types must follow the dot-namespace pattern and should be added to this document before use.
+This vocabulary is extensible. New action types must follow the dot-namespace pattern and must be added to this document before use in implementations.
+
+### Entity type vocabulary
+
+The `entity_type` field on activity records must use terms from this governed list. The list is extensible; additions must be made here before use.
+
+**Existing entity types:**
+- `project` — a Project V project record
+- `evidence` — a VEDA evidence or observatory record
+- `task` — a V Forge task or execution record
+- `handoff` — a Project V handoff record
+- `agent` — an agent instance
+
+**Added entity types (from integration map):**
+- `signal_package` — a VEDA signal delivery package (used for VEDA → Project V and VEDA → V Forge delivery events)
+- `execution_return` — a V Forge return-to-planning findings package
+- `launch_authorization` — a launch authorization request record (used for launch-readiness approval events)
+- `scope_update` — a post-replanning scope update delivery record
+- `execution_clarification` — a mid-execution clarification delivery record
+- `evidence_request` — a Project V bounded evidence request record (used for Project V → VEDA evidence request events per AD-03; see `interfaces/project-v-to-veda-evidence-request-interface.md`)
+
+For the integration map reference showing which entity types apply to which seam events, see `activity-trail-integration-map.md`.
 
 ---
 
@@ -274,9 +333,11 @@ This document should be used:
 ## Related Docs
 
 - `cross-system-access-governance.md`
+- `activity-trail-integration-map.md` *(concrete seam-to-action-type mapping layer)*
 - `../interfaces/v-forge-evidence-access-contract.md`
 - `../governance/agent-operating-doctrine.md`
 - `../governance/approval-and-escalation-model.md`
+- `../governance/approval-mechanics-seam-model.md`
 - `../governance/decision-continuity-doctrine.md`
 - `../governance/evidence-continuity-model.md`
 - `../governance/daily-report-doctrine.md`

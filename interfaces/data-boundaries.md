@@ -207,15 +207,44 @@ purposes, that local copy is a derivative reference, not a competing canonical r
 
 ## Interface-Enforcement Principle
 
-Cross-system data exchange must happen through the governed interfaces:
+Cross-system data exchange must happen through governed interfaces. The governed
+interface set is not static — it expands as the ecosystem matures.
+
+### Primary interfaces (fully defined)
 
 - VEDA signal to Project V: `veda-to-project-v-signal-interface.md`
 - VEDA signal to V Forge: `veda-to-v-forge-signal-interface.md`
 - Project V handoff to V Forge: `project-v-to-v-forge-handoff-interface.md`
 - V Forge return to Project V: `v-forge-to-project-v-return-to-planning-interface.md`
 
-Data that crosses system lines outside these interfaces is crossing outside governed
-exchange. It must not be treated as equivalent to a governed interface exchange.
+### Additional governed interfaces (stub-level, ungated)
+
+The following interfaces have been established as governed paths and have stub
+documents. They are not yet full implementation contracts but are part of the
+governed interface set:
+
+- Project V execution clarification to V Forge: `project-v-to-v-forge-execution-clarification-interface.md`
+- Project V handoff recall: `project-v-handoff-recall-interface.md`
+- Project V scope update to V Forge after replanning: `project-v-to-v-forge-scope-update-interface.md`
+- Project V bounded evidence request to VEDA: `project-v-to-veda-evidence-request-interface.md`
+
+### Additional governed interfaces (gated — pending architectural decisions)
+
+The following interface is required by other docs but is gated on an unresolved
+architectural decision. It does not yet have a governing interface document:
+
+- V Forge → VEDA observatory scope expansion request
+
+The routing ambiguity for this interface — whether it is direct V Forge → VEDA
+or V Forge → operator → VEDA — has not been resolved. Do not create a governing
+document for this interface until that ambiguity is settled by an authoritative doc.
+
+Data that crosses system lines outside the interfaces listed above is crossing
+outside governed exchange. It must not be treated as equivalent to a governed
+interface exchange.
+
+As new interfaces are created and architectural decisions resolved, this section
+must be updated to reflect the current governed set.
 
 ---
 
