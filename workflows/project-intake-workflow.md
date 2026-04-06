@@ -261,7 +261,7 @@ for the project creation outcome. For defer, hold, and reject outcomes, use the
 canonical action types `intake.defer`, `intake.hold`, and `intake.reject` respectively,
 per `ecosystem/activity-trail-integration-map.md` Section 9. If a review gate is
 required, use `approval.request` and `approval.decide` action types per integration
-map Section 5b posture (closest applicable mapping for planning-side review).
+map Section 5e (Governed Intake Outcome Review).
 
 **Exit condition → Stage 8 (outcome routing):** Outcome is produced and active;
 workflow routes to the appropriate next governed path.
@@ -482,14 +482,8 @@ applies:
 | Review does not equal project creation | True — the intake outcome activates only after review approves |
 
 For the full mechanics — review request contents, decision re-entry rules, escalation
-path — see `governance/approval-mechanics-seam-model.md`.
-
-**Important:** The current `governance/approval-mechanics-seam-model.md` does not
-define intake-specific shared mechanics as a named transition class. The closest
-applicable seam is Section B (Return-to-Planning Receipt / Review), which covers
-Project V governing a review of received findings. Use that posture as a reference
-for governance-sensitive intake outcomes. If intake-specific mechanics are later
-added to the seam-approval model, defer to those.
+path — see `governance/approval-mechanics-seam-model.md` Section E (Governed Intake
+Outcome Review).
 
 ---
 

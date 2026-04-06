@@ -27,7 +27,7 @@ not supersede it.
 This document governs:
 
 - the shared mechanics pattern for seam-level approval-sensitive transitions
-- the four primary approval-sensitive transition classes in the ecosystem
+- the five primary approval-sensitive transition classes in the ecosystem
 - the canonical pending-state vocabulary used across interfaces and workflows
 - the activity trail logging requirements for seam-level approval events
 - the rules for how interface and workflow docs must reference these mechanics
@@ -227,15 +227,15 @@ For each approval event record, the following must be identifiable:
 Approval events that are not logged in the activity trail are not governed approval
 events. Ungoverned approval events are not valid.
 
-The activity trail integration map will map these action types to specific seam events
-once that document is created (it does not yet exist — it is a planned artifact from
-the remediation plan).
+The activity trail integration map (`../ecosystem/activity-trail-integration-map.md`)
+maps these action types to specific seam events. See Section 5 of that document
+for the seam-specific minimum fields for each transition class.
 
 ---
 
 ## Transition Classes
 
-The following four transition classes are the primary approval-sensitive seam
+The following five transition classes are the primary approval-sensitive seam
 transitions in the ecosystem. Each applies the shared mechanics pattern above
 to its specific context.
 
@@ -524,6 +524,100 @@ governing decision remains active. Replanning is paused.
 
 ---
 
+### E. Governed Intake Outcome Review (Project V, Planning Authority)
+
+#### What this covers
+
+The governed review of a proposed intake outcome in `workflows/project-intake-workflow.md`
+that has material planning impact and requires human approval before the outcome
+becomes active.
+
+Not every intake outcome requires this review. Intake evaluation is primarily a
+planning-authority action that Project V owns. This transition class applies only when
+the proposed outcome — typically project creation with material planning impact,
+significant cost implications, or cross-system scope changes — rises to the threshold
+where the governing review gate at Stage 5 of the intake workflow is required.
+
+This is a Class B event in the typical case. It may reach Class C when the intake
+outcome would activate a project with significant cost or cross-system scope.
+
+#### Distinction from Class B (Return-to-Planning)
+
+This transition class is not the same as the Return-to-Planning Receipt / Review
+(Class B). The key distinctions:
+
+- Return-to-planning review is triggered by execution findings returning from V Forge;
+  intake review is triggered by a proposed planning outcome before any cross-system
+  action has occurred
+- Return-to-planning review concerns whether planning reconsideration should proceed
+  after an execution-side finding; intake review concerns whether a proposed intake
+  outcome may become active
+- Both use the `awaiting_review` pending state; the context and entity reference
+  differ (see Activity Trail section below)
+
+#### Initiating system
+
+**Project V** governs the intake review and generates the human review request
+where required. Intake evaluation is a planning-authority function; no other system
+initiates or overrides this review.
+
+#### Review request
+
+The review request must carry the minimum semantic contents defined in the
+Shared Mechanics Pattern, with specific attention to:
+
+- the specific intake outcome being proposed (project creation, or another governed outcome)
+- the signal basis and evidence posture that supports the proposed outcome
+- what material planning impact, cost implication, or cross-system scope change
+  triggers the review requirement
+- that the intake outcome has not yet been activated — it is pending review
+- what Project V's assessment is and why human review is required at this stage
+
+#### Pending state
+
+While intake outcome review is pending, the workflow must be in:
+
+**`awaiting_review`**
+
+The intake evaluation is complete and a proposed outcome has been determined.
+The review request has been generated. The intake outcome has not been activated.
+No downstream consequences of the proposed outcome (project creation, handoff
+preparation, etc.) may proceed while in `awaiting_review`.
+
+Project V must not treat a proposed intake outcome as active while in `awaiting_review`.
+
+#### Post-review
+
+On `approved`: The intake outcome becomes active. Downstream workflow routing
+proceeds per the outcome type — project creation, defer, hold, or other governed
+outcome. The approval event is recorded in the activity trail.
+
+On `rejected`: The proposed intake outcome does not become active. The workflow
+returns to the appropriate planning state. The rejection is preserved as a governed
+outcome. Rejection continuity applies: the intake item must be preserved with the
+rejection reason and scope.
+
+On `escalated`: The workflow enters governed escalation handling. The intake item
+remains in its current state. No outcome is activated.
+
+On `expired`: The prior pending approval cannot be silently reused. If the intake
+basis has materially changed since the review was requested, a new review request
+must be generated. If the basis remains current, the request may be resubmitted
+with the same intake item context.
+
+#### Activity trail
+
+- `approval.request` — produced by Project V when the intake outcome review request is generated
+- `approval.decide` — produced when the review outcome is reached
+- `approval.escalate` — produced if escalated
+
+For the integration map minimum fields for intake review events, see
+`../ecosystem/activity-trail-integration-map.md` Section 5 (the intake review
+posture aligns with the `approval.request` / `approval.decide` family; the
+`entity_type` is `intake_outcome` and the `entity_id` is the intake item identity).
+
+---
+
 ## Pending-State Vocabulary
 
 The following is the canonical vocabulary for approval-pending states across the
@@ -533,9 +627,9 @@ new names for the same posture.
 | Term | Used when |
 |---|---|
 | `awaiting_approval` | An explicit approval request has been generated and is unresolved. The transition has not proceeded. Covers handoff activation and replanning with supersedence. |
-| `awaiting_review` | Returned findings or a proposed reconsideration requires human review before planning may act on it. The specific action pending review has not been activated. Covers return-to-planning receipt / review. |
+| `awaiting_review` | Returned findings or a proposed reconsideration requires human review before planning may act on it. The specific action pending review has not been activated. Covers return-to-planning receipt / review (Class B) and governed intake outcome review (Class E). |
 | `awaiting_authorization` | A cross-system readiness convergence is established and an authorization request is pending for a launch-sensitive transition. Covers launch authorization. |
-| `escalated_for_review` | The approval or review could not be resolved at the current governance level. The workflow is in governed escalation handling. Applies across all four transition classes after an escalation outcome. |
+| `escalated_for_review` | The approval or review could not be resolved at the current governance level. The workflow is in governed escalation handling. Applies across all five transition classes after an escalation outcome. |
 
 **Rules for using this vocabulary:**
 
@@ -653,6 +747,7 @@ A capable LLM should be able to infer from this doc that:
 - activity trail logging is required for every approval event
 - this document provides the shared mechanics; interface and workflow docs provide
   the seam-specific facts
+- `awaiting_review` covers both return-to-planning review (Class B) and intake outcome review (Class E); the distinction is in context and entity reference, not the pending state term
 
 If an LLM treats an approval request as equivalent to the approval itself, treats
 the pending state as pauseable by convenience, skips activity trail logging, or
@@ -664,7 +759,7 @@ invents new pending-state vocabulary, this document is failing.
 
 This document should be used:
 
-- when implementing any of the four approval-sensitive transition classes
+- when implementing any of the five approval-sensitive transition classes
 - when writing or reviewing the approval-related sections of interface and workflow docs
 - when checking whether a pending state is correctly named and observable
 - when verifying that activity trail logging covers approval events on a seam

@@ -216,6 +216,19 @@ the seam-specific minimum fields for each transition class.
 | Supersedence decision reached | `approval.decide` | operator / approval surface | Project V | `entity_type: decision_record`, `entity_id: <prior decision identity>` | `approval_class`, `decision`, `new_governing_decision_ref` if approved | |
 | Supersedence escalated | `approval.escalate` | Project V | escalation surface | `entity_type: decision_record`, `entity_id: <prior decision identity>` | `approval_class`, `escalation_reason` | |
 
+### 5e. Governed Intake Outcome Review
+
+Source: `governance/approval-mechanics-seam-model.md` Section E
+
+Covers the governance review gate at Stage 5 of `workflows/project-intake-workflow.md`
+when a proposed intake outcome requires human approval before becoming active.
+
+| Event family | Canonical action type | Producing system | Target system | Required entity reference | Minimum additional fields | Notes |
+|---|---|---|---|---|---|---|
+| Review request generated | `approval.request` | Project V | operator / approval surface | `entity_type: intake_outcome`, `entity_id: <intake item identity>` | `approval_class` (B or C), `proposed_intake_outcome`, `intake_basis_ref`, `review_rationale` | Pending state: `awaiting_review` |
+| Review decision reached | `approval.decide` | operator / approval surface | Project V | `entity_type: intake_outcome`, `entity_id: <intake item identity>` | `approval_class`, `decision` (`approved`, `rejected`, `expired`) | On `approved`: intake outcome becomes active. On `rejected`: outcome does not activate; rejection continuity applies. |
+| Review escalated | `approval.escalate` | Project V | escalation surface | `entity_type: intake_outcome`, `entity_id: <intake item identity>` | `approval_class`, `escalation_reason` | |
+
 ---
 
 ## Section 6 — Ungated Stub Interface Mappings
@@ -318,7 +331,7 @@ non-creation terminal outcomes.
 
 **Note on project creation:** `project.create` (existing canonical type) is used for the positive intake outcome. Use `project.create` with `details` capturing the signal basis and planning context reference.
 
-**Note on review gate:** When project creation requires a governance review, use `approval.request` / `approval.decide` per Section 5b posture (closest applicable mapping). The `intake_outcome` entity type is used for the non-creation outcomes above; the `project` entity type applies to the `project.create` event.
+**Note on review gate:** When project creation (or another intake outcome) requires a governance review, use `approval.request` / `approval.decide` per Section 5e (Governed Intake Outcome Review). The `intake_outcome` entity type is used for both the non-creation outcome events above and the Section 5e review events; the `project` entity type applies to the `project.create` event.
 
 ---
 
