@@ -109,7 +109,7 @@ Allowed values:
 - `analysis`
 - `planning`
 - `specification`
-- `handoff-preparation`
+- `handoff_preparation`
 - `governance`
 
 ---

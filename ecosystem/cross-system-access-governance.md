@@ -7,7 +7,7 @@ This document adds governed access rules to the cross-system boundary model.
 It exists to answer:
 
 ```text
-How does the V Ecosystem distinguish between ownership boundaries and access boundaries, what are the rules for broad governed access that does not collapse ownership, and how is cross-system access tracked and audited?
+How does the V Ecosystem distinguish between ownership boundaries and access boundaries, what are the rules for governed access that does not collapse ownership, and how is cross-system access tracked and audited?
 ```
 
 This is a Tier 1 ecosystem authority document.
@@ -54,7 +54,7 @@ Those belong in interface-specific docs and implementation docs.
 The V Ecosystem separates two concerns that are often conflated:
 
 - **Ownership boundaries** — which system is the source of truth for which kind of data. These are strict. They do not relax.
-- **Access boundaries** — which systems may read data from other systems during operation. These can be broad, provided the access is governed.
+- **Access boundaries** — which systems may read or receive data from other systems during operation. These can be broad, provided the access is governed.
 
 Restricting access does not protect ownership. Governance protects ownership. A system that reads evidence from another system is not absorbing ownership. A system that reads evidence and then makes decisions that belong to another system's authority is violating ownership — and that violation happens regardless of whether the access was restricted.
 
@@ -72,23 +72,23 @@ These rules are restated from `cross-system-boundaries.md` for clarity. They are
 
 No cross-system access changes these ownership assignments.
 
-Reading VEDA evidence does not make V Forge the evidence owner.
-Reading V Forge execution results does not make Project V the execution owner.
-Reading Project V planning state does not make VEDA the planner.
+Reading or receiving VEDA signal does not make Project V or V Forge the signal owner.
+Reading V Forge execution findings does not make Project V the execution owner.
+Receiving planning context from Project V does not make V Forge the planner.
 
 ---
 
 ## Access Governance Requirements
 
-Any system accessing another system's data must satisfy these requirements:
+Any system accessing or receiving data from another system must satisfy these requirements:
 
 ### 1. Access must be logged
 
 Every cross-system data access must produce an activity log entry with:
 
-- the requesting system and actor (agent, session, or service)
-- the target system
-- the query type and parameters
+- the requesting or receiving system and actor (agent, session, or service)
+- the target or source system
+- the interaction type and parameters
 - the result scope (count, coverage)
 - the timestamp
 - the token cost, if applicable
@@ -97,87 +97,115 @@ Access that is not logged is ungoverned access. Ungoverned access is not permitt
 
 ### 2. Access must be scoped
 
-Cross-system queries must carry explicit scope parameters. The minimum scope is project-level. Unscoped queries that return data across all projects are not permitted through cross-system interfaces.
+Cross-system interactions must carry explicit scope parameters. The minimum scope is project-level.
+
+**Project-scoped interactions** are the default for all runtime execution. A query or delivery that returns or transfers data across all projects without a project scope qualifier is not permitted through cross-system interfaces.
+
+**Portfolio-scoped interactions** are permitted only for planning-level market signal gathering by Project V, where VEDA provides signal relevant to opportunity evaluation across projects. Portfolio-scoped access must still be explicitly authorized by the requesting context, must be logged, and must identify the portfolio or ecosystem scope explicitly rather than defaulting to unscoped. Portfolio-scoped access does not grant Project V ownership of VEDA signal.
 
 The target system enforces scoping. The requesting system cannot bypass it.
 
 ### 3. Results must carry provenance
 
-Data returned through cross-system access must carry provenance metadata identifying:
+Data returned or delivered through cross-system access must carry provenance metadata identifying:
 
 - the source system
 - the record identifier in the source system
 - the timestamp of the data (when it was gathered or created)
 - the freshness or trust classification, where applicable
 
-The requesting system must preserve this provenance when using the data in its own outputs.
+The receiving system must preserve this provenance when using the data in its own outputs.
 
 ### 4. Access must be cost-accountable
 
-Cross-system queries consume resources (tokens, API calls, compute). The cost of cross-system access counts against the requesting system's budget, not the target system's budget.
+Cross-system interactions consume resources (tokens, API calls, compute). The cost of cross-system access counts against the requesting or receiving system's budget, not the source system's budget.
 
-If the requesting system has a budget policy in effect, cross-system query costs are included in budget evaluation.
+If the requesting system has a budget policy in effect, cross-system interaction costs are included in budget evaluation.
 
 ### 5. Access does not grant authority
 
-Reading another system's data does not grant the requesting system authority to make decisions that belong to the target system's domain.
+Receiving another system's data does not grant the receiving system authority to make decisions that belong to the source system's domain.
 
-V Forge reading VEDA evidence does not authorize V Forge to make planning decisions.
-Project V reading V Forge execution results does not authorize Project V to modify executed content directly.
+V Forge receiving VEDA signal does not authorize V Forge to make planning decisions.
+Project V receiving V Forge execution findings does not authorize Project V to modify executed content directly.
 
-The authority boundary is enforced by the requesting system's operating doctrine, not by restricting read access.
+The authority boundary is enforced by the receiving system's operating doctrine, not by restricting access.
 
 ---
 
 ## Access Scope by System Pair
 
-### V Forge → VEDA (Evidence Access)
+All six system-pair interactions are listed. Each entry states who initiates the interaction, what the allowed access pattern is, and which interface doc governs it.
 
-Access type: Read-only, project-scoped, execution-time queries.
+---
 
-Governed by: `v-forge-evidence-access-contract.md`
+### VEDA → Project V (Signal Delivery)
 
-Purpose: V Forge queries VEDA evidence to improve execution quality, validate outputs against current signals, and identify maintenance priorities.
+**Direction:** VEDA delivers bounded planning-relevant signal to Project V.
 
-Boundary: Evidence use must improve approved work quality, not change what work is approved.
+**Access type:** Read-only output from VEDA; project-scoped or portfolio-scoped for planning-level market evaluation (see scoping rules above).
 
-### V Forge → Project V (Planning Context)
+**Governed by:** `veda-to-project-v-signal-interface.md`
 
-Access type: Read-only, project-scoped, limited to active handoff context.
+**Purpose:** VEDA provides signal and evidence packages to Project V for planning interpretation. Project V uses the signal to inform project creation, prioritization, readiness evaluation, and replanning decisions.
 
-Governed by: `project-v-to-v-forge-handoff-interface.md`
+**Boundary:** VEDA remains the owner of signal and evidence truth. Project V interprets signal for planning purposes. Receiving signal does not transfer signal ownership or signal-system responsibility to Project V.
 
-Purpose: V Forge reads the approved handoff, project structure, and planning context that defines what it should execute.
+---
 
-Boundary: V Forge reads planning context to understand what to do. It does not modify planning state.
+### VEDA → V Forge (Signal Delivery)
 
-### Project V → VEDA (Signal for Planning)
+**Direction:** V Forge consumes bounded observatory signal from VEDA.
 
-Access type: Read-only, project-scoped or ecosystem-scoped for market scanning.
+**Access type:** Read-only, project-scoped, execution-time queries or bounded signal package consumption.
 
-Governed by: `veda-to-project-v-signal-interface.md`
+**Governed by:** `veda-to-v-forge-signal-interface.md` and `v-forge-evidence-access-contract.md`
 
-Purpose: Project V queries VEDA signal and evidence to inform planning decisions, readiness evaluations, and project creation.
+**Purpose:** V Forge consumes VEDA signal to power its execution intelligence layer — understanding how built content is performing externally and where execution-side gaps exist.
 
-Boundary: Project V uses evidence to make planning decisions. It does not own the evidence. Evidence provenance must be preserved in planning records.
+**Boundary:** VEDA remains the owner of all observatory records and signal truth. V Forge uses consumed signal to produce execution intelligence. Consuming signal does not make V Forge the observer or the evidence owner.
 
-### Project V → V Forge (Execution Results)
+---
 
-Access type: Read-only, project-scoped.
+### Project V → V Forge (Handoff Delivery)
 
-Governed by: `v-forge-to-project-v-return-to-planning-interface.md`
+**Direction:** Project V delivers a bounded handoff package to V Forge when planning-ready work is authorized for execution.
 
-Purpose: Project V reads V Forge execution findings, completion reports, and maintenance signals to inform replanning.
+**Access type:** Project V initiates handoff; V Forge receives the execution-facing planning package. Project-scoped.
 
-Boundary: Project V reads execution results. It does not modify V Forge execution state or content graph directly.
+**Governed by:** `project-v-to-v-forge-handoff-interface.md`
 
-### VEDA → V Forge (Not Applicable)
+**Purpose:** Project V transfers execution responsibility for approved work to V Forge by delivering the bounded handoff package containing execution scope, constraints, evidence references, and expected outcomes.
 
-VEDA does not query V Forge. VEDA observes external reality, not internal execution state. If VEDA needs to observe the effect of executed work (e.g., monitoring a published page's search performance), it observes through external provider APIs, not through V Forge's internal systems.
+**Boundary:** The handoff transfers execution responsibility, not planning ownership. Project V remains the planning system of record. V Forge becomes the execution system of record for the handed-off scope. The handoff must satisfy the validity conditions defined in the handoff interface.
 
-### VEDA → Project V (Not Applicable)
+---
 
-VEDA does not query Project V. VEDA provides signal to Project V through governed interfaces. VEDA does not read planning state.
+### V Forge → Project V (Return-to-Planning Delivery)
+
+**Direction:** V Forge delivers bounded execution findings to Project V when execution requires planning reconsideration.
+
+**Access type:** V Forge initiates return; Project V receives the bounded execution findings package. Project-scoped.
+
+**Governed by:** `v-forge-to-project-v-return-to-planning-interface.md`
+
+**Purpose:** V Forge surfaces blocked, failed, incomplete, or changed execution conditions to Project V through the governed return-to-planning path. Project V uses the findings to evaluate whether replanning, deferral, revised handoff, or no-action is warranted.
+
+**Boundary:** The return-to-planning transfer delivers bounded execution findings, not full execution state ownership. V Forge remains the execution system of record. Project V receives findings as planning-reconsideration input. Returned findings do not automatically mutate planning truth.
+
+---
+
+### V Forge → VEDA (Not an interaction)
+
+V Forge does not query or write to VEDA. V Forge consumes bounded signal from VEDA (see VEDA → V Forge above). V Forge does not observe external reality on VEDA's behalf.
+
+If V Forge needs external signal that VEDA is not currently providing, the correct path is to direct VEDA to expand its observatory scope through the governed operator surface — not for V Forge to build independent observatory capability.
+
+---
+
+### VEDA → VEDA / Project V → Project V / V Forge → V Forge (Internal)
+
+Internal system operations are not governed by this document. Each system governs its own internal data access through its own schema, invariant, and API governance docs.
 
 ---
 
@@ -185,21 +213,29 @@ VEDA does not query Project V. VEDA provides signal to Project V through governe
 
 ### Access frequency does not imply ownership
 
-A system that queries another system frequently is still not the owner of that data. Frequency of access is a cost concern, not an ownership concern.
+A system that receives data from another system frequently is still not the owner of that data. Frequency of access is a cost concern, not an ownership concern.
 
 ### Caching does not create a second source of truth
 
 If a system caches cross-system data for performance, the cache is not authoritative. The source system remains the authority. Cached data must carry provenance and must be treated as potentially stale.
 
-Caching for within-session use is acceptable. Persistent cross-session caches of another system's data are not acceptable without explicit doctrine support.
+Caching for within-session use is acceptable. Persistent cross-session caches of another system's canonical data are not acceptable without explicit doctrine support.
 
 ### Access patterns must remain classifiable
 
-If a cross-system access pattern cannot be clearly described as "system X reads system Y's data to do Z," the access pattern needs governance review. Unclassifiable access patterns are a sign of boundary drift.
+If a cross-system interaction cannot be clearly described as one of the six patterns above, the pattern needs governance review before implementation. Unclassifiable access patterns are a sign of boundary drift.
+
+### Portfolio-scoped access is not unscoped access
+
+Portfolio-scoped access for Project V planning market evaluation is explicitly permitted under defined conditions. It is not the same as unscoped access with no project parameter. Portfolio scope must be declared, logged, and bounded. It does not become a general license to return all-projects data through any interface.
+
+### Delivery is not ownership transfer
+
+VEDA delivering signal to Project V or V Forge does not transfer observatory ownership. Project V delivering a handoff to V Forge does not transfer planning ownership. V Forge delivering return findings to Project V does not transfer execution ownership. Delivery is a governed exchange. It is not a merge of truth domains.
 
 ### Broad access is not a backdoor
 
-Broadening access is not a substitute for proper handoff, interface, or workflow design. If V Forge needs planning authority, the answer is to route through Project V, not to broaden V Forge's access to planning data and let the agent figure it out.
+Broadening access is not a substitute for proper handoff, interface, or workflow design. If V Forge needs planning authority, the answer is to route through the governed return-to-planning path, not to broaden V Forge's access to planning data and let the agent figure it out.
 
 ---
 
@@ -207,20 +243,21 @@ Broadening access is not a substitute for proper handoff, interface, or workflow
 
 This document should be used:
 
-- when designing new cross-system interfaces to determine appropriate access scope
+- when designing new cross-system interfaces to determine appropriate access scope and direction
 - when evaluating whether an existing access pattern respects ownership boundaries
 - when building activity logging for cross-system access
-- when reviewing budget policies that account for cross-system query costs
+- when reviewing budget policies that account for cross-system interaction costs
 - when an LLM or operator needs to understand why access is broad but ownership is strict
+- when checking whether a proposed interaction fits one of the six defined system-pair patterns
 
 ---
 
 ## Related Docs
 
 - `cross-system-boundaries.md`
-- `../interfaces/v-forge-evidence-access-contract.md`
-- `../interfaces/veda-to-v-forge-signal-interface.md`
 - `../interfaces/veda-to-project-v-signal-interface.md`
+- `../interfaces/veda-to-v-forge-signal-interface.md`
+- `../interfaces/v-forge-evidence-access-contract.md`
 - `../interfaces/project-v-to-v-forge-handoff-interface.md`
 - `../interfaces/v-forge-to-project-v-return-to-planning-interface.md`
 - `../governance/agent-operating-doctrine.md`
