@@ -202,24 +202,44 @@ This does not mean V Forge outputs must read like citations in a paper. It means
 
 ---
 
-## Activity Logging
+## Activity Trail
 
-Every evidence query from V Forge must be logged.
+Every evidence query from V Forge must produce an activity trail record using
+the canonical `evidence.query` action type from `../ecosystem/activity-trail-model.md`.
+The full mapping for this interface is defined in integration map Section 4b
+(`../ecosystem/activity-trail-integration-map.md`).
 
-Log fields per query:
+**Canonical action type:** `evidence.query`
 
-- `actor` — the V Forge agent or session issuing the query.
-- `action` — the query type (e.g., `veda_evidence_query`).
-- `query_type` — the specific query type (e.g., `evidence_by_project`, `evidence_by_topic`).
-- `project_id` — the project scope of the query.
-- `parameters` — the query parameters (freshness_window, evidence_class, topic, max_results).
-- `result_count` — number of evidence records returned.
-- `token_cost` — token cost of the query and response, if applicable.
-- `timestamp` — when the query was issued.
+**Producing system:** V Forge
 
-This log is part of the ecosystem activity trail. It makes evidence access auditable without restricting it.
+**Target system:** VEDA
 
-V Forge does not need human approval to query evidence. It does need a record that the query happened.
+**Required entity reference:**
+- `entity_type: evidence_query`
+- `entity_id` — a stable query session or per-query identifier
+
+**Required base fields** (from `../ecosystem/activity-trail-model.md` — apply to every record):
+- `activity_id`, `timestamp`, `ecosystem_session_id`
+- `actor_type`, `actor_id`, `actor_system` (V Forge)
+- `action` (`evidence.query`), `action_class` (`cross_system_access`)
+- `entity_type`, `entity_id`, `target_system` (VEDA)
+- `project_id`
+
+**Minimum additional fields** (in `details`):
+- `query_type` — one of: `evidence_by_project`, `evidence_by_topic`, `signal_status`, `evidence_by_id`
+- `project_id` — the project scope of the query (also required as a base field)
+- `freshness_requirement` — the freshness window or constraint applied
+- `result_count` — number of evidence records returned
+- `api_cost_cents` — if applicable
+
+**Optional detail fields:**
+- `evidence_class` filter, topic, `max_results`, other query-type-specific parameters
+  may be included in `details` as needed for auditability
+
+This activity record makes evidence access auditable without restricting it.
+V Forge does not need human approval to query evidence, but every query must produce
+a record. Queries that produce no activity trail record are not governed accesses.
 
 ---
 

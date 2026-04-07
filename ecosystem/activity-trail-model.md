@@ -307,6 +307,7 @@ The `entity_type` field on activity records must use terms from this governed li
 - `intake_outcome` — a Project V intake outcome record (used for `intake.defer`, `intake.hold`, `intake.reject`, and `intake.close` events; scoped to a specific intake item within a project)
 - `observation_record` — a post-launch observation record (used for `observation.cycle`, `observation.classify`, and `observation.assess` events; scoped to a specific project and observation cycle)
 - `observatory_scope_change` — an operator-to-VEDA observatory scope change request record (used for `observatory.scope_change.*` events; carries the request identity, change type, and operator approval reference)
+- `evidence_query` — a V Forge active evidence query record or query session (used for `evidence.query` events under the V Forge → VEDA evidence access contract; see `interfaces/v-forge-evidence-access-contract.md` and integration map Section 4b)
 
 For the integration map reference showing which entity types apply to which seam events, see `activity-trail-integration-map.md`.
 

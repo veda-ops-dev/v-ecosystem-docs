@@ -133,14 +133,17 @@ After a valid handoff recall:
 
 ## Activity Trail
 
-Activity trail integration is required for this interface.
+Activity trail integration for this interface is defined in
+`../ecosystem/activity-trail-integration-map.md` Section 6b.
 
-The exact canonical action type mapping and required fields will be defined in
-the activity trail integration map (`../ecosystem/activity-trail-integration-map.md`)
-once that document is completed.
+Canonical action types:
+- `handoff.recall` — Project V delivers the operator-directed recall notice to V Forge
+- `handoff.recall.confirmed` — V Forge confirms receipt of the recall
 
-This stub does not finalize the activity trail action vocabulary for this interface.
-Implementations must not proceed without that mapping in place.
+The producing system, required entity reference (`entity_type: handoff`),
+and minimum additional fields for each event are specified in integration map
+Section 6b. These are stub-level posture mappings; exact fields are subject to
+confirmation when this stub is upgraded to a full implementation contract.
 
 ---
 

@@ -228,25 +228,14 @@ governed interface set:
 - Project V scope update to V Forge after replanning: `project-v-to-v-forge-scope-update-interface.md`
 - Project V bounded evidence request to VEDA: `project-v-to-veda-evidence-request-interface.md`
 
-### Additional governed interfaces (gated — pending artifact creation)
+### Additional governed interfaces (fully defined)
 
-The following interface path is required by the ecosystem but does not yet have
-a governing interface document:
+The following interface has a full Tier 1 governing document and its activity
+trail action types are canonical in `../ecosystem/activity-trail-model.md`
+(see integration map Section 11):
 
-- Operator → VEDA observatory scope expansion
-
-The routing decision for observatory scope expansion is settled: direct
-`V Forge → VEDA` scope expansion is not the governed path. If V Forge identifies
-a signal need that VEDA is not currently providing, the correct path is to surface
-that need through the governed return-to-planning interface to Project V, and for
-the operator to direct VEDA to expand observatory scope through the governed
-operator surface. V Forge must not build independent observatory capability or
-self-authorize scope expansion.
-
-The missing artifact is the operator-mediated interface governing how operators
-(or operator-facing authorities) direct VEDA to adjust observatory scope. That
-interface has not yet been created. Do not create `v-forge-to-veda-*` interfaces
-for this purpose — the initiating authority is the operator, not V Forge.
+- Operator to VEDA observatory scope expansion:
+  `operator-to-veda-observatory-scope-expansion-interface.md`
 
 Data that crosses system lines outside the interfaces listed above is crossing
 outside governed exchange. It must not be treated as equivalent to a governed

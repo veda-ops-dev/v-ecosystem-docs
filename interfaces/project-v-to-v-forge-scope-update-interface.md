@@ -132,14 +132,17 @@ After a valid scope update:
 
 ## Activity Trail
 
-Activity trail integration is required for this interface.
+Activity trail integration for this interface is defined in
+`../ecosystem/activity-trail-integration-map.md` Section 6c.
 
-The exact canonical action type mapping and required fields will be defined in
-the activity trail integration map (`../ecosystem/activity-trail-integration-map.md`)
-once that document is completed.
+Canonical action types:
+- `execution.scope_update` — Project V delivers the post-replanning scope update to V Forge
+- `execution.scope_update.confirmed` — V Forge confirms receipt
 
-This stub does not finalize the activity trail action vocabulary for this interface.
-Implementations must not proceed without that mapping in place.
+The producing system, required entity reference (`entity_type: scope_update`),
+and minimum additional fields for each event are specified in integration map
+Section 6c. These are stub-level posture mappings; exact fields are subject to
+confirmation when this stub is upgraded to a full implementation contract.
 
 ---
 

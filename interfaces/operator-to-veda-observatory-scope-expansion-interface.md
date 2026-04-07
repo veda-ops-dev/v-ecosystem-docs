@@ -469,27 +469,15 @@ Each event record must carry, at minimum:
 
 **Activity trail canon status:**
 
-The current activity trail model (`../ecosystem/activity-trail-model.md`) does not
-yet define a dedicated action type family for operator-to-VEDA observatory scope
-change events. This interface requires the following action type extensions to that
-model before implementation:
+The `observatory.scope_change.*` action type family (seven types) and the
+`observatory_scope_change` entity type are canonical in
+`../ecosystem/activity-trail-model.md`. The full mapping for this interface —
+including producing systems, required entity references, and minimum additional
+fields per event — is defined in integration map Section 11
+(`../ecosystem/activity-trail-integration-map.md`).
 
-- `observatory.scope_change.request` — scope change request initiated
-- `observatory.scope_change.accepted` — VEDA accepts the request
-- `observatory.scope_change.narrowed` — VEDA accepts a bounded subset
-- `observatory.scope_change.deferred` — VEDA defers with reason
-- `observatory.scope_change.rejected` — VEDA rejects with reason
-- `observatory.scope_change.implemented` — VEDA confirms implementation complete
-- `observatory.scope_change.voided` — request voided before implementation
-
-A new entity type — `observatory_scope_change` — must also be added to the entity
-type vocabulary in the activity trail model before implementation.
-
-These extensions must be added to `../ecosystem/activity-trail-model.md` and
-`../ecosystem/activity-trail-integration-map.md` before this interface is
-implemented. This is a required extension, not optional cleanup. Until the
-extensions are made, implementations must not proceed without establishing the
-action type mapping.
+Implementations must use the canonical action types and fields defined there.
+Do not invent alternate action type names for this seam.
 
 ---
 
@@ -618,8 +606,8 @@ A capable LLM should be able to infer from this doc that:
 - observatory scope change may be an external-action event with cost consequences
   that require explicit approval
 - VEDA remains the owner of all observatory records produced from the changed scope
-- activity trail action types for this interface are not yet in the canonical model
-  and must be added before implementation
+- activity trail action types for this interface are canonical in the model;
+  the full mapping is in integration map Section 11
 
 If the interface is implemented as a direct V Forge command path, as an automatic
 consequence of a signal gap finding, or as a path that bypasses operator approval,
@@ -638,8 +626,7 @@ This document should be used:
 - when reviewing whether a proposed V Forge evidence need should trigger a scope
   change request vs. an evidence request vs. an evidence access contract query
 - when designing the activity logging pipeline for scope change events
-- when extending the activity trail model with the `observatory.scope_change.*`
-  action type family
+- when confirming the activity trail action type mapping at integration map Section 11
 
 ---
 

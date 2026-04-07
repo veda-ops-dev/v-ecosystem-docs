@@ -355,21 +355,15 @@ Each request event record must carry, at minimum:
 - the freshness requirement
 - the delivery status at the time of the record
 
-**Action type requirement — known gap:**
-The activity trail model (`../ecosystem/activity-trail-model.md`) does not currently
-define a dedicated action type for this event class. A new action type —
-proposed: `evidence.request` — must be added to that model before this interface
-is implemented. The integration map (`../ecosystem/activity-trail-integration-map.md`)
-must then be updated to map this interface's events to that action type with the
-minimum additional fields specified above.
+**Action type:** `evidence.request` — canonical in `../ecosystem/activity-trail-model.md`.
+The integration map (`../ecosystem/activity-trail-integration-map.md`) Section 7
+defines the full mapping for this interface's request-leg events, including the
+required entity reference (`entity_type: evidence_request`) and minimum additional
+fields (`planning_context_ref`, `originating_workflow_stage`, `bounded_planning_question_summary`,
+`freshness_requirement`).
 
-Until that extension is made, implementations must not proceed without establishing
-the action type mapping. This is a required extension, not optional cleanup.
-
-**Entity type requirement — known gap:**
-A new entity type — proposed: `evidence_request` — must be added to the activity
-trail model alongside the action type extension, to cover the evidence request
-record in entity references.
+Implementations must use the canonical action type and fields defined in integration
+map Section 7. Do not invent alternate action type names for this seam.
 
 **Response leg activity records:**
 Activity records for VEDA's response delivery are governed by
@@ -432,8 +426,8 @@ A capable LLM should be able to infer from this doc that:
 - the request is not direct observatory access; Project V does not specify which
   records to retrieve
 - the request must be tied to a specific project and a real planning-side evidence need
-- activity trail records are required for request-leg events, and the action type
-  for those records requires a planned extension to the activity trail model
+- activity trail records are required for request-leg events; the canonical action
+  type is `evidence.request` per integration map Section 7
 - VEDA's curation judgment governs the response contents; Project V cannot override it
 
 If the interface is implemented as direct record-level access, as an unbounded
@@ -452,8 +446,7 @@ This document should be used:
 - when reviewing whether a proposed evidence request is within the bounded
   request-for-package model
 - when wiring Stage 6 of the project intake workflow to the evidence request path
-- when extending the activity trail model with the `evidence.request` action type
-  and `evidence_request` entity type
+- when confirming the activity trail action type mapping at integration map Section 7
 
 ---
 
