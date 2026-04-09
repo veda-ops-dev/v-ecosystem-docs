@@ -97,11 +97,12 @@ Project V reads VEDA signal to inform planning. It does not own the signal.
 - execution truth
 - the content graph of what was built
 - execution intelligence derived from content graph analysis
+- opportunity scoring, gap detection, clustering, or competitive analysis — those belong to VEDA Strategy
 - intelligence synthesis or proposals — VEDA Brain does not exist in this ecosystem
 
 ### Boundary Rule
 VEDA is a pure observatory. It observes external reality and records what it sees.
-VEDA may provide bounded signal to Project V and V Forge through governed interfaces.
+VEDA may provide bounded signal to VEDA Strategy, Project V, and V Forge through governed interfaces.
 VEDA must not become the planner, the executor, the content modeler, or the intelligence synthesizer.
 
 The telescope mental model applies: if a telescope would not do it, VEDA should not do it.
@@ -114,7 +115,7 @@ The telescope mental model applies: if a telescope would not do it, VEDA should 
 - execution truth
 - implementation truth
 - the content graph of what was built — pages, topics, entities, internal links, archetypes, schema usage
-- execution intelligence — cross-referencing the content graph against VEDA signal to assess performance and identify gaps
+- execution intelligence — cross-referencing the content graph against VEDA signal to assess performance and identify execution-side gaps
 - bounded execution-side research
 - execution-side maintenance truth
 - execution-side reporting
@@ -125,12 +126,41 @@ The telescope mental model applies: if a telescope would not do it, VEDA should 
 - signal truth as a system of record
 - observability truth as a system of record
 - raw SERP data, GA4 data, Search Console data, or YouTube observatory data
+- opportunity scoring, strategic gap detection, or competitive analysis — those belong to VEDA Strategy
 
 ### Boundary Rule
 V Forge may consume planning inputs from Project V and bounded signal from VEDA.
+V Forge may receive execution-relevant strategic signals from VEDA Strategy.
 V Forge owns what was built and what happened during execution.
 V Forge reads VEDA signal to produce execution intelligence. It does not own the signal.
+Execution-side gap detection means identifying gaps within the existing content graph against VEDA performance signal.
+This is distinct from VEDA Strategy's strategic gap detection, which operates at the opportunity-and-market level.
 Bounded execution-side research means research performed in support of approved execution, handoff, maintenance, or return-to-planning needs. It does not mean open-ended ecosystem-wide signal gathering.
+
+---
+
+## VEDA Strategy
+
+### Owns
+- opportunity scoring
+- content gap detection at the strategic level
+- clustering
+- competitive analysis
+- strategic signals derived from VEDA observatory truth
+
+### Does Not Own
+- observatory truth — that belongs to VEDA; VEDA Strategy reads from VEDA, it does not replace it
+- planning truth — that belongs to Project V
+- execution truth — that belongs to V Forge
+- planning decisions or execution decisions
+
+### Boundary Rule
+VEDA Strategy reads VEDA's observatory truth and derives bounded strategic intelligence.
+It signals Project V when new project-worthy opportunities emerge.
+It signals V Forge when in-scope optimization or execution-relevant conditions are identified.
+VEDA Strategy must not absorb observatory truth from VEDA, planning authority from Project V,
+or execution authority from V Forge.
+Deriving strategic intelligence from signal is not the same as owning the signal.
 
 ---
 
@@ -152,7 +182,7 @@ Cross-system movement of meaning should normally happen through:
 Not through casual direct mutation.
 
 ## Rule 3 — Cross-system behavior must be classifiable
-If a proposed action cannot be clearly classified as planning, observability, execution, interface, workflow, or governance behavior, it is not ready to be implemented.
+If a proposed action cannot be clearly classified as planning, observability, strategic intelligence, execution, interface, workflow, or governance behavior, it is not ready to be implemented.
 
 ## Rule 4 — Shared context must not erase system ownership
 A shared ecosystem view does not mean a shared undifferentiated truth model.
@@ -161,6 +191,13 @@ The ecosystem is coordinated, not merged.
 
 ## Rule 5 — MCP tools do not bypass system ownership
 MCP tools are thin interfaces that call APIs. They do not grant ownership of another system's truth domain. A tool that reads VEDA data does not make the caller the owner of VEDA's signal.
+
+## Rule 6 — VEDA Strategy does not absorb adjacent truth
+VEDA Strategy derives intelligence from VEDA's observatory truth. Deriving intelligence from a source is not the same as owning the source.
+VEDA Strategy must not accumulate observatory records as though it were a second VEDA.
+VEDA Strategy must not make planning decisions as though it were Project V.
+VEDA Strategy must not issue execution instructions as though it were V Forge.
+Strategic signals flow from VEDA Strategy to Project V and V Forge. Those signals inform; they do not command.
 
 ---
 
@@ -203,8 +240,28 @@ VEDA generates planning proposals or content gap analysis and presents them as s
 
 This is not allowed because:
 - planning proposals belong to Project V's planning intelligence layer
-- content gap analysis belongs to V Forge's execution intelligence layer
+- strategic content gap analysis belongs to VEDA Strategy
+- execution-side gap detection belongs to V Forge's execution intelligence layer
 - VEDA Brain does not exist in this ecosystem
+
+### Allowed
+VEDA Strategy reads VEDA SERP snapshots and search performance observations.
+VEDA Strategy derives opportunity scores and surfaces a strategic signal to Project V.
+Project V uses that signal to evaluate whether a new project should be created.
+
+This is allowed because:
+- VEDA remains the owner of the observatory records
+- VEDA Strategy remains the owner of the derived scoring and strategic signal
+- Project V remains the planning system of record
+
+### Not Allowed
+VEDA Strategy stores its own copies of VEDA SERP snapshots or search performance records
+as canonical truth inside the `veda_strategy` schema.
+
+This is not allowed because:
+- observatory truth belongs to VEDA
+- VEDA Strategy may read from VEDA; it must not duplicate VEDA's canonical records
+- accumulating VEDA records inside VEDA Strategy makes it a second observatory
 
 ### Not Allowed
 Project V starts storing rich execution lifecycle state and treating it as canonical execution truth.

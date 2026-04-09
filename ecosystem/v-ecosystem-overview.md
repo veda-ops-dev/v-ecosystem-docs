@@ -154,18 +154,46 @@ V Forge exists to carry out approved work, perform bounded execution-side resear
 
 ---
 
+## VEDA Strategy
+
+### Role
+VEDA Strategy is the derived strategic intelligence system of the V Ecosystem.
+
+### Owns
+- opportunity scoring
+- content gap detection
+- clustering
+- competitive analysis
+- strategic signals derived from observatory truth
+
+### Does Not Own
+- observatory truth — that belongs to VEDA
+- planning truth — that belongs to Project V
+- execution truth — that belongs to V Forge
+- raw signal or evidence — VEDA Strategy reads from VEDA; it does not replace it
+- planning decisions or execution decisions
+
+### Main Use
+VEDA Strategy reads VEDA observatory truth and derives bounded strategic intelligence.
+It signals Project V when new project-worthy opportunities emerge.
+It signals V Forge when in-scope optimization or execution-relevant conditions are identified.
+It does not replace Project V's planning authority or V Forge's execution authority.
+
+---
+
 ## High-Level Ecosystem Model
 
 The ecosystem should be understood through this flow:
 
-1. **VEDA** provides signal, evidence, and observability
-2. **Project V** interprets what matters for planning and orchestration
-3. **Project V** creates structure, readiness, and handoff truth
+1. **VEDA** observes external reality and preserves signal, evidence, and observability truth
+2. **VEDA Strategy** reads VEDA's observatory truth and derives scored opportunities, gap signals, and strategic intelligence
+3. **Project V** receives strategic signals from VEDA Strategy, interprets what matters for planning, and creates structure, readiness, and handoff truth
 4. **Human review and approval** occurs at meaningful choke points before execution where required
 5. **V Forge** executes approved work within its bounded role
-6. **V Forge** reports outcomes, issues, and findings back into the ecosystem
-7. **VEDA** continues to observe reality over time
-8. **Project V** may re-prioritize, re-plan, or create new handoffs based on evidence and outcomes
+6. **V Forge** receives execution-relevant signals from VEDA Strategy to inform execution intelligence
+7. **V Forge** reports outcomes, issues, and findings back into the ecosystem
+8. **VEDA** continues to observe reality over time
+9. **Project V** may re-prioritize, re-plan, or create new handoffs based on strategic signals and execution findings
 
 This is a cooperation model, not shared ownership.
 
@@ -175,8 +203,8 @@ This is a cooperation model, not shared ownership.
 
 The V Ecosystem is primarily surfaced to operators through one unified Tauri 2 desktop application.
 
-That desktop application is an operator-facing governance and runtime layer, not a fourth peer ecosystem system.
-It presents bounded access to Project V, VEDA, and V Forge while preserving their separate truth domains.
+That desktop application is an operator-facing governance and runtime layer. It is not a peer ecosystem system alongside Project V, VEDA, VEDA Strategy, and V Forge.
+It presents bounded access to the four core systems while preserving their separate truth domains.
 The desktop runtime behavior, orchestration posture, and tool-surface rules are governed by the desktop doctrine docs under `../interfaces/`, not by this overview doc.
 
 ---
@@ -218,9 +246,9 @@ If the docs are ambiguous, the ecosystem becomes easier for LLMs to drift while 
 
 ## Future Growth Principle
 
-The V Ecosystem is expected to grow beyond the first three systems.
+The V Ecosystem currently has four core systems. It may grow further.
 
-Any future project added to the ecosystem must:
+Any future system added to the ecosystem must:
 
 - have a clear role
 - have a bounded truth domain
