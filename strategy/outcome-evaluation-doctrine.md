@@ -46,7 +46,7 @@ and project-specific evaluation docs.
 
 ## System
 
-- strategy
+- veda_strategy
 
 ---
 

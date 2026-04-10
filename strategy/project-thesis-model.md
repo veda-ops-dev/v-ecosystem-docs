@@ -46,7 +46,7 @@ Those belong in workflow docs, opportunity scoring model, and outcome evaluation
 
 ## System
 
-- strategy
+- veda_strategy
 
 ---
 

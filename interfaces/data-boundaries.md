@@ -95,6 +95,13 @@ this model. The enforcement model is defined in `../interfaces/mcp-coordination-
 - provider integration configuration and ingest pipeline records
 - signal packages produced from observatory records
 
+### VEDA Strategy owns canonically:
+- opportunity scoring records
+- content gap detection records
+- clustering records
+- competitive analysis records
+- strategic signal packages derived from VEDA observatory truth
+
 ### V Forge owns canonically:
 - execution records and execution lifecycle state
 - content graph records — pages, topics, entities, internal links, archetypes, schema usage
@@ -121,6 +128,13 @@ or V Forge execution records than what is required for planning-side traceabilit
 
 VEDA must not store planning state, execution state, or content graph data.
 
+### VEDA Strategy may reference:
+- VEDA observatory records through the governed VEDA-to-VEDA-Strategy read path
+- project identifiers from Project V to scope strategic intelligence to specific projects
+
+VEDA Strategy must not store copies of VEDA canonical observatory records as though
+it were a second observatory. It reads from `veda.*`; it does not duplicate it.
+
 ### V Forge may reference:
 - bounded VEDA signal packages received through the VEDA to V Forge signal interface
   for use in execution intelligence
@@ -137,10 +151,10 @@ V Forge must not store Project V planning records as though they are execution r
 
 The following are forbidden regardless of technical feasibility or operational convenience.
 
-### Direct cross-system database access
-No system may query another system's database directly.
+### Direct cross-system schema access
+No system may query another system's schema directly.
 All cross-system data access must go through the governing API.
-Shared infrastructure does not grant database-level access rights.
+Shared infrastructure does not grant schema-level access rights.
 
 ### Cross-system canonical ownership duplication
 No system may store a richer or more authoritative copy of another system's
@@ -174,11 +188,11 @@ access that bypasses the API enforcement layer.
 
 ## Persistence-Layer Ownership Rule
 
-Even when systems share physical or logical infrastructure — a shared database cluster,
+Even when systems share physical or logical infrastructure — a shared database instance,
 a shared hosting environment, or shared storage — logical ownership boundaries must
 still be enforced through:
 
-- separate databases or schemas per system
+- separate schemas per system
 - API-layer enforcement that prevents cross-schema direct access
 - no shared tables that mix canonical data from two systems
 - governed interface-only cross-system reads
@@ -227,6 +241,8 @@ governed interface set:
 - Project V handoff recall: `project-v-handoff-recall-interface.md`
 - Project V scope update to V Forge after replanning: `project-v-to-v-forge-scope-update-interface.md`
 - Project V bounded evidence request to VEDA: `project-v-to-veda-evidence-request-interface.md`
+- VEDA Strategy signal to Project V: `veda-strategy-to-project-v-signal-interface.md`
+- VEDA Strategy signal to V Forge: `veda-strategy-to-v-forge-signal-interface.md`
 
 ### Additional governed interfaces (fully defined)
 

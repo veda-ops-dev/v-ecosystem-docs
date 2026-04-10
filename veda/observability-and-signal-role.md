@@ -70,10 +70,15 @@ VEDA's role is to watch external reality faithfully:
 - how keyword volatility, intent, and competitive dynamics behave
 - what performance signals Google Analytics and Search Console report
 - what YouTube surfaces show for relevant searches
+- what AI surfaces show — how brands, topics, and entities appear in mentions, citations, fan-out queries, and answer-surface responses observed through admitted providers
 - what external sources contain when captured
 - what the observatory event log records as state changes
 
-Interpretation of those observations — deciding what they mean for planning and execution — belongs to Project V and V Forge.
+Interpretation of those observations — deciding what they mean for strategic intelligence, planning, and execution — belongs to VEDA Strategy, Project V, and V Forge.
+
+VEDA Strategy derives scored opportunities and strategic signals from what VEDA observed.
+Project V uses those signals to make planning decisions.
+V Forge uses them for execution intelligence.
 
 VEDA supplies the raw material. Other systems do the thinking.
 
@@ -85,6 +90,7 @@ VEDA must improve decision quality without absorbing decision ownership.
 
 This means:
 
+- VEDA may inform VEDA Strategy
 - VEDA may inform Project V
 - VEDA may inform V Forge
 - VEDA may inform human operators
@@ -92,6 +98,7 @@ This means:
 
 But:
 
+- VEDA Strategy remains the derived strategic intelligence layer
 - Project V remains planning and orchestration truth
 - V Forge remains execution truth and content graph truth
 - humans remain responsible for governed approval and review posture where required
@@ -266,7 +273,8 @@ VEDA does not:
 
 - model the content graph of what was built — that belongs to V Forge
 - generate planning proposals — that belongs to Project V's planning intelligence layer
-- generate content gap analysis — that belongs to V Forge's execution intelligence layer
+- derive strategic intelligence — opportunity scoring, strategic gap detection, clustering, competitive analysis — that belongs to VEDA Strategy
+- generate execution-side content gap analysis — that belongs to V Forge's execution intelligence layer
 - synthesize cross-system intelligence — VEDA Brain does not exist in this ecosystem
 - instruct V Forge directly — VEDA provides signal through governed interfaces
 
@@ -389,7 +397,8 @@ VEDA's observability and signal role has drifted if it begins to:
 
 - model the content graph of what projects have built
 - generate planning proposals or project intake recommendations
-- generate content gap analysis as though it were an observatory output
+- derive strategic intelligence as though it were an observatory output — that belongs to VEDA Strategy
+- generate execution-side content gap analysis as though it were an observatory output
 - act as the planning brain of the ecosystem
 - act as the execution controller of the ecosystem
 - recreate VEDA Brain under any name
@@ -427,8 +436,8 @@ A capable LLM should be able to infer from this doc that:
 - VEDA observes external reality and preserves evidence
 - VEDA derives bounded interpretation and signal from observatory truth
 - VEDA does not model the content graph of what was built
-- VEDA does not generate planning proposals or content gap analysis
-- VEDA Brain does not exist — those capabilities belong to Project V and V Forge
+- VEDA does not generate planning proposals, strategic intelligence, or content gap analysis
+- VEDA Brain does not exist — derived strategic intelligence belongs to VEDA Strategy; planning capabilities belong to Project V; execution intelligence belongs to V Forge
 - signal influence is not the same as signal authority
 
 If an LLM could use this doc to justify turning VEDA into a general intelligence governor that decides what the ecosystem should build or models internal project structure, this document is failing.

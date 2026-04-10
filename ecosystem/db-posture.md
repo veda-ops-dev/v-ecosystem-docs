@@ -7,7 +7,9 @@ This document defines the database posture for the V Ecosystem.
 It exists to answer:
 
 ```text
-What database family, cluster shape, ownership boundaries, migration posture, and future expansion rules should govern persistence across the V Ecosystem?
+What database family, physical shape, schema separation model, ownership
+boundaries, migration posture, and boundary enforcement rules govern
+persistence across the V Ecosystem?
 ```
 
 This is a Tier 1 ecosystem authority document.
@@ -19,12 +21,13 @@ This is a Tier 1 ecosystem authority document.
 This document governs:
 
 - the database engine family posture for the ecosystem
-- the cluster and database separation model
+- the physical database shape and schema separation model
 - canonical ownership boundaries at the persistence layer
-- cross-system database access rules
+- boundary enforcement mechanisms
+- cross-system data access rules
 - migration ownership rules
 - future onboarding rules for new bounded systems
-- future vector-capable expansion posture
+- future vector-capable and retrieval expansion posture
 
 ---
 
@@ -37,6 +40,8 @@ This document does not define:
 - exact schema design for each bounded system
 - backup and restore runbooks in detail
 - production sizing, capacity planning, or cost modeling
+- detailed Qdrant or retrieval infrastructure posture — that belongs in
+  `retrieval-infrastructure-posture.md` once governed
 
 Those belong in system-specific docs, deployment docs, or later operational runbooks.
 
@@ -50,13 +55,12 @@ Those belong in system-specific docs, deployment docs, or later operational runb
 
 ## Core Rule
 
-The V Ecosystem standardizes on a PostgreSQL-family database posture.
+The V Ecosystem uses one physical PostgreSQL-family database with four schemas,
+one per bounded system.
 
-The ecosystem uses one shared PostgreSQL-family cluster with one separate database per bounded system.
-
-Canonical truth must remain separated by bounded system.
-Shared infrastructure is allowed.
-Shared canonical ownership is not.
+Physical consolidation into one database does not imply shared ownership.
+Each schema is an independently governed canonical persistence boundary.
+The systems that own those schemas do not share truth because they share infrastructure.
 
 ---
 
@@ -74,26 +78,30 @@ This rule exists because the ecosystem requires:
 - compatibility with multiple access-layer styles
 - future vector-capable expansion without re-platforming the ecosystem
 
-A different database family must not be introduced for a core bounded system unless an explicit governed exception is approved.
+A different database family must not be introduced for a core bounded system
+unless an explicit governed exception is approved.
 
 ---
 
-## Cluster Shape Rule
+## Physical Shape Rule
 
-The standard cluster shape is:
+The physical database shape is:
 
-- one shared PostgreSQL-family cluster
-- one separate database per bounded system
+- one shared PostgreSQL-family database instance
+- four schemas, one per bounded system
 
-The initial ecosystem database shape is:
+The current schema set is:
 
-- `project_v` for Project V
-- `veda` for VEDA
-- `v_forge` for V Forge
+- `project_v` — owned by Project V
+- `veda` — owned by VEDA
+- `veda_strategy` — owned by VEDA Strategy
+- `v_forge` — owned by V Forge
 
-Future bounded systems should normally follow the same shape.
+Each schema is a hard logical boundary, not a naming convention.
+Being in the same database instance does not make schemas interchangeable or
+co-owned. A schema is a canonical ownership container, not a folder.
 
-This rule preserves bounded ownership while keeping infrastructure reasonably simple.
+This shape is governed by ADR-012.
 
 ---
 
@@ -105,21 +113,22 @@ This means:
 
 - Project V owns planning and orchestration truth in `project_v`
 - VEDA owns signal, evidence, and observability truth in `veda`
+- VEDA Strategy owns derived strategic intelligence in `veda_strategy`
 - V Forge owns execution truth in `v_forge`
 
 A record has one canonical home.
-A system must not treat another system’s database as an extension of its own domain.
+A system must not treat another system’s schema as an extension of its own domain.
 
 ---
 
 ## Cross-System Access Rule
 
-Cross-system coordination must not depend on direct database reach-through.
+Cross-system coordination must not depend on direct schema reach-through.
 
 This means:
 
-- one system must not directly write canonical tables in another system’s database as a convenience shortcut
-- one system must not read another system’s database as though it were part of its own bounded schema
+- one system must not directly write canonical tables in another system’s schema as a convenience shortcut
+- one system must not read another system’s schema as though it were part of its own bounded domain
 - cross-system coordination must occur through governed interfaces, governed workflows, or thin explicit references
 
 Thin explicit references are allowed.
@@ -143,11 +152,11 @@ Imported convenience state must not masquerade as canonical truth from the sourc
 
 ## Credentials and Isolation Rule
 
-Each bounded system should have separate database credentials.
+Each bounded system must have separate database credentials scoped to its own schema.
 
-Those credentials must be scoped so that one system’s application identity cannot query or mutate another system’s database by default.
+Those credentials must be scoped so that one system’s application identity cannot query or mutate another system’s schema by default.
 
-Cross-database credential isolation is a real boundary requirement, not an optional hygiene preference.
+Schema-level credential isolation is a real boundary requirement, not an optional hygiene preference.
 
 This isolation should be verified as an environment and deployment check.
 
@@ -161,9 +170,10 @@ This means:
 
 - Project V runs migrations for `project_v`
 - VEDA runs migrations for `veda`
+- VEDA Strategy runs migrations for `veda_strategy`
 - V Forge runs migrations for `v_forge`
 
-One system’s migration runner must not mutate another system’s database.
+One system’s migration runner must not mutate another system’s schema.
 
 Migration tooling may differ between systems.
 Migration ownership may not.
@@ -250,12 +260,12 @@ Vendor lock as hidden doctrine is not.
 
 A new bounded system joining the V Ecosystem should normally receive:
 
-- its own database inside the shared PostgreSQL-family cluster
+- its own schema inside the shared PostgreSQL-family database
 - its own migration ownership
 - its own canonical persistence boundary
 - its own bounded system doctrine
 
-A new bounded system must not be onboarded by casually sharing another system’s canonical database as a convenience shortcut.
+A new bounded system must not be onboarded by casually sharing another system’s canonical schema as a convenience shortcut.
 
 If an exception is proposed, that exception must be explicit, governed, and justified.
 
@@ -267,9 +277,9 @@ This posture must be verified, not merely declared.
 
 Verification should include:
 
-- confirming that each system uses its own database
-- confirming that one system’s credentials cannot query another system’s database by default
-- confirming that migration runners are scoped to the owning system’s database
+- confirming that each system uses its own schema
+- confirming that one system’s credentials cannot query another system’s schema by default
+- confirming that migration runners are scoped to the owning system’s schema
 - confirming that cross-system coordination occurs through governed boundaries rather than hidden DB shortcuts
 
 A declared boundary that is not verified is weak architecture.
@@ -280,11 +290,11 @@ A declared boundary that is not verified is weak architecture.
 
 The ecosystem database posture has drifted if:
 
-- multiple bounded systems begin storing mixed canonical truth in the same database by convenience
+- multiple bounded systems begin storing mixed canonical truth across schemas by convenience
 - one system begins writing directly into another system’s canonical tables
-- one system’s credentials can freely reach into another system’s database without governed reason
+- one system’s credentials can freely reach into another system’s schema without governed reason
 - JSON blobs become a storage loophole for cross-boundary truth copying
-- a new bounded system is added without its own persistence boundary
+- a new bounded system is added without its own schema and persistence boundary
 - vendor-specific convenience becomes hidden doctrine without explicit approval
 
 These are not harmless shortcuts.
@@ -312,15 +322,15 @@ Database posture is too load-bearing to drift through convenience decisions.
 
 A capable LLM should be able to infer from this doc that:
 
-- the ecosystem standardizes on PostgreSQL-family infrastructure
-- each bounded system gets its own database
-- canonical ownership stays separated by system
-- cross-system direct DB shortcuts are forbidden
-- migration ownership stays local to the owning system
+- the ecosystem uses one physical PostgreSQL-family database with four schemas
+- each bounded system owns its own schema; physical consolidation does not mean shared ownership
+- canonical ownership stays separated by schema and enforced by credentials, service boundaries, and API enforcement
+- cross-system direct schema access is forbidden
+- migration ownership stays local to the owning system’s schema
 - future vector capability should be added without fragmenting the database family casually
-- future onboarded systems normally receive their own persistence boundary
+- future onboarded systems normally receive their own schema and persistence boundary
 
-If an LLM could read this posture as permission to mix canonical truth across systems inside one convenience database, this document is failing.
+If an LLM could read this posture as permission to mix canonical truth across schemas because they share one database instance, this document is failing.
 
 ---
 
@@ -340,8 +350,10 @@ This document should be used:
 
 - `v-ecosystem-overview.md`
 - `cross-system-boundaries.md`
+- `decisions/ADR-012-single-postgres-multi-schema.md`
 - `../project-v/project-v.md`
 - `../veda/veda.md`
+- `../veda-strategy/veda-strategy.md`
 - `../v-forge/v-forge.md`
 - `../interfaces/project-v-to-v-forge-handoff-interface.md`
 - `../interfaces/v-forge-to-project-v-return-to-planning-interface.md`
