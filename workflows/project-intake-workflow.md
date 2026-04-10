@@ -39,6 +39,9 @@ This document does not define:
 
 - the VEDA → Project V signal interface data contract — that belongs in
   `interfaces/veda-to-project-v-signal-interface.md`
+- the VEDA Strategy → Project V signal interface data contract — that belongs in
+  `interfaces/veda-strategy-to-project-v-signal-interface.md` (full specification
+  deferred to Batch K; the stub is sufficient for intake workflow entry)
 - the AD-03 evidence request interface contract — that belongs in
   `interfaces/project-v-to-veda-evidence-request-interface.md`
 - detailed Project V internal project schema
@@ -108,15 +111,48 @@ requires intake evaluation. The trigger must be:
 - not merely a loose instruction to "explore" or "go create projects"
 
 Entry: Workflow enters at Stage 2 (framing) directly — bypassing Stage 1 because
-no VEDA delivery event has occurred. The same planning and governance boundary
+no signal delivery event has occurred. The same planning and governance boundary
 rules apply from Stage 2 forward.
+
+**Trigger Type C — VEDA Strategy-delivered strategic signal**
+A valid VEDA Strategy → Project V strategic signal delivery has been received and
+confirmed through `interfaces/veda-strategy-to-project-v-signal-interface.md`.
+The delivery carries a bounded strategic signal package containing VEDA Strategy's
+derived intelligence outputs — such as scored opportunity candidates, strategic-level
+gap signals, clustering outputs, or competitive analysis conclusions — packaged for
+planning evaluation.
+
+A Type C delivery does not carry raw VEDA observatory records. It carries VEDA
+Strategy's canonical derived records, which remain owned by VEDA Strategy after
+delivery. Project V receives the package as a planning input, not as a planning
+decision or an authorization to create a project.
+
+Entry: Receipt is confirmed (Stage 1 entry). Workflow enters normally. The same
+planning and governance boundary rules apply as for Type A.
+
+A strong VEDA Strategy signal does not constitute a planning decision. Project V
+still frames, interprets, evaluates, and produces its own intake outcome. VEDA
+Strategy does not make planning decisions and does not constrain what determination
+Project V reaches.
+
+Note: Because the VEDA Strategy → Project V signal interface is currently a
+governed stub with full specification deferred to Batch K, the delivery package
+field specifications, transport mechanics, and activity trail action type mappings
+specific to Type C are not yet fully defined. The governed path exists and the
+boundary rules are settled; detailed mechanics follow when the interface contract
+is fully specified.
 
 ### What does NOT validly start intake
 
 - Raw unbounded VEDA observability state (not a delivery package)
+- Raw VEDA Strategy internal derivation state (not a delivery package through the
+  governed interface)
+- Project V directly querying VEDA Strategy's derived records outside the
+  governed signal interface
 - Execution-side findings without a planning question attached
 - Informal operator mentions without a bounded planning question
-- VEDA signal that has not passed the validity conditions in the signal interface
+- VEDA or VEDA Strategy signal that has not passed the validity conditions in its
+  respective signal interface
 - Signal that is known to be stale or of insufficient trust posture at receipt
 
 ### Minimum clarity for evaluation
@@ -129,26 +165,40 @@ or classified as requiring additional bounded evidence before evaluation.
 
 ## Workflow Stages
 
-### Stage 1 — Signal Delivery Received and Confirmed (Trigger Type A only)
+### Stage 1 — Signal Delivery Received and Confirmed (Trigger Type A or Type C)
 
-**Entry event:** VEDA delivers a bounded planning-relevant signal package to Project V;
+**Entry event:** A bounded signal package is delivered to Project V through a
+governed signal interface — either VEDA (Type A) or VEDA Strategy (Type C) — and
 Project V confirms receipt.
 
 **What happens:**
-Project V confirms receipt of the VEDA signal delivery per the signal interface.
+Project V confirms receipt of the signal delivery per the relevant signal interface.
 The package is now available for framing. Receipt does not mean framing has occurred
-or a project will be created. The signal remains VEDA-owned truth.
+or a project will be created. The delivered signal remains owned by the source
+system:
+
+- Type A deliveries: signal remains VEDA-owned truth in `veda.*`
+- Type C deliveries: strategic signal package remains VEDA Strategy-owned derived
+  intelligence in `veda_strategy.*`
+
+In both cases, Project V's local receipt record is a planning-side reference — not
+a duplicate or transfer of the source system's canonical records.
 
 **Activity trail:** Signal delivery receipt is covered in
 `ecosystem/activity-trail-integration-map.md` Section 1: `signal.delivery.confirmed`
-record produced by Project V on receipt.
+record produced by Project V on receipt. Activity trail action type mappings
+specific to Type C deliveries follow the full VEDA Strategy → Project V interface
+specification in Batch K.
 
 **Exit condition → Stage 2:** Receipt confirmed; intake item can be framed.
 **Exit condition → Stage 7 (degraded):** Delivery package fails freshness or
 validity check at receipt; signal is too stale or provenance is insufficient.
 
-**Boundary rule:** VEDA retains signal/evidence ownership. Receipt does not transfer
-signal ownership to Project V. Project V does not begin planning mutation at this stage.
+**Boundary rule:** The source system retains signal ownership. Receipt does not
+transfer signal ownership to Project V. Project V does not begin planning mutation
+at this stage. A Type C receipt does not authorize project creation — VEDA Strategy
+does not make planning decisions, and a strategic signal package is a planning
+input, not a planning outcome.
 
 ---
 
@@ -356,8 +406,9 @@ See Outcome Routing section below for detailed routing per outcome type.
 
 | From | Event | To |
 |---|---|---|
-| Valid Type A trigger | Signal delivery confirmed | Stage 1 |
+| Valid Type A trigger | VEDA signal delivery confirmed | Stage 1 |
 | Valid Type B trigger | Operator/strategy trigger | Stage 2 |
+| Valid Type C trigger | VEDA Strategy strategic signal delivery confirmed | Stage 1 |
 | Stage 1 | Receipt confirmed | Stage 2 |
 | Stage 1 | Package fails validity / freshness | Stage 7 |
 | Stage 2 | Planning question framed | Stage 3 |
@@ -609,6 +660,8 @@ This document should be used:
 ## Related Docs
 
 - `../interfaces/veda-to-project-v-signal-interface.md`
+- `../interfaces/veda-strategy-to-project-v-signal-interface.md`
+- `../veda-strategy/veda-strategy.md`
 - `../governance/approval-and-escalation-model.md`
 - `../governance/approval-mechanics-seam-model.md`
 - `../governance/decision-continuity-doctrine.md`
