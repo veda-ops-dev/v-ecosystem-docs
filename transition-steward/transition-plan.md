@@ -54,15 +54,19 @@ A future LLM reading this document should be able to determine immediately:
 
 - VEDA is observatory-only — no scoring, no gap detection, no clustering
 - Firecrawl belongs in VEDA as an observatory provider
+- DataForSEO AI Optimization belongs in VEDA as an observatory provider
 - Pre-project observability is required — observation does not require an
   existing project
 - Key concepts to formalize: `observatory_scope`, `topic_monitor`
+- Raw AI-surface observability (mentions, citations, fan-out queries, brand
+  entities, surface metadata) belongs in VEDA; derived interpretation later
+  belongs in VEDA Strategy
 
 ---
 
 ## Current Transition Status
 
-**Phase: Batch A drafted — pending human review.**
+**Phase: Batch G complete — Batch H ready to execute.**
 
 The following has been done:
 - Full spec-doc context read across all Tier 1 and Tier 2 authority docs
@@ -70,17 +74,59 @@ The following has been done:
 - Transition plan corrected (this document)
 - Qdrant+Postgres architecture research prompt executed (output to be
   uploaded as reference material — not stored in this repo)
-- Batch A edits drafted: `ecosystem/v-ecosystem-overview.md` and
+- Batch A complete: `ecosystem/v-ecosystem-overview.md` and
   `ecosystem/cross-system-boundaries.md` updated with VEDA Strategy as
-  the fourth governed system — **awaiting human review before marking complete**
+  the fourth governed system — reviewed and accepted
+- Batch B complete: `ecosystem/db-posture.md` rewritten for single-Postgres/
+  four-schema posture; `interfaces/data-boundaries.md` updated with VEDA Strategy
+  ownership map entry; `ecosystem/decisions/ADR-012-single-postgres-multi-schema.md`
+  created — reviewed and accepted
+- Batch C complete: `ecosystem/ecosystem-schema-spine.md` updated with
+  `veda_strategy` in all canonical enumerations; `strategic_signal_package` entity
+  type added; VEDA Strategy usage section added — reviewed and accepted
+- Batch D complete: `veda-strategy/veda-strategy.md`,
+  `veda-strategy/data-boundaries.md`, and `veda-strategy/schema-authority.md`
+  created — reviewed and accepted
+- DataForSEO AI Optimization admitted into `veda/providers/registry.md` as an
+  active observatory provider; raw AI-surface observability is now explicitly
+  classified as VEDA input rather than VEDA Strategy logic
+- Batch E complete: `veda/veda.md`, `veda/system-invariants.md`, and
+  `veda/observability-and-signal-role.md` updated to name VEDA Strategy
+  explicitly as the governed destination for derived strategic intelligence and
+  to recognize raw AI-surface observability as valid VEDA input — reviewed and
+  accepted
+- Batch F complete: `interfaces/veda-strategy-to-project-v-signal-interface.md`
+  and `interfaces/veda-strategy-to-v-forge-signal-interface.md` created as
+  governed interface stubs; `interfaces/data-boundaries.md` updated to include
+  VEDA Strategy ownership and governed signal-routing interfaces — reviewed and
+  accepted
+- Batch G complete: `project-v/project-v.md` updated with a new Relationship to
+  VEDA Strategy section (Project V consumes strategic signal packages, does not
+  generate them) and Related Docs additions; `workflows/project-intake-workflow.md`
+  updated with Trigger Type C (VEDA Strategy-delivered strategic signal, Stage 1
+  entry), Stage 1 generalized to cover Type A and Type C deliveries with
+  source-system ownership split, "What does NOT validly start intake" expanded,
+  Transition Summary Table updated, and Related Docs additions; no structural
+  rewrite of stages 2–8; `project-v/data-boundaries.md` and
+  `project-v/schema-authority.md` intentionally untouched per Batch G scope note
 
 The following has not yet been done:
-- Batch A not yet reviewed and accepted
-- No database posture docs have been modified
-- No new system docs have been created
-- No ADRs have been written for the single-database posture
+- Batch H not yet executed (Firecrawl admission process is a precondition for
+  closing the registry entry portion of Batch H)
+- Batches I, J, K not yet executed
+- Supersession cleanup for `project-v/decisions/ADR-001-separate-databases-per-bounded-system.md`
+  not yet executed; the file exists and conflicts with ADR-012's accepted
+  single-Postgres / multi-schema posture
+- Exact VEDA schema families for AI-surface observability not yet formalized
+- Exact normalization/provenance doctrine for AI-surface observability not yet formalized
+- Exact VEDA Strategy models derived from AI-surface observability not yet formalized
+- Downstream consequence of Batch G: the intake workflow now contains explicit
+  Batch K-deferred notes in Trigger Type C, Stage 1 activity trail mapping, and
+  Out of Scope. These must be revisited and tightened when Batch K runs.
 
-**Next action: Human reviews Batch A. On acceptance, proceed to Batch B.**
+**Next action: Execute Batch H as spec-doc authoring per the doctrine. Batch J is independently eligible and may run before, after, or alongside Batch H (it follows Batch D, does not depend on H or I).**
+
+**Note on "admission process" in docs-refoundation mode:** Several batches (notably Batch H) reference the external provider admission process defined in `ecosystem/external-provider-integration-doctrine.md`. That doctrine is written as runtime governance for a live ecosystem — it requires classification, API client, ingest layer, schema, hammer verification, registry entry, and optional ADR. In the current docs-refoundation phase, these are spec documents that downstream implementation will build against. "Completing the admission process" for a provider in this phase means producing the governance documentation artifacts (provider classification doc, registry entry, and ADR if cross-system) so that a capable LLM can later implement the code-level portions (API client, ingest layer, schema, hammer) from the specs without ambiguity. The runtime/hammer portions become implementation work downstream; they are not blockers for spec-doc authoring.
 
 ---
 
@@ -94,7 +140,8 @@ The following has not yet been done:
 6. Correct Project V docs: Project V consumes strategy signals, does not generate them
 7. Create VEDA Strategy interface stubs for signal routing to Project V and V Forge
 8. Formalize pre-project observability concepts in VEDA docs
-9. Add Firecrawl to VEDA provider registry via governed admission process
+9. Add Firecrawl and DataForSEO AI Optimization to VEDA provider governance and
+   classify what they settle now vs. what remains deferred
 10. Promote Qdrant doctrine into a governed infrastructure posture doc
 11. Clean up strategy/* system field and align with VEDA Strategy identity
 
@@ -110,7 +157,7 @@ Batches A through C must complete before any system-level doc work begins.
 
 ### Batch A — Four-System Ecosystem Map
 **Branch:** `docs/transition-batch-a-four-system-ecosystem-map`
-**Status:** Drafted — pending human review
+**Status:** Complete — reviewed and accepted
 
 Docs:
 - `ecosystem/v-ecosystem-overview.md`
@@ -133,7 +180,7 @@ in the ecosystem overview, all subsequent corrections reference a ghost system.
 
 ### Batch B — Database Posture Correction
 **Branch:** `docs/transition-batch-b-database-posture-correction`
-**Status:** Not started
+**Status:** Complete — reviewed and accepted
 
 Docs:
 - `ecosystem/db-posture.md` — rewrite
@@ -153,9 +200,12 @@ Changes:
 
 **Note on the old Phase 5:** The previous plan referenced
 `project-v/decisions/ADR-001-separate-databases-per-bounded-system.md` as
-the cleanup target. That file does not exist and never existed at that path.
-The ADR numbering in `ecosystem/decisions/` currently ends at ADR-011. The
-correct action is to create ADR-012 here. There is nothing to delete.
+the cleanup target. That file does exist and is marked Accepted in the Project V
+ADR folder. Creating `ecosystem/decisions/ADR-012-single-postgres-multi-schema.md`
+was still the correct Batch B action because no prior ecosystem-level ADR existed
+for the single-Postgres / multi-schema posture. However, ADR-001 now requires an
+explicit supersession cleanup follow-on so the repo no longer carries two accepted
+and contradictory persistence postures.
 
 **Why second:** The db-posture doc is the most actively misleading doc in the
 repo. Every LLM that reads it picks up multi-database posture as current doctrine.
@@ -165,7 +215,7 @@ Must be corrected before schema or system docs reference it.
 
 ### Batch C — Schema Spine Enumeration Updates
 **Branch:** `docs/transition-batch-c-schema-spine-enumerations`
-**Status:** Not started
+**Status:** Complete — reviewed and accepted
 
 Docs:
 - `ecosystem/ecosystem-schema-spine.md`
@@ -186,7 +236,7 @@ enumerations. This is a prerequisite for Batch D.
 
 ### Batch D — VEDA Strategy System Introduction
 **Branch:** `docs/transition-batch-d-veda-strategy-introduction`
-**Status:** Not started
+**Status:** Complete — reviewed and accepted
 
 New files to create:
 - `veda-strategy/veda-strategy.md` — identity doc
@@ -210,7 +260,7 @@ VEDA Strategy as a destination and before interface stubs can reference it.
 
 ### Batch E — VEDA Docs Narrow Correction
 **Branch:** `docs/transition-batch-e-veda-docs-narrow-correction`
-**Status:** Not started
+**Status:** Complete — reviewed and accepted
 
 Docs (targeted additions only — these docs are already well-aligned):
 - `veda/veda.md`
@@ -226,16 +276,19 @@ Changes:
   capabilities; update related docs reference
 - `veda/observability-and-signal-role.md`: update "What VEDA Does Not Do"
   section to name VEDA Strategy by name rather than just "Project V or V Forge"
+- Update VEDA docs to recognize DataForSEO AI Optimization as observatory input
+  for raw AI-surface behavior, not embedded interpretation logic
 
 **Scope note:** Do not rewrite these docs. They are already the best-specified
 boundary docs in the repository. Only add the explicit VEDA Strategy references
-where "belongs elsewhere" currently has no named destination.
+where "belongs elsewhere" currently has no named destination, and add only the
+minimum DataForSEO AI Optimization recognition needed to preserve observatory posture.
 
 ---
 
 ### Batch F — VEDA Strategy Interface Stubs
 **Branch:** `docs/transition-batch-f-veda-strategy-interface-stubs`
-**Status:** Not started
+**Status:** Complete — reviewed and accepted
 
 New files to create:
 - `interfaces/veda-strategy-to-project-v-signal-interface.md` — stub
@@ -258,7 +311,7 @@ reference.
 
 ### Batch G — Project V and Intake Workflow Corrections
 **Branch:** `docs/transition-batch-g-project-v-intake-workflow`
-**Status:** Not started
+**Status:** Complete — reviewed and accepted
 
 Docs:
 - `project-v/project-v.md`
@@ -277,6 +330,16 @@ Changes:
 are already well-aligned and do not need changes in this batch. Touch only
 the identity doc and intake workflow.
 
+**Execution note:** Trigger Type C was added to the intake workflow as a
+Stage 1 entry (parallel to Type A), with explicit Batch K-deferred notes for
+delivery package field specifications, transport mechanics, and activity trail
+action type mappings. Stage 1 was generalized rather than duplicated; stages
+2–8 were not restructured. When Batch K specifies the full VEDA Strategy →
+Project V interface contract, the deferred notes in `workflows/project-intake-workflow.md`
+(Trigger Type C mechanics paragraph, Stage 1 activity trail paragraph, and the
+Out of Scope bullet referencing Batch K) must be revisited and tightened to
+reflect the settled contract.
+
 ---
 
 ### Batch H — VEDA Infrastructure: Firecrawl, Blob, Pre-Project Observability
@@ -286,6 +349,7 @@ the identity doc and intake workflow.
 Docs:
 - `veda/providers/registry.md`
 - `veda/schema-reference.md`
+- provider docs under `veda/providers/`
 
 Changes:
 - `veda/providers/registry.md`: add Firecrawl as an admitted observatory
@@ -293,16 +357,27 @@ Changes:
   `ecosystem/external-provider-integration-doctrine.md`; include
   classification, data supplied, trust posture, spend posture, approval
   posture, status, admitted date
+- Keep DataForSEO AI Optimization admitted in the registry and use this batch to
+  clarify what that admission settles now vs. what remains deferred at schema
+  and strategy layers
 - `veda/schema-reference.md`: formalize `observatory_scope` and `topic_monitor`
   as deferred-but-owned model families required for pre-project observability;
   specify they must not receive ad hoc tables before governed family design
+- Add first-pass VEDA schema/reference posture for AI-surface observability,
+  including where mention/citation/fan-out/entity observations conceptually live,
+  while keeping exact normalization and downstream derivation conservative
 - Blob/page-capture posture: add doctrine note on local blob storage posture
   and R2/bucket compatibility requirement; home is `veda/data-boundaries.md`
   or a new infrastructure posture doc depending on scope
 
-**Prerequisite:** Firecrawl admission requires completing the provider
-admission process — this batch cannot fully close until that process runs.
-The registry entry is the output of that process, not a shortcut around it.
+**Prerequisite:** Firecrawl admission must be completed as part of this batch per
+the external provider integration doctrine. In docs-refoundation mode, this means
+producing the provider classification doc (`veda/providers/firecrawl.md`) and the
+registry entry — the code-level portions of the doctrine (API client, ingest layer,
+schema, hammer verification) become downstream implementation work built against
+these specs. DataForSEO AI Optimization has already been admitted at the spec-doc
+level; this batch handles its follow-on doctrine implications (what admission settles
+now vs. what remains deferred at schema and strategy layers) rather than re-admitting it.
 
 ---
 
@@ -361,6 +436,12 @@ Docs (when ready):
 - `interfaces/veda-strategy-to-project-v-signal-interface.md` — full spec
 - `interfaces/veda-strategy-to-v-forge-signal-interface.md` — full spec
 
+Downstream docs that must be revisited during Batch K to retire Batch K-deferred
+notes introduced by earlier batches:
+- `workflows/project-intake-workflow.md` — Trigger Type C mechanics paragraph,
+  Stage 1 activity trail paragraph, and Out of Scope bullet referencing Batch K
+  (introduced by Batch G)
+
 **Why deferred:** Full interface specification requires understanding VEDA
 Strategy's schema and signal posture, which cannot be final until Batch D
 docs are reviewed and stable. The stubs from Batch F are sufficient until then.
@@ -378,7 +459,7 @@ Batch A  →  Batch B  →  Batch C  →  Batch D
                    ↓
                Batch G
                    ↓
-               Batch H  (Firecrawl admission runs in parallel)
+               Batch H  (Firecrawl admission is part of Batch H, not a parallel external process)
                    ↓
                Batch I  (blocked until research reviewed)
                    ↓
@@ -389,8 +470,9 @@ Batch A  →  Batch B  →  Batch C  →  Batch D
 
 Batches A, B, C must run in order.
 Batches D through H run in sequence after C.
+Batches A through G are complete; Batch H is next in sequence.
 Batch I is blocked on external research input.
-Batch J may run after Batch D regardless of H or I status.
+Batch J may run after Batch D regardless of H or I status — eligible now.
 Batch K is the last phase — do not start it early.
 
 ---
@@ -408,6 +490,10 @@ Batch K is the last phase — do not start it early.
   Batch I promotes the research into governed doctrine.
 - Do not correct the strategy/* system field before Batch D establishes
   the VEDA Strategy identity. The files are usable as-is.
+- Do not let provider capability imply settled schema or strategy doctrine.
+  DataForSEO AI Optimization admission means the source is admitted as VEDA
+  observatory input; it does not mean normalization, weighting, derived models,
+  or tactics are already canonized.
 - Do not treat the transition-steward folder as a replacement for authority
   docs. Any load-bearing conclusion must be promoted into the proper doc
   cluster and removed from here.
@@ -437,7 +523,13 @@ The transition is complete when:
 - VEDA docs name VEDA Strategy explicitly where relevant
 - `ecosystem-schema-spine.md` includes `veda_strategy` in all enumerations
 - Firecrawl is in the VEDA provider registry via the governed process
+- DataForSEO AI Optimization is reflected consistently as VEDA observatory input,
+  with later schema and strategy implications clarified in the proper batches
 - Qdrant retrieval posture is in a governed ecosystem doc
 - Pre-project observability concepts are formalized in VEDA docs
 - No contradictions remain between Tier 1 docs
 - Implementation can proceed from docs without drift assumptions
+
+
+
+
