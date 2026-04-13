@@ -107,9 +107,18 @@ requires intake evaluation. The trigger must be:
 - within Project V's planning authority
 - not merely a loose instruction to "explore" or "go create projects"
 
+This trigger type also covers strategic signal packages delivered to Project V
+through the governed VEDA Strategy → Project V interface
+(`interfaces/veda-strategy-to-project-v-signal-interface.md`). VEDA Strategy-originated
+signals — scored opportunity candidates, strategic gap signals, competitive analysis
+conclusions — enter Project V intake through that governed interface as a bounded
+delivery, not as informal operator direction. The planning and governance boundary
+rules from Stage 2 forward apply equally regardless of whether the Type B entry
+originates from operator direction or a VEDA Strategy interface delivery.
+
 Entry: Workflow enters at Stage 2 (framing) directly — bypassing Stage 1 because
-no VEDA delivery event has occurred. The same planning and governance boundary
-rules apply from Stage 2 forward.
+no VEDA observatory delivery event has occurred. The same planning and governance
+boundary rules apply from Stage 2 forward.
 
 ### What does NOT validly start intake
 
@@ -609,6 +618,7 @@ This document should be used:
 ## Related Docs
 
 - `../interfaces/veda-to-project-v-signal-interface.md`
+- `../interfaces/veda-strategy-to-project-v-signal-interface.md`
 - `../governance/approval-and-escalation-model.md`
 - `../governance/approval-mechanics-seam-model.md`
 - `../governance/decision-continuity-doctrine.md`

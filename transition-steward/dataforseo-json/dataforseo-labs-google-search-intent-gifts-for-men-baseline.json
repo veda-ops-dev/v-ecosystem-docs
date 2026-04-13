@@ -1,0 +1,40 @@
+{
+  "id": "04110622-1463-0541-0000-a207bfa87cef",
+  "status_code": 20000,
+  "status_message": "Ok.",
+  "time": "0.0225 sec.",
+  "cost": 0.0011,
+  "result_count": 1,
+  "path": [
+    "v3",
+    "dataforseo_labs",
+    "google",
+    "search_intent",
+    "live"
+  ],
+  "data": {
+    "api": "dataforseo_labs",
+    "function": "search_intent",
+    "se_type": "google",
+    "keywords": [
+      "gifts for men"
+    ],
+    "language_code": "en"
+  },
+  "result": [
+    {
+      "language_code": "en",
+      "items_count": 1,
+      "items": [
+        {
+          "keyword": "gifts for men",
+          "keyword_intent": {
+            "label": "commercial",
+            "probability": 0.8352958
+          },
+          "secondary_keyword_intents": null
+        }
+      ]
+    }
+  ]
+}

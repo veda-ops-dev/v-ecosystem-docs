@@ -114,25 +114,44 @@ These record what URLs were discovered during sitemap processing, crawl expansio
 
 ## Relationship to existing VEDA record families
 
-The exact placement of crawled page observations in VEDA's canonical schema is deferred. The relationship between Firecrawl-crawled pages and the existing `SourceItem` family (which already models captured external items including webpages) has not been formally settled.
+The exact placement of crawled page observations in VEDA's canonical schema is deferred. The relationship between Firecrawl-crawled pages and the existing SourceItem family (which already models captured external items including webpages) has not been formally settled.
+
+What is settled now:
+
+* Firecrawl-captured external pages are a VEDA-owned observatory domain
+* raw crawl payloads, raw HTML, normalized markdown, metadata captures, and link captures are evidence-support families
+* those evidence-support families are not self-interpreting canonical truth
 
 Possible futures include:
 
-* Firecrawl crawled pages land in the existing `SourceItem` family with crawl-specific provenance fields
+* Firecrawl crawled pages land in the existing SourceItem family with crawl-specific provenance fields
 * a new crawl-specific canonical family is established for crawled page observations with its own schema posture
-* a bounded combination in which lightweight captures use `SourceItem` and structured crawl jobs use a new family
+* a bounded combination in which lightweight captures use SourceItem and structured crawl jobs use a new family
 
-That question is owned by VEDA schema authority and must be resolved through governed doctrine work before implementation. Admission of Firecrawl as an observatory provider does not resolve it. See the Crawled page observability families entry in `../schema-reference.md`.
+That question is owned by VEDA schema authority and must be resolved through governed doctrine work before implementation. Admission of Firecrawl as an observatory provider does not resolve it. See the Crawled page observability families entry in ../schema-reference.md.
 
 ---
 
-## Snapshot storage posture
+## Snapshot and bucket storage posture
 
 Crawled page payloads may include substantial content that must be preserved as evidence.
 
-This content must follow the blob and snapshot storage posture defined in `../data-boundaries.md` — addressable by stable reference, backing-store neutral, and not embedded directly in hot-path query fields.
+Large Firecrawl captures may live in bucket/blob backing storage rather than being embedded directly in hot-path canonical rows. This is the correct posture for evidence-heavy artifacts such as:
 
-Hot-path fields required for querying or filtering must be promoted to explicit schema columns per `../schema-reference.md`. Raw crawled payloads are evidence support, not the primary query target.
+* raw Firecrawl API payloads
+* raw HTML captures
+* normalized markdown exports
+* link dumps
+* large metadata or discovery artifacts
+
+In this posture:
+
+* the bucket/blob store is evidence backing storage, not canonical truth
+* canonical VEDA records remain the system of record for the observatory fact that a capture occurred
+* canonical VEDA records must preserve stable references to the backing artifacts
+* provenance, project scope, capture time, provider identity, and hot-path query fields must remain in governed VEDA records rather than living only in the bucket
+
+Hot-path fields required for querying or filtering must be promoted to explicit schema columns per ../schema-reference.md. Raw crawled payloads are evidence support, not the primary query target.
 
 ---
 
@@ -191,7 +210,7 @@ The following should remain deferred until later doctrine work is complete:
 * exact VEDA canonical schema family for crawled page observations
 * exact normalization model for extracted structured data
 * exact deduplication and supersedence rules for re-crawls of the same URL
-* exact retention and archival policy for crawled page snapshots
+* exact bucket retention, archival, and retrieval policy for crawled page snapshots
 * exact VEDA Strategy models derived from crawled observations
 * exact relationship between crawled page observations and the existing `SourceItem` family
 
@@ -210,3 +229,4 @@ These should not be guessed early. The admission of Firecrawl as an observatory 
 * `../../ecosystem/external-provider-integration-doctrine.md`
 * `../../governance/paid-data-pull-governance.md`
 * `../../veda-strategy/veda-strategy.md`
+

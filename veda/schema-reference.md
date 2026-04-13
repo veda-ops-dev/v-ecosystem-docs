@@ -375,6 +375,79 @@ VEDA owns Google Analytics 4 performance observations. No `GA4Observation` or eq
 
 VEDA owns YouTube search and channel observatory data. YouTube query-level SERP observations land in `SERPSnapshot` per VEDA-001. YouTube enrichment data from the YouTube Data API — including video metadata, channel metadata, and statistics snapshots — does not yet have a governed canonical family. This must not receive ad hoc tables. Its family design must be governed through a future VEDA architecture decision and added here before implementation.
 
+### Crawled page observability families
+
+VEDA owns crawled external page observability for admitted crawl providers such as Firecrawl. This includes crawled page observations, crawl-job observations, crawl-failure observations, and discovery observations.
+
+What is settled now:
+
+- Firecrawl is admitted as an observatory provider
+- crawled external page observations are a VEDA-owned observatory domain
+- raw crawl payloads, raw HTML, normalized markdown, metadata captures, and link captures are evidence-support families, not self-interpreting truth
+- substantial raw captures may live in bucket/blob backing storage so long as canonical VEDA records preserve stable references, provenance, and promoted hot-path fields
+
+What remains deferred:
+
+- whether crawled pages land in the existing `SourceItem` family, a new crawl-specific family, or a bounded combination
+- whether crawl-job and crawl-failure observations share a family or split into separate families
+- exact deduplication, supersedence, and re-crawl posture for the same URL over time
+- exact bucket retention, archival, and retrieval rules for large crawl payloads
+
+Until those families are governed, implementation must not create ad hoc crawl tables or hide the domain inside generic JSON blobs on unrelated families.
+
+---
+
+### `observatory_scope` and `topic_monitor`
+
+`observatory_scope` and `topic_monitor` are named in the current architecture direction as key concepts to formalize for VEDA. They are VEDA-owned model families that have not yet received governed canonical family design.
+
+What is settled now:
+
+- both are VEDA-owned model families requiring governed design
+- pre-project observability is a required VEDA capability — observation must not require an existing Project V project record to proceed
+- `observatory_scope` and `topic_monitor` are the named families intended to support that capability
+- these families must not be conflated with VEDA's existing thin `Project` partition record
+
+What remains deferred:
+
+- the exact role, scope, and semantics of each family
+- exact field definitions, uniqueness constraints, and mutation rules for both
+- the relationship between `observatory_scope` and VEDA's existing `Project` partition record
+- the relationship between `topic_monitor` and existing `KeywordTarget` records
+- lifecycle and archival rules for both families
+- all implementation detail
+
+Until those families are governed, implementation must not create ad hoc tables, provisional schema, or JSON blob shortcuts that substitute for governed `observatory_scope` or `topic_monitor` family design.
+
+---
+
+### AI-surface observability families
+
+VEDA owns raw AI-surface observability as an observatory domain. DataForSEO AI Optimization has been admitted as an observatory provider supplying this data. Provider admission settles provider admissibility — it does not settle canonical family design.
+
+What is settled now:
+
+- raw AI-surface observability is a VEDA-owned observatory domain
+- this domain includes, at a minimum: mention observations, citation observations, fan-out query observations, brand and entity observations, and provider-returned AI-surface response metadata
+- data from DataForSEO AI Optimization is observatory input to VEDA, not strategic truth
+- provider-computed metrics (such as aggregated impression-type or volume estimates) are observable attributes of what the provider returned, not VEDA-derived or VEDA-validated metrics
+- different AI surfaces and platforms may behave differently; those differences must be preserved in observation records rather than flattened
+- derived interpretation of AI-surface observations — opportunity scoring, citation gap detection, brand visibility signals — belongs to VEDA Strategy, not to VEDA
+
+What remains deferred:
+
+- exact canonical family boundaries for this domain (whether mention, citation, fan-out, entity, and surface metadata land in separate families or a bounded combination)
+- exact normalization and deduplication posture across provider responses
+- exact representation of platform, surface, locale, and query context dimensions
+- exact relationship between provider-specific response wrappers and canonical VEDA records
+- exact placement of provider-computed aggregate metrics vs raw observation rows
+- schema design for surfaces not yet sampled (direct LLM mentions search, aggregated metrics surfaces) — these must not be assumed from existing ChatGPT LLM Responses samples alone
+- VEDA Strategy derivation models built from these observations
+
+Until the canonical families are governed, implementation must not create ad hoc tables for this domain. Implementation must not hide unresolved AI-surface schema design inside generic JSON blobs on unrelated families such as `SERPSnapshot`. Provider-computed metrics must not be silently promoted to canonical observatory truth before their provenance and trust posture are explicitly governed.
+
+---
+
 ### Rule: No ad hoc tables for deferred domains
 
 A deferred domain must not receive an implementation-local table, a provisional schema, or a JSON convenience blob that substitutes for governed family design. Adding schema for a deferred domain without first governing the family through a documented architecture decision and updating this document is a boundary violation.
@@ -669,3 +742,5 @@ This document should be used:
 - `../interfaces/veda-to-v-forge-signal-interface.md`
 - `../v-forge/schema-reference.md` *(content graph schema lives here)*
 - `../project-v/schema-specification.md`
+
+
