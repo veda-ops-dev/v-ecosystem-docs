@@ -411,7 +411,7 @@ project records back to their intake basis.
 | `decided_at` | Yes | No | UTC timestamp when the outcome was produced and became active (or, if a review gate was required, when the review decision was received). |
 | `decided_by_actor_type` | Yes | No | The `actor_type` of the actor that produced the outcome. |
 | `decided_by_actor_id` | Yes | No | The `actor_id` of the deciding actor, using the value class from `governance/actor-identity-schema-spec.md`. |
-| `workflow_trigger_type` | Yes | No | One of: `veda_signal`, `operator_strategy`. Records whether intake was triggered by a VEDA signal delivery (Type A) or an operator/strategy trigger (Type B). |
+| `workflow_trigger_type` | Yes | No | One of: `veda_signal`, `operator_strategy`. Records whether intake was triggered by a VEDA signal delivery (Type A) or an operator/strategy trigger (Type B). The `operator_strategy` value covers both direct operator direction and governed VEDA Strategy → Project V strategic signal deliveries — both enter intake as Type B triggers per `workflows/project-intake-workflow.md`. |
 | `created_at` | Yes | No | UTC timestamp of record creation. |
 
 ### Continuity requirement

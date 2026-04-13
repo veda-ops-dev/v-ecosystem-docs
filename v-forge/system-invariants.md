@@ -178,6 +178,8 @@ V Forge must not become the signal, evidence, or observability system of record.
 V Forge may:
 
 - consume bounded signal outputs from VEDA where execution requires them
+- consume bounded execution-relevant strategic signals from VEDA Strategy through
+  the governed VEDA Strategy → V Forge signal interface
 - generate bounded execution findings during approved work
 - observe execution-relevant conditions enough to complete or validate approved scope
 
@@ -187,9 +189,12 @@ V Forge must not:
 - become the canonical evidence archive for ecosystem observability
 - operate as a general research observatory
 - replace VEDA's signal-system role through execution convenience
+- replace VEDA Strategy's derived intelligence role through execution convenience
 
 Execution-side findings are not a license to absorb observability ownership.
 Consuming VEDA signal is not the same as owning VEDA signal.
+Receiving VEDA Strategy strategic signals is not the same as owning derived
+strategic intelligence.
 
 ---
 
@@ -506,9 +511,11 @@ This document should be used:
 - `../ecosystem/v-ecosystem-overview.md`
 - `../ecosystem/cross-system-boundaries.md`
 - `../ecosystem/vocabulary.md`
+- `../veda-strategy/veda-strategy.md`
 - `../interfaces/veda-to-v-forge-signal-interface.md`
 - `../interfaces/project-v-to-v-forge-handoff-interface.md`
 - `../interfaces/v-forge-to-project-v-return-to-planning-interface.md`
+- `../interfaces/veda-strategy-to-v-forge-signal-interface.md`
 - `../governance/approval-and-escalation-model.md`
 - `../governance/auth-and-actor-model.md`
 - `../governance/external-action-governance.md`
