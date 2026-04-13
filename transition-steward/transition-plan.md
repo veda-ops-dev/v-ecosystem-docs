@@ -66,7 +66,7 @@ A future LLM reading this document should be able to determine immediately:
 
 ## Current Transition Status
 
-**Phase: Branch carries landed documentation work through Batch G, plus partial Batch H provider/infrastructure and Firecrawl sample-governance work — pending human review, Batch H residual schema-reference work, and Batch J verification.**
+**Phase: Branch carries landed documentation work through Batch G, partial Batch H, verified Batch J, and a same-day cleanup set — pending human review and remaining Batch H residual doctrine work.**
 
 The following has been done on branch `docs/batch-h-firecrawl-provider-governance`:
 - Full spec-doc context read across all Tier 1 and Tier 2 authority docs
@@ -105,21 +105,43 @@ The following has been done on branch `docs/batch-h-firecrawl-provider-governanc
 - DataForSEO AI Optimization admitted into `veda/providers/registry.md` as an
   active observatory provider; raw AI-surface observability is now explicitly
   classified as VEDA input rather than VEDA Strategy logic
+- Batch H partial posture landed: `veda/data-boundaries.md` updated with bucket/
+  snapshot storage posture for large Firecrawl captures; `veda/schema-reference.md`
+  updated to formalize `observatory_scope`, `topic_monitor`, crawled page
+  observability families, and AI-surface observability families as
+  deferred-but-owned VEDA model families with an explicit no-ad-hoc-tables rule
+- Batch J verified complete: all four `strategy/*` docs already carry
+  `system: veda_strategy`; root `README.md` strategy section already reflects
+  VEDA Strategy as the authority-owning system; no file changes were required
+- Same-day cleanup set landed:
+  - `project-v/decisions/ADR-001-separate-databases-per-bounded-system.md`
+    status updated to Superseded by ADR-012; supersession notice added;
+    ADR-012 added to Related Docs
+  - `ecosystem/vocabulary.md` updated with VEDA Strategy as a canonical term
+    entry parallel to the other three system entries
+  - `v-forge/v-forge.md` updated with a Relationship to VEDA Strategy section
+    and the VEDA Strategy → V Forge interface added to Related Docs
+  - `veda/observatory-models.md` Anti-Drift Rule 3 corrected to name VEDA
+    Strategy as the first-named governed destination for derived strategic
+    intelligence types (opportunity scoring, gap detection, clustering,
+    competitive analysis) rather than routing them generically to
+    "Project V or V Forge"
+  - `veda/search-intelligence-layer.md` Rule 6 and Rule 7 corrected with the
+    same destination fix and with an explicit acknowledgment of the governed
+    VEDA → VEDA Strategy read path
 
 The following remains unfinished or not yet human-accepted:
-- None of the landed Batch A–G work has been marked human-reviewed and accepted yet
-- Batch H remains partial: Firecrawl admission and transition-support baseline
-  capture are landed, and `observatory_scope` / `topic_monitor` are now formalized
-  as deferred-but-owned VEDA model families in `veda/schema-reference.md`;
-  remaining Batch H work includes schema/reference posture for Firecrawl
-  capture families and AI-surface observability families, which remain deferred
-  pending additional governed doctrine work (no DataForSEO pulls required for
-  the deferred posture work, but exact family design is not yet settled)
-- Batch J verified complete: all four `strategy/*` docs already carry `system: veda_strategy`; root `README.md` strategy section already reflects VEDA Strategy as the authority-owning system; no file changes were required
+- None of the landed work has been marked human-reviewed and accepted yet
+- Batch H remains partial: Firecrawl admission, transition-support baseline
+  capture, bucket/blob posture, and deferred-but-owned schema family posture
+  are all landed; remaining Batch H work is the governed doctrine design for
+  the Firecrawl capture families and AI-surface observability families in
+  `veda/schema-reference.md` — exact family design is not yet settled and
+  requires a governed schema design pass, not a text edit
 - Batch I remains blocked on external research review
 - Batch K remains deferred
 
-**Next action:** Human reviews the branch state and accepts or corrects the landed A–J work. After transition-control truth is synced to reality, complete remaining Batch H residual work before Batch I or K.
+**Next action:** Human reviews the branch state and accepts or corrects the landed work. After transition-control truth is synced to reality, complete remaining Batch H schema design work before Batch I or K.
 
 ---
 
@@ -191,11 +213,10 @@ Changes:
   explicitly supersede the prior multi-database posture that was described
   in `db-posture.md` as prose doctrine (no prior ADR existed for it)
 
-**Note on the old Phase 5:** The previous plan referenced
-`project-v/decisions/ADR-001-separate-databases-per-bounded-system.md` as
-the cleanup target. That file does not exist and never existed at that path.
-The ADR numbering in `ecosystem/decisions/` currently ends at ADR-011. The
-correct action is to create ADR-012 here. There is nothing to delete.
+**Note on ADR-001:** `project-v/decisions/ADR-001-separate-databases-per-bounded-system.md`
+exists and has been updated in the same-day cleanup set: its status is now
+Superseded by ADR-012 and a supersession notice has been added. The historical
+content is preserved. ADR-012 governs the current posture.
 
 **Why second:** The db-posture doc is the most actively misleading doc in the
 repo. Every LLM that reads it picks up multi-database posture as current doctrine.
