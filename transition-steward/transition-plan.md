@@ -377,6 +377,34 @@ Changes:
   for one direct API baseline scrape plus paired Playground artifacts; use
   those artifacts to ground the remaining Firecrawl doctrine work rather than
   infer structure from vendor docs or UI behavior alone
+- `/crawl` and `/map` surface shapes are now doc-confirmed via canonical
+  Firecrawl documentation (live samples blocked by provider 502s; doc
+  confirmation is sufficient for the schema design pass):
+  - `/map` response: `success` + `links[]` with `url`, optional `title`,
+    optional `description`; speed-first, sourced from sitemap + cached SERP
+    results; explicitly not guaranteed comprehensive; 1 credit flat regardless
+    of URL count; use as pre-flight discovery only, not as a thorough baseline
+  - `/crawl` response: async job-based; per-page families are the same as
+    `/scrape` (markdown, html, metadata with statusCode/sourceURL, links);
+    delivered via polling, WebSocket, or webhook
+  - Three caveats to carry forward into the schema design pass and
+    implementation work:
+    1. **24-hour result expiration** — crawl job results expire from the live
+       API 24 hours after completion; bucket capture is therefore required, not
+       optional — live results will not be available for later re-parsing
+    2. **Non-determinism** — crawl results vary between runs; concurrent
+       scraping means link discovery order depends on network timing; near
+       maxDiscoveryDepth boundaries different site branches get explored to
+       different extents; this has direct implications for re-crawl comparison
+       logic and observatory trust posture
+    3. **Crawl errors are a separate endpoint** — the `data` array in a
+       completed crawl only contains successfully scraped pages; pages that
+       failed due to network errors, timeouts, or robots.txt blocks are
+       silently absent; `GET /crawl/{id}/errors` must be polled separately for
+       a complete capture picture; not calling the errors endpoint produces a
+       silently incomplete capture with no warning
+  - Inventory note for `/crawl` and `/map` surfaces added at
+    `transition-steward/firecrawl/firecrawl-crawl-map-surface-inventory.md`
 - `veda/schema-reference.md`: formalize `observatory_scope` and `topic_monitor`
   as deferred-but-owned model families required for pre-project observability;
   specify they must not receive ad hoc tables before governed family design
