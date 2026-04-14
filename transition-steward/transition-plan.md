@@ -66,7 +66,7 @@ A future LLM reading this document should be able to determine immediately:
 
 ## Current Transition Status
 
-**Phase: Branch carries landed documentation work through Batch G, partial Batch H, verified Batch J, and a same-day cleanup set — pending human review and remaining Batch H residual doctrine work.**
+**Phase: Branch carries landed documentation work through Batch G, partial Batch H, verified Batch J, Batch L, and a same-day cleanup set — pending human review and remaining Batch H residual doctrine work.**
 
 The following has been done on branch `docs/batch-h-firecrawl-provider-governance`:
 - Full spec-doc context read across all Tier 1 and Tier 2 authority docs
@@ -113,6 +113,10 @@ The following has been done on branch `docs/batch-h-firecrawl-provider-governanc
 - Batch J verified complete: all four `strategy/*` docs already carry
   `system: veda_strategy`; root `README.md` strategy section already reflects
   VEDA Strategy as the authority-owning system; no file changes were required
+- Batch L docs landed: `v-forge/content-execution-module.md`,
+  `interfaces/desktop-interaction-surface-and-command-dispatch.md`, and
+  `v-forge/bounded-analytical-tools-and-plugin-doctrine.md` created — see
+  Batch L entry below for scope
 - Same-day cleanup set landed:
   - `project-v/decisions/ADR-001-separate-databases-per-bounded-system.md`
     status updated to Superseded by ADR-012; supersession notice added;
@@ -140,6 +144,7 @@ The following remains unfinished or not yet human-accepted:
   requires a governed schema design pass, not a text edit
 - Batch I remains blocked on external research review
 - Batch K remains deferred
+- Batch L docs are present on branch but pending human review and acceptance
 
 **Next action:** Human reviews the branch state and accepts or corrects the landed work. After transition-control truth is synced to reality, complete remaining Batch H schema design work before Batch I or K.
 
@@ -159,6 +164,13 @@ The following remains unfinished or not yet human-accepted:
    classify what they settle now vs. what remains deferred
 10. Promote Qdrant doctrine into a governed infrastructure posture doc
 11. Clean up strategy/* system field and align with VEDA Strategy identity
+12. Govern bounded V Forge content execution so SEO Machine-style execution
+    patterns cannot be imported without doctrine
+13. Govern the VedaOps desktop interaction and command-dispatch surface so
+    terminal ergonomics do not become governance bypasses
+14. Govern bounded analytical tools and plugins inside V Forge so scoring
+    modules, specialist agents, and helpers do not become shadow planning
+    or shadow observability
 
 ---
 
@@ -445,6 +457,62 @@ docs are reviewed and stable. The stubs from Batch F are sufficient until then.
 
 ---
 
+### Batch L — V Forge Execution and Desktop Interaction Doctrine
+**Branch:** `docs/batch-h-firecrawl-provider-governance` (landed on current branch)
+**Status:** Landed on current branch — pending human review and acceptance
+
+Docs:
+- `v-forge/content-execution-module.md` — new file
+- `interfaces/desktop-interaction-surface-and-command-dispatch.md` — new file
+- `v-forge/bounded-analytical-tools-and-plugin-doctrine.md` — new file
+
+This batch was created to establish load-bearing doctrine for execution-side
+capability areas that were otherwise ungoverned and at risk of drifting toward
+shadow planning or shadow observability.
+
+Changes:
+- `v-forge/content-execution-module.md`: defines the bounded capability area
+  within V Forge for content-driven owned-surface execution; governs what
+  content execution work is admitted, how content graph operations are bounded,
+  what execution-side research is and is not admitted, how execution intelligence
+  works within this area, how SEO Machine-pattern commands and agents are
+  classified at doctrine level, and how return-to-planning posture works for
+  content execution findings
+- `interfaces/desktop-interaction-surface-and-command-dispatch.md`: defines
+  the doctrine for the VedaOps desktop terminal/REPL-style operator interaction
+  surface and its slash command dispatch model; establishes that terminal
+  ergonomics do not change governance posture, that slash commands are bounded
+  dispatch invocations that inherit session scope without widening it, and that
+  Class B and Class C approval events must complete through the governed gate
+  surfaces — not inline through the interaction surface
+- `v-forge/bounded-analytical-tools-and-plugin-doctrine.md`: defines what
+  bounded analytical tools, scoring modules, specialist agents, and plugin-style
+  helpers are inside V Forge; governs their admitted inputs, forbidden inputs,
+  admitted outputs, the non-authority of their outputs, how delegation remains
+  bounded by parent scope, the four-category finding classification model, and
+  the doctrine boundary between these tools and VEDA, VEDA Strategy, and the
+  approval model; classifies SEO Machine-pattern analytical helpers at doctrine
+  level
+
+**Why this batch exists:** Prior to this batch, V Forge had identity docs,
+invariant docs, and interface docs, but no load-bearing doctrine governing:
+(a) what content-driven execution work is admissible and on what terms,
+(b) how the desktop interaction surface and command dispatch remain bounded
+by existing governance rather than becoming a bypass layer, or
+(c) what bounded analytical tools and plugins may and may not do so that
+scoring and specialist agents do not become shadow planners or shadow
+observatories. These gaps represented real drift risk when implementation
+begins. Batch L closes those gaps at the doctrine layer before implementation
+proceeds.
+
+**Scope note:** This batch does not define implementation mechanics for any of
+these docs. Plugin runtime mechanisms, specific command catalogs, schema for
+tool outputs, and full approval mechanics are all explicitly deferred to later
+implementation or specification passes. This batch establishes the doctrine
+boundaries; later work fills in the implementation detail within those bounds.
+
+---
+
 ## Sequencing Summary
 
 ```
@@ -463,6 +531,10 @@ Batch A  →  Batch B  →  Batch C  →  Batch D
                Batch J  (follows Batch D, independent of H/I)
                    ↓
                Batch K  (deferred, follows A–F stable)
+
+Batch L  (V Forge execution and desktop interaction doctrine —
+          landed on current branch, independent of H/I/K sequencing,
+          prerequisite for V Forge implementation work)
 ```
 
 Batches A, B, C must run in order.
@@ -470,6 +542,10 @@ Batches D through H run in sequence after C.
 Batch I is blocked on external research input.
 Batch J may run after Batch D regardless of H or I status.
 Batch K is the last phase — do not start it early.
+Batch L governs V Forge execution and desktop interaction posture; it was
+landed on the current branch and is a prerequisite for any V Forge
+implementation work that involves content execution, command dispatch,
+or analytical tool/plugin use inside V Forge.
 
 ---
 
@@ -493,6 +569,10 @@ Batch K is the last phase — do not start it early.
 - Do not treat the transition-steward folder as a replacement for authority
   docs. Any load-bearing conclusion must be promoted into the proper doc
   cluster and removed from here.
+- Do not treat Batch L docs as optional pre-implementation reading. They are
+  load-bearing doctrine. V Forge content execution, desktop command dispatch,
+  and analytical tool/plugin use must comply with them before implementation
+  begins.
 
 ---
 
@@ -523,10 +603,8 @@ The transition is complete when:
   with later schema and strategy implications clarified in the proper batches
 - Qdrant retrieval posture is in a governed ecosystem doc
 - Pre-project observability concepts are formalized in VEDA docs
+- V Forge content execution, desktop interaction/command-dispatch posture,
+  and bounded analytical tool/plugin posture are governed by load-bearing
+  doctrine docs (Batch L complete)
 - No contradictions remain between Tier 1 docs
 - Implementation can proceed from docs without drift assumptions
-
-
-
-
-
