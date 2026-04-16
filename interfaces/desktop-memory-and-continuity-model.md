@@ -220,8 +220,10 @@ Protected context includes, at minimum:
 - current system posture
 - current workflow-stage state relevant to the active work
 - active approval and gating state
+- persisted approval event references cited by current outputs
 - loaded decision continuity context
-- loaded evidence basis markers and freshness state
+- loaded evidence basis markers, source provenance, and freshness state
+- loaded VEDA Strategy derivation basis where current outputs depend on a derived strategic signal
 - session integrity state
 - active runtime warnings that affect correctness
 

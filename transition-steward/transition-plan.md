@@ -133,13 +133,21 @@ The following has been done on branch `docs/batch-h-firecrawl-provider-governanc
   - `veda/search-intelligence-layer.md` Rule 6 and Rule 7 corrected with the
     same destination fix and with an explicit acknowledgment of the governed
     VEDA → VEDA Strategy read path
+  - first-archetype candidate research note added at
+    `transition-steward/first-archetype-affiliate-content-site-note.md` to
+    preserve the current provisional assessment of a revenue-first public
+    content / affiliate-style site as a strong first candidate archetype for
+    VedaOps; this is transition-support only, not a final archetype decision,
+    and should be read before future archetype-framework or BYDA integration work
 
 The following remains unfinished or not yet human-accepted:
 - None of the landed work has been marked human-reviewed and accepted yet
 - Batch H remains partial: Firecrawl admission, transition-support baseline
   capture, bucket/blob posture, and deferred-but-owned schema family posture
-  are all landed; remaining Batch H work is the governed doctrine design for
-  the Firecrawl capture families and AI-surface observability families in
+  are all landed; `/crawl` and `/map` are now doc-confirmed sufficiently for the
+  schema design pass even though live baseline confirmation was blocked by
+  provider 502s; remaining Batch H work is the governed doctrine design for the
+  Firecrawl capture families and AI-surface observability families in
   `veda/schema-reference.md` — exact family design is not yet settled and
   requires a governed schema design pass, not a text edit
 - Batch I remains blocked on external research review
