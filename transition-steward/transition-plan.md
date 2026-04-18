@@ -12,7 +12,8 @@ A future LLM reading this document should be able to determine immediately:
 - what the current architecture direction is
 - what phase the transition is in
 - what has already been settled
-- what batch to execute next
+- what branch reality includes beyond the original batches
+- what transition-control work remains before coding proceeds
 - what must not be done all at once
 
 ---
@@ -66,7 +67,7 @@ A future LLM reading this document should be able to determine immediately:
 
 ## Current Transition Status
 
-**Phase: Branch carries landed documentation work through Batch G, partial Batch H, verified Batch J, Batch L, and a same-day cleanup set — pending human review and remaining Batch H residual doctrine work.**
+**Phase: Branch carries landed documentation work through Batch G, partial Batch H, verified Batch J, Batch L, and a later transition-support first-project / context-loading / V Forge structural cluster — all pending human review and with original transition-control work still unfinished.**
 
 The following has been done on branch `docs/batch-h-firecrawl-provider-governance`:
 - Full spec-doc context read across all Tier 1 and Tier 2 authority docs
@@ -139,9 +140,36 @@ The following has been done on branch `docs/batch-h-firecrawl-provider-governanc
     content / affiliate-style site as a strong first candidate archetype for
     VedaOps; this is transition-support only, not a final archetype decision,
     and should be read before future archetype-framework or BYDA integration work
+- Later transition-support side work landed under
+  `transition-steward/first-project-v-forge/` covering:
+  - doctrine-aware context loading working notes and design passes
+  - harness enforcement / inspectability posture for context admission
+  - execution-scoped planning digest spec work and proving-case closure
+  - first-project v1 execution packet draft exercise
+  - affiliate-link record posture, placement posture, and graph posture
+  - first-project V Forge record-family and schema-drafting basis notes
+  - a folder README that classifies derivation history vs current starting points
 
-The following remains unfinished or not yet human-accepted:
-- None of the landed work has been marked human-reviewed and accepted yet
+### Interpretation of the later transition-support cluster
+
+The `transition-steward/first-project-v-forge/` cluster is **not** part of the
+original authority-correction batch sequence.
+
+It is preserved branch work that:
+- pressure-tests first-project execution structure
+- explores doctrine-aware context loading and execution-packet posture
+- shapes first-project V Forge structural assumptions far enough for later
+  schema/spec work
+- remains transition-support unless and until promoted into the proper authority
+  docs
+
+It must not be treated as a silent replacement for authority docs or for the
+original transition-control spine.
+
+### What remains unfinished or not yet human-accepted
+
+- None of the landed authority-correction work has been marked human-reviewed
+  and accepted yet
 - Batch H remains partial: Firecrawl admission, transition-support baseline
   capture, bucket/blob posture, and deferred-but-owned schema family posture
   are all landed; `/crawl` and `/map` are now doc-confirmed sufficiently for the
@@ -153,8 +181,55 @@ The following remains unfinished or not yet human-accepted:
 - Batch I remains blocked on external research review
 - Batch K remains deferred
 - Batch L docs are present on branch but pending human review and acceptance
+- The later first-project / context-loading / V Forge cluster remains
+  transition-support side work only; none of it has been promoted or accepted
+  as authority doctrine
 
-**Next action:** Human reviews the branch state and accepts or corrects the landed work. After transition-control truth is synced to reality, complete remaining Batch H schema design work before Batch I or K.
+### Control-spine reading of current branch reality
+
+The branch is ahead of the original batch sequence in one important way:
+there is now a substantial transition-support proving cluster for first-project
+execution structure and context-loading.
+
+That cluster should be read as:
+- useful branch reality
+- preserved derivation and schema-facing preparation
+- not settled authority
+- not a reason to treat the original transition batches as complete
+
+**Actual next transition-control step:** Re-center on the original authority-
+correction spine. Human review must accept or correct the landed authority work,
+then remaining Batch H doctrine work must be finished. In parallel, a bounded
+coding-readiness pass should classify what in the new first-project cluster is
+safe implementation guidance versus derivation history only. Do not continue
+expanding the first-project cluster as though it were the control spine.
+
+---
+
+## Coding-Readiness Reading of the Current Repo
+
+The repo now contains three distinct layers that must not be confused:
+
+### 1. Settled / landed authority-correction work
+This includes Batches A–G, J, and L as landed branch work, plus partial Batch H.
+This layer is the primary target of the transition plan.
+
+### 2. Transition-support proving cluster
+This includes the new `transition-steward/first-project-v-forge/` folder and
+its README. It is useful for schema/spec drafting preparation and first-project
+execution thinking, but it is not yet authority.
+
+### 3. Still-missing authority / control work
+This includes:
+- human review / acceptance across landed batches
+- remaining Batch H schema/doctrine work
+- Batch I Qdrant doctrine promotion
+- Batch K full interface specs when appropriate
+- a bounded coding-readiness classification pass so LLM implementation work does
+  not read every transition-support note as if it were settled doctrine
+
+This distinction matters because the risk has shifted from "missing docs" to
+"too many useful branch notes without enough acceptance and hierarchy."
 
 ---
 
@@ -179,6 +254,10 @@ The following remains unfinished or not yet human-accepted:
 14. Govern bounded analytical tools and plugins inside V Forge so scoring
     modules, specialist agents, and helpers do not become shadow planning
     or shadow observability
+15. Re-establish the transition plan as the control spine even when useful
+    first-project transition-support work accumulates on branch
+16. Produce a bounded coding-readiness classification pass before coding begins
+    from the new first-project transition-support cluster
 
 ---
 
@@ -531,7 +610,7 @@ Changes:
   level
 
 **Why this batch exists:** Prior to this batch, V Forge had identity docs,
-invariant docs, and interface docs, but no load-bearing doctrine governing:
+variant docs, and interface docs, but no load-bearing doctrine governing:
 (a) what content-driven execution work is admissible and on what terms,
 (b) how the desktop interaction surface and command dispatch remain bounded
 by existing governance rather than becoming a bypass layer, or
@@ -546,6 +625,52 @@ these docs. Plugin runtime mechanisms, specific command catalogs, schema for
 tool outputs, and full approval mechanics are all explicitly deferred to later
 implementation or specification passes. This batch establishes the doctrine
 boundaries; later work fills in the implementation detail within those bounds.
+
+---
+
+## Later Transition-Support Side Cluster (Preserved, Not Promoted)
+
+A substantial proving cluster now exists under:
+
+- `transition-steward/first-project-v-forge/`
+
+This cluster captures one bounded workstream:
+- doctrine-aware context-loading design
+- harness enforcement / inspectability posture for context admission
+- execution-scoped planning digest spec and closure work
+- first-project v1 execution packet proving work
+- affiliate-link posture, placement, and graph posture
+- first-project V Forge record-family and schema-drafting-basis notes
+
+### Why this cluster exists
+
+This work was created to pressure-test whether a first-project execution slice
+could be made structurally legible enough for later schema/spec work and for
+LLM execution inside V Forge without relying on planning-packet bleed.
+
+### What this cluster is
+
+It is:
+- transition-support side work
+- derivation history plus schema-facing preparation
+- useful implementation guidance if read cautiously and in hierarchy
+- preserved branch reality
+
+It is not:
+- final authority doctrine
+- a replacement for `transition-plan.md`
+- a signal that the original transition batches are complete
+- automatically safe as direct coding input without a coding-readiness pass
+
+### Current best starting point inside that cluster
+
+For V Forge schema/spec drafting, the current cluster starting point is:
+- `transition-steward/first-project-v-forge/first-project-v-forge-schema-drafting-basis-note.md`
+
+For execution-preparation reading, the current cluster starting point is:
+- `transition-steward/first-project-v-forge/first-project-v1-execution-packet-draft.md`
+
+These files are still transition-support only.
 
 ---
 
@@ -571,6 +696,10 @@ Batch A  →  Batch B  →  Batch C  →  Batch D
 Batch L  (V Forge execution and desktop interaction doctrine —
           landed on current branch, independent of H/I/K sequencing,
           prerequisite for V Forge implementation work)
+
+Later first-project / context-loading / V Forge cluster
+          (preserved transition-support side work; not on the main
+          authority-correction spine; do not treat as replacement control flow)
 ```
 
 Batches A, B, C must run in order.
@@ -582,6 +711,8 @@ Batch L governs V Forge execution and desktop interaction posture; it was
 landed on the current branch and is a prerequisite for any V Forge
 implementation work that involves content execution, command dispatch,
 or analytical tool/plugin use inside V Forge.
+The later first-project cluster should be read after — not instead of — the
+main transition-control spine.
 
 ---
 
@@ -609,6 +740,11 @@ or analytical tool/plugin use inside V Forge.
   load-bearing doctrine. V Forge content execution, desktop command dispatch,
   and analytical tool/plugin use must comply with them before implementation
   begins.
+- Do not let the later `first-project-v-forge/` cluster silently become a
+  replacement for authority doctrine or for transition-control sequencing.
+- Do not begin coding from the full cluster indiscriminately. A coding-readiness
+  pass must first classify what in the cluster is safe implementation guidance,
+  what is derivation history only, and what remains blocked by missing authority.
 
 ---
 
@@ -622,6 +758,22 @@ or analytical tool/plugin use inside V Forge.
 - One branch per batch — no mixing batch scope
 - Merge and review each batch before starting the next
 - Physical consolidation does not mean conceptual merger
+- The transition plan remains the control spine even when later branch work is
+  useful and organized
+
+---
+
+## Immediate Next Control-Step
+
+1. Human reviews the landed authority-correction work already on branch and
+   accepts or corrects it.
+2. Remaining Batch H doctrine work is completed at governed schema/design level.
+3. A bounded coding-readiness classification pass is run so implementation can
+   distinguish authority inputs, usable transition-support guidance, and
+   derivation-history-only files in the new first-project cluster.
+4. Only after that should coding proceed from the stable subset of the repo.
+5. Resume expansion of the first-project V Forge cluster only if coding,
+   schema drafting, or runtime proving work exposes a real missing seam.
 
 ---
 
@@ -642,5 +794,8 @@ The transition is complete when:
 - V Forge content execution, desktop interaction/command-dispatch posture,
   and bounded analytical tool/plugin posture are governed by load-bearing
   doctrine docs (Batch L complete)
-- No contradictions remain between Tier 1 docs
+- The original authority-correction batches are human-reviewed and accepted
+- The later `transition-steward/first-project-v-forge/` cluster is either
+  appropriately promoted, explicitly classified as transition-support only,
+  or superseded where necessary
 - Implementation can proceed from docs without drift assumptions
