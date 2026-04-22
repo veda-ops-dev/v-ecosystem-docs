@@ -160,6 +160,10 @@ This preserves the planning rationale and supports continuity across sessions.
 Bounded references to the evidence, signal, or planning rationale that supports
 this handoff. These are references, not copies of VEDA-owned evidence. The
 evidence referenced here must be traceable through the system that owns it.
+Where the handoff depends on implementation-target decisions, evidence references
+must include the governed ETR records supporting those decisions, with their
+version, source attribution, and freshness classification preserved. See
+`../project-v/external-technology-research-doctrine.md`.
 
 **Expected outcomes or intended execution objective**
 What execution is intended to produce — the high-level objective that V Forge

@@ -122,6 +122,7 @@ A valid first-pass traceability chain in Project V should preserve linkage acros
 - handoff records
 - bounded external or execution references where needed
 - audit results
+- external technology research references where implementation-target decisions depend on them
 - planning-side drift or invalidation findings
 
 That chain should help answer:
@@ -165,6 +166,8 @@ Project V may store bounded links such as:
 
 Those links support orchestration and traceability.
 They do not transfer canonical ownership of execution truth into Project V.
+
+External technology research is distinct from execution-facing ExternalLink records. When planning depends on a version-specific external technology claim, the planning basis should remain recoverable through governed ResearchDoc posture as defined in `external-technology-research-doctrine.md`.
 
 ### Rule
 External references must remain directional and honest.

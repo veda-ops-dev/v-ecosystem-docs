@@ -106,6 +106,35 @@ If a proposed data category starts representing observed reality, execution-stat
 
 ---
 
+## External Technology Research as Planning-Support Data
+
+Project V may canonically own external technology research when that
+research exists to support planning decisions about external technologies
+such as databases, frameworks, APIs, libraries, runtimes, infrastructure
+components, or third-party platforms.
+
+This research is stored through ResearchDoc records in the bounded
+external-technology-research posture defined in
+`external-technology-research-doctrine.md`.
+
+### Rule
+External technology research is planning-support evidence owned by
+Project V.
+It is not VEDA observatory evidence.
+It is not V Forge execution truth.
+
+When used to support a governed planning decision, it must preserve:
+
+- technology identity
+- version or version range
+- source attribution
+- capture timestamp
+- freshness classification
+
+Unversioned, unattributed, or stale technology research must not be
+silently treated as sound planning basis.
+
+---
 ## Allowed Planning-Side Interpretations
 
 Project V may store planning-side interpretations derived from external inputs where those interpretations are themselves Project V truth.
@@ -191,7 +220,7 @@ The following categories are out of bounds for canonical Project V persistence:
 - rich execution-progress models that make Project V behave like the receiving system
 
 ### Rule
-If a proposed Project V table or field would naturally be queried to answer “what happened in VEDA?” or “what is happening in execution right now?”, it is probably out of bounds.
+If a proposed Project V table or field would naturally be queried to answer "what happened in VEDA?" or "what is happening in execution right now?", it is probably out of bounds.
 
 ---
 
