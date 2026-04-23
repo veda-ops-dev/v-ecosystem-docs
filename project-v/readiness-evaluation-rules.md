@@ -164,6 +164,7 @@ Examples:
 - no supporting evidence where evidence is required
 - no recoverable rationale for a materially important decision
 - an implementation-target decision cited by the evaluated record has no linked governed ETR, or the linked ETR is materially stale or insufficiently attributed per `external-technology-research-doctrine.md`
+- an implementation document is required for a non-trivial execution-target work item or handoff but does not exist, or exists but fails the minimum semantic contract per `implementation-document-doctrine.md`
 
 ### Dependency visibility block
 
@@ -393,4 +394,5 @@ This document should be used:
 - `controlled-vocabularies.md`
 - `schema-authority.md`
 - `status-transitions.md`
+- `implementation-document-doctrine.md`
 - `../governance/approval-and-escalation-model.md`

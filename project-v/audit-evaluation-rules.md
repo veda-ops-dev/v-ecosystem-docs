@@ -190,6 +190,7 @@ If no hard-failure rule or warning condition is true, return `pass`.
 - Implementation linkage posture is missing where required
 - Cross-artifact contract disagreement is material
 - Implementation-target planning depends on governed ETR that is stale, unknown, or insufficiently attributed at implementation-readiness time
+- An implementation document is required for the execution scope but does not exist, or exists but fails the minimum semantic contract defined in `implementation-document-doctrine.md`
 
 **Warning examples:**
 - Non-blocking advisory gap remains open
@@ -460,5 +461,6 @@ This document should be used:
 - `controlled-vocabularies.md`
 - `schema-authority.md`
 - `implementation-traceability.md`
+- `implementation-document-doctrine.md`
 - `../governance/decision-continuity-doctrine.md`
 - `../governance/testing-and-verification-doctrine.md`

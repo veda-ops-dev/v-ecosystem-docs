@@ -371,7 +371,8 @@ The following are forbidden drift patterns:
 - ETR stored only in chat or ungoverned prose
 - stale ETR being reused silently
 - handoff or implementation docs paraphrasing unsupported technology claims as
-  though they were grounded
+  though they were grounded — see `implementation-document-doctrine.md` for
+  the minimum ETR linkage requirements on implementation documents
 - treating vendor documentation as VEDA-style observatory evidence
 - letting ETR expand into uncontrolled documentation hoarding unrelated to a
   planning need
@@ -413,6 +414,7 @@ This document should be used:
 - `data-boundaries.md`
 - `schema-authority.md`
 - `implementation-traceability.md`
+- `implementation-document-doctrine.md`
 - `readiness-evaluation-rules.md`
 - `audit-evaluation-rules.md`
 - `controlled-vocabularies.md`

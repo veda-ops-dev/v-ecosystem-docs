@@ -51,6 +51,9 @@ This document does not define:
   that is `project-v-to-v-forge-execution-clarification-interface.md`
 - post-replanning scope updates —
   that is `project-v-to-v-forge-scope-update-interface.md`
+- the execution-ready planning artifact that Project V produces as the narrative
+  carrier of handoff package semantics — that is
+  `../project-v/implementation-document-doctrine.md`
 - transport-layer implementation details or API schemas
 
 ---
@@ -493,6 +496,7 @@ This document should be used:
 - `../ecosystem/cross-system-access-governance.md`
 - `../ecosystem/activity-trail-model.md`
 - `../project-v/project-v.md`
+- `../project-v/implementation-document-doctrine.md`
 - `../v-forge/v-forge.md`
 - `../workflows/handoff-workflow.md`
 - `../governance/recommendation-packaging-doctrine.md`
