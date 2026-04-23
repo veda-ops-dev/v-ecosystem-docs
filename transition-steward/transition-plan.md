@@ -204,6 +204,45 @@ coding-readiness pass should classify what in the new first-project cluster is
 safe implementation guidance versus derivation history only. Do not continue
 expanding the first-project cluster as though it were the control spine.
 
+### Integrity Infrastructure — Text Artifact Integrity Check Layer
+
+A lightweight text integrity utility (`tools/vcheck.py`) and a matching
+pre-commit hook (`hooks/pre-commit`) have been added to the repo.
+
+This work was prompted by a real failure during the ETR doctrine pass:
+hidden control characters (ESC / `0x1B`) were injected into three markdown
+files by a write tool. The corruption was invisible to normal visual review
+but broke all automated string matching and reference resolution. Detection
+required manual binary inspection.
+
+`vcheck` is a small stdlib-only Python utility. It blocks on:
+
+- invalid UTF-8
+- forbidden control characters (`\x00`–`\x1F` except tab/newline/CR; `\x7F`)
+- null bytes
+- control characters immediately before backtick-wrapped file references
+  (the specific injection pattern that caused the real failure)
+
+It warns on broken backtick `.md` references, mixed line endings, and
+trailing invisible whitespace.
+
+The pre-commit hook runs `vcheck --sweep` against all staged `.md` files
+and blocks the commit on any blocking failure.
+
+This is a persistence-hygiene floor. It sits below the audit, readiness,
+and traceability layers — those layers assume the text they operate on is
+structurally clean. `vcheck` makes that assumption real rather than declared.
+
+It is not a schema validator, not a semantic validator, and not a replacement
+for the BYDA audit system or the hammer layer. It handles only the physical
+text layer.
+
+**To activate the hook:**
+```
+cp hooks/pre-commit .git/hooks/pre-commit
+chmod +x .git/hooks/pre-commit
+```
+
 ---
 
 ## Coding-Readiness Reading of the Current Repo
