@@ -56,12 +56,45 @@ That role must not have:
 
 - `UPDATE` on ecosystem trail tables
 - `DELETE` on ecosystem trail tables
-- broad `SELECT` on the `ecosystem` schema
+- `SELECT` on the `ecosystem` schema
 - write access to any bounded-system schema
 
 The four bounded-system service roles may be granted `ecosystem_trail_writer` for the sole purpose of writing activity trail records.
 
-Governance replay, audit queries, retention, repair, compaction, and DLQ draining require a separate privileged operational role. That operational role is not granted to bounded-system services.
+### SELECT posture for bounded-system services
+
+Bounded-system service roles must not receive SELECT grants on `ecosystem.activity_trail`
+or `ecosystem.activity_trail_dlq` for general use.
+
+Service-layer verification of trail record existence (for example, confirming that a
+fail-closed write succeeded within the same transaction) must be achieved through the
+write result or transaction outcome, not through a follow-up SELECT query. A service
+that needs to confirm its own write must rely on the database's write acknowledgement,
+not a read-back.
+
+### Governance replay and audit reads
+
+Governance replay and audit query access requires a separate read role:
+
+- Suggested name: `ecosystem_governance_reader`
+- Permitted: `SELECT` on `ecosystem.activity_trail`
+- Must not have: `INSERT`, `UPDATE`, `DELETE`, or access to any bounded-system schema
+- This role is not granted to bounded-system services
+
+### DLQ draining, compaction, retention, and repair
+
+Dead-letter draining, compaction, retention enforcement, and repair operations require
+a separate maintenance role with elevated privileges:
+
+- Suggested name: `ecosystem_governance_operator`
+- Permitted: `SELECT`, `INSERT`, `UPDATE`, `DELETE` on `ecosystem.activity_trail` and
+  `ecosystem.activity_trail_dlq` as needed for operational work
+- Must not have: write access to any bounded-system schema
+- This role is not granted to bounded-system services
+
+The exact privileges for `ecosystem_governance_reader` and `ecosystem_governance_operator`
+are an infrastructure concern to be established before governance replay or DLQ operations
+go live. Neither role may be granted to bounded-system services under any circumstances.
 
 ## Migration Ownership
 

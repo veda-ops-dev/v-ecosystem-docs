@@ -11,6 +11,16 @@ Durable activity trail implementation content from this workbench document has b
 
 This file remains transition-steward derivation history. Do not treat it as the canonical implementation contract.
 
+---
+
+## Archived Derivation History
+
+The content below is the original workbench derivation. It is retained for audit trail purposes.
+
+Do not use it as a coding input. Use `../../ecosystem/activity-trail-implementation.md` as the canonical implementation contract.
+
+---
+
 ## Purpose
 
 This document bridges the gap between the activity trail doctrine defined in

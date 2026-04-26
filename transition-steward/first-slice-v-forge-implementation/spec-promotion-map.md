@@ -53,14 +53,14 @@ The workbench documents are useful, but their folder location does not make them
 
 ## Promotion Map
 
-| Workbench document | Long-term target | Treatment |
-|---|---|---|
-| `activity-trail-implementation-spec.md` | 'ecosystem/activity-trail-implementation.md' | Extract durable activity trail storage, write-helper, fail-open/fail-closed, DLQ, first-pass scope, and `ecosystem_trail_writer` rules. |
-| `packet-schema-drafting-basis.md` | 'interfaces/packet-schema-reference.md' or targeted updates to interface/governance docs | Extract mature structural packet constraints for handoff, return-to-planning, approval requests, and governed reports. Keep semantic sufficiency warnings intact. |
-| `invariant-enforcement-plan.md` | Split across `ecosystem/`, `v-forge/`, `interfaces/`, and `governance/` | Extract only settled enforcement mappings into the owning docs. Do not promote human-governance-only commentary as mechanical guarantees. |
-| `minimum-codable-first-slice.md` | 'v-forge/playbooks/first-slice-governance-proving-slice.md' | Convert into a V Forge implementation playbook. Preserve slice boundary and out-of-scope list. Do not make it authority doctrine. |
-| `first-slice-implementation-task-breakdown.md` | 'v-forge/playbooks/first-slice-task-breakdown.md' | Convert into an engineering task plan/playbook. Preserve task order, dependencies, acceptance criteria, and test plan. |
-| `coding-readiness-classification.md` | Remain in workbench until superseded | Keep as transition-control/readiness classification. Supersede after promoted specs and playbooks exist. |
+| Workbench document | Long-term target | Treatment | Status |
+|---|---|---|---|
+| `activity-trail-implementation-spec.md` | `ecosystem/activity-trail-implementation.md` | Extract durable activity trail storage, write-helper, fail-open/fail-closed, DLQ, first-pass scope, and `ecosystem_trail_writer` rules. | **Complete** — landed at `ecosystem/activity-trail-implementation.md`. ADR-013 and `db-posture.md` amendment are in place. Workbench source is now derivation history. |
+| `packet-schema-drafting-basis.md` | 'interfaces/packet-schema-reference.md' or targeted updates to interface/governance docs | Extract mature structural packet constraints for handoff, return-to-planning, approval requests, and governed reports. Keep semantic sufficiency warnings intact. | Pending |
+| `invariant-enforcement-plan.md` | Split across `ecosystem/`, `v-forge/`, `interfaces/`, and `governance/` | Extract only settled enforcement mappings into the owning docs. Do not promote human-governance-only commentary as mechanical guarantees. | Pending |
+| `minimum-codable-first-slice.md` | 'v-forge/playbooks/first-slice-governance-proving-slice.md' | Convert into a V Forge implementation playbook. Preserve slice boundary and out-of-scope list. Do not make it authority doctrine. | Pending |
+| `first-slice-implementation-task-breakdown.md` | 'v-forge/playbooks/first-slice-task-breakdown.md' | Convert into an engineering task plan/playbook. Preserve task order, dependencies, acceptance criteria, and test plan. | Pending |
+| `coding-readiness-classification.md` | Remain in workbench until superseded | Keep as transition-control/readiness classification. Supersede after promoted specs and playbooks exist. | Pending |
 
 ---
 

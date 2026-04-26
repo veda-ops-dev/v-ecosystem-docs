@@ -132,6 +132,40 @@ Failure records are written when failure is established: a timeout expires, an e
 
 ---
 
+## Write Helper Contract
+
+Every service that writes activity trail records must use a shared write helper. The helper enforces consistent behavior for idempotency, failure handling, and DLQ routing across all services and action types.
+
+The write helper must:
+
+- live at the service layer, not inside domain model methods or API handler shells
+- accept an activity record payload and a `fail_closed` boolean parameter
+- generate `activity_id` as a UUID before any write attempt, if not already supplied by the caller for a retry
+- validate that the following required base fields are present before attempting any DB operation:
+  - `timestamp`
+  - `actor_type`
+  - `actor_id`
+  - `actor_system`
+  - `action`
+  - `action_class`
+  - `entity_type`
+  - `entity_id`
+- write using `INSERT ... ON CONFLICT (activity_id) DO NOTHING` so that a duplicate `activity_id` on retry is a safe no-op
+- on fail-closed write failure:
+  - route the full attempted payload to `ecosystem.activity_trail_dlq` if possible
+  - throw or return a failure result to the caller
+  - the caller must halt, hold, or roll back the primary operation
+- on fail-open write failure:
+  - route the full attempted payload to `ecosystem.activity_trail_dlq` if possible
+  - log the failure at error level or equivalent in the system-internal operational log
+  - return without throwing so the caller may continue
+- preserve the original `timestamp` in the DLQ payload so recovery writes can be timestamped correctly
+- never silently swallow trail write failures; failures must be observable
+
+Retries of the same attempted trail write must reuse the same `activity_id`. Delivery retries are different events and receive new `activity_id` values.
+
+---
+
 ## Fail-Open and Fail-Closed Behavior
 
 Not all activity trail write failures have the same consequence.

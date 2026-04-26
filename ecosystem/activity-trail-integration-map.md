@@ -427,6 +427,7 @@ governed extension path (add to `activity-trail-model.md` first, then this map).
 ## Related Docs
 
 - `activity-trail-model.md` *(Tier 1 authority — read before this doc)*
+- `activity-trail-implementation.md` *(implementation contract — storage schema, write helper, fail-closed behavior, first-slice replay path)*
 - `cross-system-access-governance.md`
 - `../interfaces/veda-to-project-v-signal-interface.md`
 - `../interfaces/project-v-to-veda-evidence-request-interface.md`

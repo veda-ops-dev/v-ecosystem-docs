@@ -55,12 +55,16 @@ Those belong in system-specific docs, deployment docs, or later operational runb
 
 ## Core Rule
 
-The V Ecosystem uses one physical PostgreSQL-family database with four schemas,
-one per bounded system.
+The V Ecosystem uses one physical PostgreSQL-family database with four bounded-system
+schemas and one constrained ecosystem governance schema.
 
 Physical consolidation into one database does not imply shared ownership.
-Each schema is an independently governed canonical persistence boundary.
+Each bounded-system schema is an independently governed canonical persistence boundary.
 The systems that own those schemas do not share truth because they share infrastructure.
+
+The `ecosystem` schema is a governance-only constrained exception, not a fifth bounded
+system and not a shared application database. See ADR-013 and the Physical Shape Rule
+below for the governed scope and constraints.
 
 ---
 
