@@ -67,7 +67,7 @@ A future LLM reading this document should be able to determine immediately:
 
 ## Current Transition Status
 
-**Phase: Branch carries landed documentation work through Batch G, partial Batch H, verified Batch J, Batch L, and a later transition-support first-project / context-loading / V Forge structural cluster — all pending human review and with original transition-control work still unfinished.**
+**Phase: Branch carries landed documentation work through Batch G, partial Batch H, verified Batch J, Batch L, later transition-support first-project / context-loading / V Forge structural cluster, and a completed first-slice coding-readiness packet. DataForSEO AI-surface authority promotion is paused pending provider credits; Batch I remains separately blocked on Qdrant/Postgres research review.**
 
 The following has been done on branch `docs/batch-h-firecrawl-provider-governance`:
 - Full spec-doc context read across all Tier 1 and Tier 2 authority docs
@@ -170,20 +170,25 @@ original transition-control spine.
 
 - None of the landed authority-correction work has been marked human-reviewed
   and accepted yet
-- Batch H remains partial: Firecrawl admission, transition-support baseline
-  capture, bucket/blob posture, and deferred-but-owned schema family posture
-  are all landed; `/crawl` and `/map` are now doc-confirmed sufficiently for the
-  schema design pass even though live baseline confirmation was blocked by
-  provider 502s; remaining Batch H work is the governed doctrine design for the
-  Firecrawl capture families and AI-surface observability families in
-  `veda/schema-reference.md` — exact family design is not yet settled and
-  requires a governed schema design pass, not a text edit
-- Batch I remains blocked on external research review
+- Batch H remains partial, but its blockers are now split:
+  - Firecrawl family promotion is not blocked by provider credits; it is waiting
+    on human review of `batch-h-veda-family-design-pass.md`, resolution or
+    explicit deferral of the remaining design-pass open questions, and a governed
+    authority-doc update to `veda/schema-reference.md`
+  - DataForSEO AI-surface authority promotion is paused pending provider credits
+    because LLM Mentions, aggregated AI-surface metrics, and related
+    citation/mention surfaces still lack real intended-workflow payload evidence;
+    docs-confirmed structures must not be promoted as payload-confirmed doctrine
+- Batch I remains blocked on Qdrant/Postgres research output review; this is a
+  separate blocker from the DataForSEO credit pause
 - Batch K remains deferred
 - Batch L docs are present on branch but pending human review and acceptance
 - The later first-project / context-loading / V Forge cluster remains
   transition-support side work only; none of it has been promoted or accepted
   as authority doctrine
+- The first-slice coding-readiness pass is complete for handoff acceptance,
+  approval gate, and activity trail work; it is documented in
+  `coding-readiness-classification.md` and related implementation-support docs
 
 ### Control-spine reading of current branch reality
 
@@ -198,11 +203,14 @@ That cluster should be read as:
 - not a reason to treat the original transition batches as complete
 
 **Actual next transition-control step:** Re-center on the original authority-
-correction spine. Human review must accept or correct the landed authority work,
-then remaining Batch H doctrine work must be finished. In parallel, a bounded
-coding-readiness pass should classify what in the new first-project cluster is
-safe implementation guidance versus derivation history only. Do not continue
-expanding the first-project cluster as though it were the control spine.
+correction spine while respecting current branch reality. The highest-value
+unblocked Batch H path is human review of the Firecrawl family design pass and
+promotion of non-credit-blocked families into `veda/schema-reference.md` where
+review accepts them. DataForSEO AI-surface authority promotion remains paused
+pending provider credits and real payload capture. The first-slice V Forge
+coding packet is complete and may proceed in parallel without Batch H provider
+work. Do not continue expanding the first-project cluster as though it were the
+control spine.
 
 ### Integrity Infrastructure — Text Artifact Integrity Check Layer
 
@@ -261,11 +269,14 @@ execution thinking, but it is not yet authority.
 ### 3. Still-missing authority / control work
 This includes:
 - human review / acceptance across landed batches
-- remaining Batch H schema/doctrine work
+- remaining non-credit-blocked Batch H Firecrawl authority-promotion work
+- paused DataForSEO AI-surface authority promotion after provider credits are
+  available and real LLM Mentions / citation-related payloads can be captured
 - Batch I Qdrant doctrine promotion
 - Batch K full interface specs when appropriate
-- a bounded coding-readiness classification pass so LLM implementation work does
-  not read every transition-support note as if it were settled doctrine
+- continued use of the completed coding-readiness classification so LLM
+  implementation work does not read every transition-support note as if it were
+  settled doctrine
 
 This distinction matters because the risk has shifted from "missing docs" to
 "too many useful branch notes without enough acceptance and hierarchy."
@@ -804,13 +815,15 @@ main transition-control spine.
 
 ## Immediate Next Control-Step
 
-1. Human reviews the landed authority-correction work already on branch and
-   accepts or corrects it.
-2. Remaining Batch H doctrine work is completed at governed schema/design level.
-3. A bounded coding-readiness classification pass is run so implementation can
-   distinguish authority inputs, usable transition-support guidance, and
-   derivation-history-only files in the new first-project cluster.
-4. Only after that should coding proceed from the stable subset of the repo.
+1. Human reviews and accepts or corrects the Batch H Firecrawl family design pass
+   and promotes accepted, non-credit-blocked families into `veda/schema-reference.md`.
+2. DataForSEO AI-surface authority promotion remains paused pending provider
+   credits; resume only after real LLM Mentions / citation-related payloads are
+   captured, inventoried, and compared against the current transition-support
+   design notes.
+3. First-slice V Forge work may proceed in parallel from the completed coding
+   packet for handoff acceptance, approval gate, and activity trail.
+4. Batch I remains separately blocked on Qdrant/Postgres research output review.
 5. Resume expansion of the first-project V Forge cluster only if coding,
    schema drafting, or runtime proving work exposes a real missing seam.
 
