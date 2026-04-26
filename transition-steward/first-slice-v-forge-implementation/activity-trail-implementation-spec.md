@@ -5,6 +5,12 @@
 Transition-steward working doc. Not a canonical authority document by itself.
 Load-bearing conclusions must be promoted into the proper canonical doc set.
 
+## Supersession Note
+
+Durable activity trail implementation content from this workbench document has been promoted to `../../ecosystem/activity-trail-implementation.md` after ADR-013 authorized the constrained `ecosystem` governance schema.
+
+This file remains transition-steward derivation history. Do not treat it as the canonical implementation contract.
+
 ## Purpose
 
 This document bridges the gap between the activity trail doctrine defined in
