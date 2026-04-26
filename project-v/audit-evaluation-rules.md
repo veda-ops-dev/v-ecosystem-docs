@@ -38,7 +38,7 @@ This document does not define:
 - controlled vocabulary values (see `controlled-vocabularies.md`)
 - how audit state couples to readiness (see `readiness-evaluation-rules.md`)
 - schema field details (see `schema-authority.md`)
-- audit-and-gap model shape (see `schema-authority.md` ΓÇö AuditRun and AuditGap sections)
+- audit-and-gap model shape (see `schema-authority.md` — AuditRun and AuditGap sections)
 
 ---
 
@@ -96,25 +96,25 @@ Not every project must use every audit type on day one. But the rule set must de
 
 Evaluate in this strict order for every audit run.
 
-### Step 1 ΓÇö Scope validity
+### Step 1 — Scope validity
 If the target entity is missing, invalid, or out of project scope, fail the request rather than producing an audit result. Return `400 Bad Request` or `404 Not Found` as appropriate.
 
-### Step 2 ΓÇö Audit applicability
+### Step 2 — Audit applicability
 If the requested audit type does not apply to the target entity or lifecycle stage, fail the request rather than producing fake output. Return `422 Unprocessable Entity`.
 
-### Step 3 ΓÇö Required-basis validity
+### Step 3 — Required-basis validity
 If the audit lacks the minimum required basis to ask its questions honestly, return `fail` and create gaps where appropriate.
 
-### Step 4 ΓÇö Hard-failure conditions
+### Step 4 — Hard-failure conditions
 If one or more hard-failure rules are true, return `fail`.
 
-### Step 5 ΓÇö Warning conditions
+### Step 5 — Warning conditions
 If no hard-failure rule is true but one or more warning conditions are true, return `warning`.
 
-### Step 6 ΓÇö Pass condition
+### Step 6 — Pass condition
 If no hard-failure rule or warning condition is true, return `pass`.
 
-### Step 7 ΓÇö Staleness
+### Step 7 — Staleness
 `stale` is not a normal first-run result. It is a later invalidation state applied when the original audit basis is no longer trustworthy. See Staleness / Invalidation Rules.
 
 ---
@@ -137,11 +137,16 @@ If no hard-failure rule or warning condition is true, return `pass`.
 - Material evidence basis is missing
 - Ownership is ambiguous
 - The problem statement is too vague to plan against
+- External technology is relied on for implementation-target planning but no governed ETR exists
+- Governed ETR exists but lacks version information
+- Governed ETR exists but lacks source attribution
+- Governed ETR is stale or unknown for an active implementation-target decision
 
 **Warning examples:**
 - Rationale exists but is still thin
 - Dependency visibility is incomplete but not yet blocking
 - Evidence is present but weak in one advisory area
+- Governed ETR is aging but not yet stale for the current planning horizon
 
 **Typical gap severities:** `major`, `minor`, `advisory`
 
@@ -184,6 +189,8 @@ If no hard-failure rule or warning condition is true, return `pass`.
 - Blocking audit gap remains open
 - Implementation linkage posture is missing where required
 - Cross-artifact contract disagreement is material
+- Implementation-target planning depends on governed ETR that is stale, unknown, or insufficiently attributed at implementation-readiness time
+- An implementation document is required for the execution scope but does not exist, or exists but fails the minimum semantic contract defined in `implementation-document-doctrine.md`
 
 **Warning examples:**
 - Non-blocking advisory gap remains open
@@ -265,11 +272,12 @@ First-pass cross-artifact checks must include at least the following, bound to t
 
 | Check | Applies To Audit Types |
 |---|---|
-| `schema-authority` Γåö `controlled-vocabularies` | `planning`, `implementation_readiness`, `hygiene` |
-| `controlled-vocabularies` Γåö implementation | `planning`, `implementation_readiness`, `hygiene` |
-| API contracts Γåö `schema-authority` | `implementation_readiness`, `code_alignment`, `hygiene` |
-| `status-transitions` Γåö explicit status-route expectations | `planning`, `implementation_readiness`, `hygiene` |
-| External linkage rules Γåö `implementation-traceability` rules | `code_alignment`, `handoff` |
+| `schema-authority` ↔ `controlled-vocabularies` | `planning`, `implementation_readiness`, `hygiene` |
+| `controlled-vocabularies` ↔ implementation | `planning`, `implementation_readiness`, `hygiene` |
+| API contracts ↔ `schema-authority` | `implementation_readiness`, `code_alignment`, `hygiene` |
+| `status-transitions` ↔ explicit status-route expectations | `planning`, `implementation_readiness`, `hygiene` |
+| External linkage rules ↔ `implementation-traceability` rules | `code_alignment`, `handoff` |
+| ETR ↔ supporting `DecisionRecord` rationale | `research`, `planning`, `implementation_readiness` |
 
 ### Applicability note on API contracts
 
@@ -292,7 +300,7 @@ First-pass ambiguity detection must flag terms such as:
 
 Flagging a term triggers a classification decision.
 
-### Material ambiguity ΓÇö must fail the audit
+### Material ambiguity — must fail the audit
 
 Ambiguity is material when it affects any of the following:
 
@@ -303,11 +311,11 @@ Ambiguity is material when it affects any of the following:
 - a constraint or validation rule that the hammer suite would probe
 
 Examples:
-- "set a **reasonable** timeout" in a schema spec ΓåÆ material; a timeout value is a hard rule, not a preference
-- "use **appropriate** credentials" in a security doc ΓåÆ material; authentication rules are implementation gates
-- "**TBD**: decide retry behavior" in an API contract ΓåÆ material; missing contract terms block safe implementation
+- "set a **reasonable** timeout" in a schema spec → material; a timeout value is a hard rule, not a preference
+- "use **appropriate** credentials" in a security doc → material; authentication rules are implementation gates
+- "**TBD**: decide retry behavior" in an API contract → material; missing contract terms block safe implementation
 
-### Advisory ambiguity ΓÇö may produce a warning or minor gap
+### Advisory ambiguity — may produce a warning or minor gap
 
 Ambiguity is advisory when it appears in:
 
@@ -317,8 +325,8 @@ Ambiguity is advisory when it appears in:
 - areas where the adjacent concrete rule makes the intent sufficiently recoverable
 
 Examples:
-- "this pattern is generally **sufficient** for most projects" in a rationale paragraph ΓåÆ advisory
-- "**TODO**: add examples here" in an explanatory section that already has governing rules ΓåÆ advisory
+- "this pattern is generally **sufficient** for most projects" in a rationale paragraph → advisory
+- "**TODO**: add examples here" in an explanatory section that already has governing rules → advisory
 
 ### Ambiguity detection is a classification step, not a blanket pass/fail
 
@@ -426,7 +434,7 @@ The hammer suite must verify at least:
 A capable LLM should be able to infer from this doc that:
 
 - audit results are server-owned and not caller-settable
-- evaluation runs in a strict order: scope ΓåÆ applicability ΓåÆ basis ΓåÆ hard-fail ΓåÆ warning ΓåÆ pass
+- evaluation runs in a strict order: scope → applicability → basis → hard-fail → warning → pass
 - `stale` is a later invalidation state, not a first-run result
 - cross-artifact consistency checks are required for specific audit type combinations
 - ambiguity detection classifies material vs advisory before deciding result impact
@@ -453,6 +461,6 @@ This document should be used:
 - `controlled-vocabularies.md`
 - `schema-authority.md`
 - `implementation-traceability.md`
+- `implementation-document-doctrine.md`
 - `../governance/decision-continuity-doctrine.md`
 - `../governance/testing-and-verification-doctrine.md`
-

@@ -180,8 +180,14 @@ VEDA has drifted when it:
 - proposes what should be built or changed based on its signal observations
 - stores V Forge execution records as part of its observatory truth
 
-The VEDA Brain prohibition (ADR-003) specifically governs the second category.
-VEDA observes and records. It does not synthesize, model, or propose.
+VEDA is observatory-only. It observes and records external reality. It does not
+synthesize, model, derive strategic intelligence, or propose action.
+
+Derived strategic intelligence — opportunity scoring, content gap detection at the
+strategic level, clustering, competitive analysis — belongs in VEDA Strategy.
+If a proposed capability is observatory truth, it belongs in VEDA.
+If it is derived strategic intelligence, it belongs in VEDA Strategy.
+If it is execution truth or execution intelligence, it belongs in V Forge.
 
 ---
 
@@ -219,6 +225,8 @@ This document should be used:
 - `vs-project-v.md`
 - `../veda/veda.md`
 - `../veda/system-invariants.md`
+- `../veda-strategy/veda-strategy.md`
 - `../interfaces/veda-to-v-forge-signal-interface.md`
+- `../interfaces/veda-strategy-to-v-forge-signal-interface.md`
 - `../ecosystem/cross-system-boundaries.md`
 - `../ecosystem/vocabulary.md`

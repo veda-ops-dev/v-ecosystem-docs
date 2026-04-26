@@ -84,6 +84,7 @@ VEDA owns:
 - Google Analytics 4 performance observations
 - Google Search Console indexation and performance observations
 - YouTube search and channel observatory data
+- raw AI-surface observability — mentions, citations, fan-out queries, brand entity appearances, and answer-surface platform metadata captured from admitted providers
 - source capture and source item ingestion
 - observatory event log
 - external provider data ingestion pipelines
@@ -185,10 +186,15 @@ VEDA does not have an intelligence synthesis layer.
 
 There is no VEDA Brain in this ecosystem.
 
-Intelligence synthesis that was previously attributed to VEDA Brain is split cleanly:
+Derived strategic intelligence that was previously attributed to VEDA Brain now has a governed home in VEDA Strategy.
 
-- pre-build market opportunity analysis belongs to Project V's planning intelligence layer
-- post-build content performance gap analysis belongs to V Forge's execution intelligence layer
+VEDA Strategy owns:
+
+- opportunity scoring
+- strategic-level content gap detection
+- clustering
+- competitive analysis
+- strategic signals derived from VEDA observatory truth
 
 VEDA must not:
 
@@ -197,7 +203,7 @@ VEDA must not:
 - synthesize cross-system intelligence as though it were an observatory output
 - recreate VEDA Brain under any other name
 
-If a capability sounds like VEDA Brain, it belongs in Project V or V Forge, not in VEDA.
+If a capability sounds like VEDA Brain, it belongs in VEDA Strategy, Project V, or V Forge — not in VEDA.
 
 ---
 
@@ -372,7 +378,7 @@ VEDA doctrine must remain structured so that a capable LLM can reliably infer:
 - what may cross into Project V or V Forge and how
 - when VEDA must stay bounded instead of acting like a planner or executor
 
-If a capable LLM could read VEDA as a generic intelligence layer that is free to mutate planning or execution truth, or that owns the content graph, these invariants are failing.
+If a capable LLM could read VEDA as a generic intelligence layer that is free to mutate planning or execution truth, own the content graph, or perform the strategic intelligence role belonging to VEDA Strategy, these invariants are failing.
 
 ---
 
@@ -421,7 +427,7 @@ A capable LLM should be able to infer from this doc that:
 - VEDA owns external observatory truth only
 - VEDA is observatory-only — the telescope, not the analyst
 - VEDA does not own planning truth, execution truth, or the content graph
-- VEDA Brain does not exist — intelligence synthesis belongs to Project V and V Forge
+- VEDA Brain does not exist — derived strategic intelligence belongs to VEDA Strategy; planning decisions belong to Project V; execution intelligence belongs to V Forge
 - evidence and interpretation must remain distinct
 - observatory models must stay project-scoped, time-aware, and structurally sound
 - event auditability and transaction integrity matter

@@ -327,7 +327,7 @@ non-creation terminal outcomes.
 |---|---|---|---|---|---|---|
 | Intake item deferred | `intake.defer` | Project V | — (internal) | `entity_type: intake_outcome`, `entity_id: <intake item identity>` | `deferral_reason`, `re_evaluation_conditions`, `signal_basis_ref` | Action class: `state_change`. Decision continuity must be preserved. |
 | Intake item held | `intake.hold` | Project V | — (internal) | `entity_type: intake_outcome`, `entity_id: <intake item identity>` | `hold_reason`, `triggering_conditions_for_reconsideration`, `signal_basis_ref` | Action class: `state_change`. Decision continuity must be preserved. |
-| Intake item rejected | `intake.reject` | Project V | — (internal) | `entity_type: intake_outcome`, `entity_id: <intake item identity>` | `rejection_reason`, `rejection_scope`, `signal_basis_ref` | Action class: `state_change`. Rejection continuity required per `decision-continuity-doctrine.md`. |
+| Intake item rejected | `intake.reject` | Project V | — (internal) | `entity_type: intake_outcome`, `entity_id: <intake item identity>` | `rejection_reason`, `rejection_scope`, `signal_basis_ref` | Action class: `state_change`. Rejection continuity required per `../governance/decision-continuity-doctrine.md`. |
 | Intake item closed (insufficient basis) | `intake.close` | Project V | — (internal) | `entity_type: intake_outcome`, `entity_id: <intake item identity>` | `closure_reason`, `degraded_condition` | Action class: `state_change`. Stage 7 closure only. Distinct from reject — closed on insufficient basis, not on planning-posture decision. |
 
 **Note on project creation:** `project.create` (existing canonical type) is used for the positive intake outcome. Use `project.create` with `details` capturing the signal basis and planning context reference.
@@ -427,6 +427,7 @@ governed extension path (add to `activity-trail-model.md` first, then this map).
 ## Related Docs
 
 - `activity-trail-model.md` *(Tier 1 authority — read before this doc)*
+- `activity-trail-implementation.md` *(implementation contract — storage schema, write helper, fail-closed behavior, first-slice replay path)*
 - `cross-system-access-governance.md`
 - `../interfaces/veda-to-project-v-signal-interface.md`
 - `../interfaces/project-v-to-veda-evidence-request-interface.md`

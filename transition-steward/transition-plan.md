@@ -12,7 +12,8 @@ A future LLM reading this document should be able to determine immediately:
 - what the current architecture direction is
 - what phase the transition is in
 - what has already been settled
-- what batch to execute next
+- what branch reality includes beyond the original batches
+- what transition-control work remains before coding proceeds
 - what must not be done all at once
 
 ---
@@ -54,33 +55,231 @@ A future LLM reading this document should be able to determine immediately:
 
 - VEDA is observatory-only — no scoring, no gap detection, no clustering
 - Firecrawl belongs in VEDA as an observatory provider
+- DataForSEO AI Optimization belongs in VEDA as an observatory provider
 - Pre-project observability is required — observation does not require an
   existing project
 - Key concepts to formalize: `observatory_scope`, `topic_monitor`
+- Raw AI-surface observability (mentions, citations, fan-out queries, brand
+  entities, surface metadata) belongs in VEDA; derived interpretation later
+  belongs in VEDA Strategy
 
 ---
 
 ## Current Transition Status
 
-**Phase: Batch A drafted — pending human review.**
+**Phase: Branch carries landed documentation work through Batch G, partial Batch H, verified Batch J, Batch L, later transition-support first-project / context-loading / V Forge structural cluster, and a completed first-slice coding-readiness packet. DataForSEO AI-surface authority promotion is paused pending provider credits; Batch I remains separately blocked on Qdrant/Postgres research review.**
 
-The following has been done:
+The following has been done on branch `docs/batch-h-firecrawl-provider-governance`:
 - Full spec-doc context read across all Tier 1 and Tier 2 authority docs
 - Transition review and diagnosis pass completed
 - Transition plan corrected (this document)
 - Qdrant+Postgres architecture research prompt executed (output to be
   uploaded as reference material — not stored in this repo)
-- Batch A edits drafted: `ecosystem/v-ecosystem-overview.md` and
+- Batch A docs landed: `ecosystem/v-ecosystem-overview.md` and
   `ecosystem/cross-system-boundaries.md` updated with VEDA Strategy as
-  the fourth governed system — **awaiting human review before marking complete**
+  the fourth governed system
+- Batch B docs landed: `ecosystem/db-posture.md` rewritten for single-Postgres/
+  four-schema posture; `interfaces/data-boundaries.md` updated with VEDA Strategy
+  ownership map entry; `ecosystem/decisions/ADR-012-single-postgres-multi-schema.md`
+  created
+- Batch C docs landed: `ecosystem/ecosystem-schema-spine.md` updated with
+  `veda_strategy` in canonical enumerations and with first-pass VEDA Strategy
+  entity coverage
+- Batch D docs landed: `veda-strategy/veda-strategy.md`,
+  `veda-strategy/data-boundaries.md`, and `veda-strategy/schema-authority.md`
+  created
+- Batch E docs landed: `veda/veda.md`, `veda/system-invariants.md`, and
+  `veda/observability-and-signal-role.md` updated to name VEDA Strategy as the
+  governed destination for non-observatory capabilities
+- Batch F stubs landed: `interfaces/veda-strategy-to-project-v-signal-interface.md`
+  and `interfaces/veda-strategy-to-v-forge-signal-interface.md` created
+- Batch G docs landed: `project-v/project-v.md` updated with VEDA Strategy
+  relationship section and updated Related Docs; `workflows/project-intake-workflow.md`
+  tightened so that VEDA Strategy-originated signals are explicitly named as entering
+  intake through the governed VEDA Strategy → Project V interface under Trigger Type B
+- Firecrawl admitted into `veda/providers/registry.md` as an active observatory
+  provider with supporting provider/admission docs in `veda/providers/`
+- Firecrawl transition-support baseline capture is now documented under
+  `transition-steward/firecrawl/`, including a direct API baseline sample,
+  Playground comparison artifacts, a primary inventory note, and folder README
+  clarifying raw API shape versus Playground wrapper shape
+- DataForSEO AI Optimization admitted into `veda/providers/registry.md` as an
+  active observatory provider; raw AI-surface observability is now explicitly
+  classified as VEDA input rather than VEDA Strategy logic
+- Batch H partial posture landed: `veda/data-boundaries.md` updated with bucket/
+  snapshot storage posture for large Firecrawl captures; `veda/schema-reference.md`
+  updated to formalize `observatory_scope`, `topic_monitor`, crawled page
+  observability families, and AI-surface observability families as
+  deferred-but-owned VEDA model families with an explicit no-ad-hoc-tables rule
+- Batch J verified complete: all four `strategy/*` docs already carry
+  `system: veda_strategy`; root `README.md` strategy section already reflects
+  VEDA Strategy as the authority-owning system; no file changes were required
+- Batch L docs landed: `v-forge/content-execution-module.md`,
+  `interfaces/desktop-interaction-surface-and-command-dispatch.md`, and
+  `v-forge/bounded-analytical-tools-and-plugin-doctrine.md` created — see
+  Batch L entry below for scope
+- Same-day cleanup set landed:
+  - `project-v/decisions/ADR-001-separate-databases-per-bounded-system.md`
+    status updated to Superseded by ADR-012; supersession notice added;
+    ADR-012 added to Related Docs
+  - `ecosystem/vocabulary.md` updated with VEDA Strategy as a canonical term
+    entry parallel to the other three system entries
+  - `v-forge/v-forge.md` updated with a Relationship to VEDA Strategy section
+    and the VEDA Strategy → V Forge interface added to Related Docs
+  - `veda/observatory-models.md` Anti-Drift Rule 3 corrected to name VEDA
+    Strategy as the first-named governed destination for derived strategic
+    intelligence types (opportunity scoring, gap detection, clustering,
+    competitive analysis) rather than routing them generically to
+    "Project V or V Forge"
+  - `veda/search-intelligence-layer.md` Rule 6 and Rule 7 corrected with the
+    same destination fix and with an explicit acknowledgment of the governed
+    VEDA → VEDA Strategy read path
+  - first-archetype candidate research note added at
+    `transition-steward/first-archetype-affiliate-content-site-note.md` to
+    preserve the current provisional assessment of a revenue-first public
+    content / affiliate-style site as a strong first candidate archetype for
+    VedaOps; this is transition-support only, not a final archetype decision,
+    and should be read before future archetype-framework or BYDA integration work
+- Later transition-support side work landed under
+  `transition-steward/first-project-v-forge/` covering:
+  - doctrine-aware context loading working notes and design passes
+  - harness enforcement / inspectability posture for context admission
+  - execution-scoped planning digest spec work and proving-case closure
+  - first-project v1 execution packet draft exercise
+  - affiliate-link record posture, placement posture, and graph posture
+  - first-project V Forge record-family and schema-drafting basis notes
+  - a folder README that classifies derivation history vs current starting points
 
-The following has not yet been done:
-- Batch A not yet reviewed and accepted
-- No database posture docs have been modified
-- No new system docs have been created
-- No ADRs have been written for the single-database posture
+### Interpretation of the later transition-support cluster
 
-**Next action: Human reviews Batch A. On acceptance, proceed to Batch B.**
+The `transition-steward/first-project-v-forge/` cluster is **not** part of the
+original authority-correction batch sequence.
+
+It is preserved branch work that:
+- pressure-tests first-project execution structure
+- explores doctrine-aware context loading and execution-packet posture
+- shapes first-project V Forge structural assumptions far enough for later
+  schema/spec work
+- remains transition-support unless and until promoted into the proper authority
+  docs
+
+It must not be treated as a silent replacement for authority docs or for the
+original transition-control spine.
+
+### What remains unfinished or not yet human-accepted
+
+- None of the landed authority-correction work has been marked human-reviewed
+  and accepted yet
+- Batch H remains partial, but its blockers are now split:
+  - Firecrawl family promotion is not blocked by provider credits; it is waiting
+    on human review of `batch-h-veda-family-design-pass.md`, resolution or
+    explicit deferral of the remaining design-pass open questions, and a governed
+    authority-doc update to `veda/schema-reference.md`
+  - DataForSEO AI-surface authority promotion is paused pending provider credits
+    because LLM Mentions, aggregated AI-surface metrics, and related
+    citation/mention surfaces still lack real intended-workflow payload evidence;
+    docs-confirmed structures must not be promoted as payload-confirmed doctrine
+- Batch I remains blocked on Qdrant/Postgres research output review; this is a
+  separate blocker from the DataForSEO credit pause
+- Batch K remains deferred
+- Batch L docs are present on branch but pending human review and acceptance
+- The later first-project / context-loading / V Forge cluster remains
+  transition-support side work only; none of it has been promoted or accepted
+  as authority doctrine
+- The first-slice coding-readiness pass is complete for handoff acceptance,
+  approval gate, and activity trail work; it is documented in
+  `coding-readiness-classification.md` and related implementation-support docs
+
+### Control-spine reading of current branch reality
+
+The branch is ahead of the original batch sequence in one important way:
+there is now a substantial transition-support proving cluster for first-project
+execution structure and context-loading.
+
+That cluster should be read as:
+- useful branch reality
+- preserved derivation and schema-facing preparation
+- not settled authority
+- not a reason to treat the original transition batches as complete
+
+**Actual next transition-control step:** Re-center on the original authority-
+correction spine while respecting current branch reality. The highest-value
+unblocked Batch H path is human review of the Firecrawl family design pass and
+promotion of non-credit-blocked families into `veda/schema-reference.md` where
+review accepts them. DataForSEO AI-surface authority promotion remains paused
+pending provider credits and real payload capture. The first-slice V Forge
+coding packet is complete and may proceed in parallel without Batch H provider
+work. Do not continue expanding the first-project cluster as though it were the
+control spine.
+
+### Integrity Infrastructure — Text Artifact Integrity Check Layer
+
+A lightweight text integrity utility (`tools/vcheck.py`) and a matching
+pre-commit hook (`hooks/pre-commit`) have been added to the repo.
+
+This work was prompted by a real failure during the ETR doctrine pass:
+hidden control characters (ESC / `0x1B`) were injected into three markdown
+files by a write tool. The corruption was invisible to normal visual review
+but broke all automated string matching and reference resolution. Detection
+required manual binary inspection.
+
+`vcheck` is a small stdlib-only Python utility. It blocks on:
+
+- invalid UTF-8
+- forbidden control characters (`\x00`–`\x1F` except tab/newline/CR; `\x7F`)
+- null bytes
+- control characters immediately before backtick-wrapped file references
+  (the specific injection pattern that caused the real failure)
+
+It warns on broken backtick `.md` references, mixed line endings, and
+trailing invisible whitespace.
+
+The pre-commit hook runs `vcheck --sweep` against all staged `.md` files
+and blocks the commit on any blocking failure.
+
+This is a persistence-hygiene floor. It sits below the audit, readiness,
+and traceability layers — those layers assume the text they operate on is
+structurally clean. `vcheck` makes that assumption real rather than declared.
+
+It is not a schema validator, not a semantic validator, and not a replacement
+for the BYDA audit system or the hammer layer. It handles only the physical
+text layer.
+
+**To activate the hook:**
+```
+cp hooks/pre-commit .git/hooks/pre-commit
+chmod +x .git/hooks/pre-commit
+```
+
+---
+
+## Coding-Readiness Reading of the Current Repo
+
+The repo now contains three distinct layers that must not be confused:
+
+### 1. Settled / landed authority-correction work
+This includes Batches A–G, J, and L as landed branch work, plus partial Batch H.
+This layer is the primary target of the transition plan.
+
+### 2. Transition-support proving cluster
+This includes the new `transition-steward/first-project-v-forge/` folder and
+its README. It is useful for schema/spec drafting preparation and first-project
+execution thinking, but it is not yet authority.
+
+### 3. Still-missing authority / control work
+This includes:
+- human review / acceptance across landed batches
+- remaining non-credit-blocked Batch H Firecrawl authority-promotion work
+- paused DataForSEO AI-surface authority promotion after provider credits are
+  available and real LLM Mentions / citation-related payloads can be captured
+- Batch I Qdrant doctrine promotion
+- Batch K full interface specs when appropriate
+- continued use of the completed coding-readiness classification so LLM
+  implementation work does not read every transition-support note as if it were
+  settled doctrine
+
+This distinction matters because the risk has shifted from "missing docs" to
+"too many useful branch notes without enough acceptance and hierarchy."
 
 ---
 
@@ -94,9 +293,21 @@ The following has not yet been done:
 6. Correct Project V docs: Project V consumes strategy signals, does not generate them
 7. Create VEDA Strategy interface stubs for signal routing to Project V and V Forge
 8. Formalize pre-project observability concepts in VEDA docs
-9. Add Firecrawl to VEDA provider registry via governed admission process
+9. Add Firecrawl and DataForSEO AI Optimization to VEDA provider governance and
+   classify what they settle now vs. what remains deferred
 10. Promote Qdrant doctrine into a governed infrastructure posture doc
 11. Clean up strategy/* system field and align with VEDA Strategy identity
+12. Govern bounded V Forge content execution so SEO Machine-style execution
+    patterns cannot be imported without doctrine
+13. Govern the VedaOps desktop interaction and command-dispatch surface so
+    terminal ergonomics do not become governance bypasses
+14. Govern bounded analytical tools and plugins inside V Forge so scoring
+    modules, specialist agents, and helpers do not become shadow planning
+    or shadow observability
+15. Re-establish the transition plan as the control spine even when useful
+    first-project transition-support work accumulates on branch
+16. Produce a bounded coding-readiness classification pass before coding begins
+    from the new first-project transition-support cluster
 
 ---
 
@@ -110,7 +321,7 @@ Batches A through C must complete before any system-level doc work begins.
 
 ### Batch A — Four-System Ecosystem Map
 **Branch:** `docs/transition-batch-a-four-system-ecosystem-map`
-**Status:** Drafted — pending human review
+**Status:** Landed on current branch — pending human review
 
 Docs:
 - `ecosystem/v-ecosystem-overview.md`
@@ -133,7 +344,7 @@ in the ecosystem overview, all subsequent corrections reference a ghost system.
 
 ### Batch B — Database Posture Correction
 **Branch:** `docs/transition-batch-b-database-posture-correction`
-**Status:** Not started
+**Status:** Landed on current branch — pending human review
 
 Docs:
 - `ecosystem/db-posture.md` — rewrite
@@ -151,11 +362,10 @@ Changes:
   explicitly supersede the prior multi-database posture that was described
   in `db-posture.md` as prose doctrine (no prior ADR existed for it)
 
-**Note on the old Phase 5:** The previous plan referenced
-`project-v/decisions/ADR-001-separate-databases-per-bounded-system.md` as
-the cleanup target. That file does not exist and never existed at that path.
-The ADR numbering in `ecosystem/decisions/` currently ends at ADR-011. The
-correct action is to create ADR-012 here. There is nothing to delete.
+**Note on ADR-001:** `project-v/decisions/ADR-001-separate-databases-per-bounded-system.md`
+exists and has been updated in the same-day cleanup set: its status is now
+Superseded by ADR-012 and a supersession notice has been added. The historical
+content is preserved. ADR-012 governs the current posture.
 
 **Why second:** The db-posture doc is the most actively misleading doc in the
 repo. Every LLM that reads it picks up multi-database posture as current doctrine.
@@ -165,7 +375,7 @@ Must be corrected before schema or system docs reference it.
 
 ### Batch C — Schema Spine Enumeration Updates
 **Branch:** `docs/transition-batch-c-schema-spine-enumerations`
-**Status:** Not started
+**Status:** Landed on current branch — pending human review
 
 Docs:
 - `ecosystem/ecosystem-schema-spine.md`
@@ -186,7 +396,7 @@ enumerations. This is a prerequisite for Batch D.
 
 ### Batch D — VEDA Strategy System Introduction
 **Branch:** `docs/transition-batch-d-veda-strategy-introduction`
-**Status:** Not started
+**Status:** Landed on current branch — pending human review
 
 New files to create:
 - `veda-strategy/veda-strategy.md` — identity doc
@@ -210,7 +420,7 @@ VEDA Strategy as a destination and before interface stubs can reference it.
 
 ### Batch E — VEDA Docs Narrow Correction
 **Branch:** `docs/transition-batch-e-veda-docs-narrow-correction`
-**Status:** Not started
+**Status:** Landed on current branch — pending human review
 
 Docs (targeted additions only — these docs are already well-aligned):
 - `veda/veda.md`
@@ -226,16 +436,19 @@ Changes:
   capabilities; update related docs reference
 - `veda/observability-and-signal-role.md`: update "What VEDA Does Not Do"
   section to name VEDA Strategy by name rather than just "Project V or V Forge"
+- Update VEDA docs to recognize DataForSEO AI Optimization as observatory input
+  for raw AI-surface behavior, not embedded interpretation logic
 
 **Scope note:** Do not rewrite these docs. They are already the best-specified
 boundary docs in the repository. Only add the explicit VEDA Strategy references
-where "belongs elsewhere" currently has no named destination.
+where "belongs elsewhere" currently has no named destination, and add only the
+minimum DataForSEO AI Optimization recognition needed to preserve observatory posture.
 
 ---
 
 ### Batch F — VEDA Strategy Interface Stubs
 **Branch:** `docs/transition-batch-f-veda-strategy-interface-stubs`
-**Status:** Not started
+**Status:** Landed on current branch — pending human review
 
 New files to create:
 - `interfaces/veda-strategy-to-project-v-signal-interface.md` — stub
@@ -258,7 +471,7 @@ reference.
 
 ### Batch G — Project V and Intake Workflow Corrections
 **Branch:** `docs/transition-batch-g-project-v-intake-workflow`
-**Status:** Not started
+**Status:** Landed on current branch — pending human review
 
 Docs:
 - `project-v/project-v.md`
@@ -281,11 +494,12 @@ the identity doc and intake workflow.
 
 ### Batch H — VEDA Infrastructure: Firecrawl, Blob, Pre-Project Observability
 **Branch:** `docs/transition-batch-h-veda-infrastructure`
-**Status:** Not started
+**Status:** Partially landed on current branch — provider admission and Firecrawl baseline sample-governance artifacts are present, pending human review and residual doctrine work
 
 Docs:
 - `veda/providers/registry.md`
 - `veda/schema-reference.md`
+- provider docs under `veda/providers/`
 
 Changes:
 - `veda/providers/registry.md`: add Firecrawl as an admitted observatory
@@ -293,9 +507,48 @@ Changes:
   `ecosystem/external-provider-integration-doctrine.md`; include
   classification, data supplied, trust posture, spend posture, approval
   posture, status, admitted date
+- Keep DataForSEO AI Optimization admitted in the registry and use this batch to
+  clarify what that admission settles now vs. what remains deferred at schema
+  and strategy layers
+- Transition-support evidence now exists under `transition-steward/firecrawl/`
+  for one direct API baseline scrape plus paired Playground artifacts; use
+  those artifacts to ground the remaining Firecrawl doctrine work rather than
+  infer structure from vendor docs or UI behavior alone
+- `/crawl` and `/map` surface shapes are now doc-confirmed via canonical
+  Firecrawl documentation (live samples blocked by provider 502s; doc
+  confirmation is sufficient for the schema design pass):
+  - `/map` response: `success` + `links[]` with `url`, optional `title`,
+    optional `description`; speed-first, sourced from sitemap + cached SERP
+    results; explicitly not guaranteed comprehensive; 1 credit flat regardless
+    of URL count; use as pre-flight discovery only, not as a thorough baseline
+  - `/crawl` response: async job-based; per-page families are the same as
+    `/scrape` (markdown, html, metadata with statusCode/sourceURL, links);
+    delivered via polling, WebSocket, or webhook
+  - Three caveats to carry forward into the schema design pass and
+    implementation work:
+    1. **24-hour result expiration** — crawl job results expire from the live
+       API 24 hours after completion; bucket capture is therefore required, not
+       optional — live results will not be available for later re-parsing
+    2. **Non-determinism** — crawl results vary between runs; concurrent
+       scraping means link discovery order depends on network timing; near
+       maxDiscoveryDepth boundaries different site branches get explored to
+       different extents; this has direct implications for re-crawl comparison
+       logic and observatory trust posture
+    3. **Crawl errors are a separate endpoint** — the `data` array in a
+       completed crawl only contains successfully scraped pages; pages that
+       failed due to network errors, timeouts, or robots.txt blocks are
+       silently absent; `GET /crawl/{id}/errors` must be polled separately for
+       a complete capture picture; not calling the errors endpoint produces a
+       silently incomplete capture with no warning
+  - Inventory note for `/crawl` and `/map` surfaces added at
+    `transition-steward/firecrawl/firecrawl-crawl-map-surface-inventory.md`
 - `veda/schema-reference.md`: formalize `observatory_scope` and `topic_monitor`
   as deferred-but-owned model families required for pre-project observability;
   specify they must not receive ad hoc tables before governed family design
+- Add first-pass VEDA schema/reference posture for Firecrawl page-capture
+  families and AI-surface observability, including what belongs in canonical
+  observatory truth versus raw/archive capture, while keeping exact
+  normalization and downstream derivation conservative
 - Blob/page-capture posture: add doctrine note on local blob storage posture
   and R2/bucket compatibility requirement; home is `veda/data-boundaries.md`
   or a new infrastructure posture doc depending on scope
@@ -303,6 +556,8 @@ Changes:
 **Prerequisite:** Firecrawl admission requires completing the provider
 admission process — this batch cannot fully close until that process runs.
 The registry entry is the output of that process, not a shortcut around it.
+DataForSEO AI Optimization has already been admitted; this batch handles its
+follow-on doctrine implications rather than re-admitting it.
 
 ---
 
@@ -332,7 +587,7 @@ material to be supplied as reference.
 
 ### Batch J — Strategy Folder System Field and README Cleanup
 **Branch:** `docs/transition-batch-j-strategy-folder-cleanup`
-**Status:** Not started — must follow Batch D
+**Status:** Verified complete — all four strategy docs already carry `system: veda_strategy`; README `strategy/` section already reflects VEDA Strategy as the authority-owning system; no file changes required
 
 Docs:
 - `strategy/ecosystem-objective-function.md`
@@ -367,6 +622,108 @@ docs are reviewed and stable. The stubs from Batch F are sufficient until then.
 
 ---
 
+### Batch L — V Forge Execution and Desktop Interaction Doctrine
+**Branch:** `docs/batch-h-firecrawl-provider-governance` (landed on current branch)
+**Status:** Landed on current branch — pending human review and acceptance
+
+Docs:
+- `v-forge/content-execution-module.md` — new file
+- `interfaces/desktop-interaction-surface-and-command-dispatch.md` — new file
+- `v-forge/bounded-analytical-tools-and-plugin-doctrine.md` — new file
+
+This batch was created to establish load-bearing doctrine for execution-side
+capability areas that were otherwise ungoverned and at risk of drifting toward
+shadow planning or shadow observability.
+
+Changes:
+- `v-forge/content-execution-module.md`: defines the bounded capability area
+  within V Forge for content-driven owned-surface execution; governs what
+  content execution work is admitted, how content graph operations are bounded,
+  what execution-side research is and is not admitted, how execution intelligence
+  works within this area, how SEO Machine-pattern commands and agents are
+  classified at doctrine level, and how return-to-planning posture works for
+  content execution findings
+- `interfaces/desktop-interaction-surface-and-command-dispatch.md`: defines
+  the doctrine for the VedaOps desktop terminal/REPL-style operator interaction
+  surface and its slash command dispatch model; establishes that terminal
+  ergonomics do not change governance posture, that slash commands are bounded
+  dispatch invocations that inherit session scope without widening it, and that
+  Class B and Class C approval events must complete through the governed gate
+  surfaces — not inline through the interaction surface
+- `v-forge/bounded-analytical-tools-and-plugin-doctrine.md`: defines what
+  bounded analytical tools, scoring modules, specialist agents, and plugin-style
+  helpers are inside V Forge; governs their admitted inputs, forbidden inputs,
+  admitted outputs, the non-authority of their outputs, how delegation remains
+  bounded by parent scope, the four-category finding classification model, and
+  the doctrine boundary between these tools and VEDA, VEDA Strategy, and the
+  approval model; classifies SEO Machine-pattern analytical helpers at doctrine
+  level
+
+**Why this batch exists:** Prior to this batch, V Forge had identity docs,
+variant docs, and interface docs, but no load-bearing doctrine governing:
+(a) what content-driven execution work is admissible and on what terms,
+(b) how the desktop interaction surface and command dispatch remain bounded
+by existing governance rather than becoming a bypass layer, or
+(c) what bounded analytical tools and plugins may and may not do so that
+scoring and specialist agents do not become shadow planners or shadow
+observatories. These gaps represented real drift risk when implementation
+begins. Batch L closes those gaps at the doctrine layer before implementation
+proceeds.
+
+**Scope note:** This batch does not define implementation mechanics for any of
+these docs. Plugin runtime mechanisms, specific command catalogs, schema for
+tool outputs, and full approval mechanics are all explicitly deferred to later
+implementation or specification passes. This batch establishes the doctrine
+boundaries; later work fills in the implementation detail within those bounds.
+
+---
+
+## Later Transition-Support Side Cluster (Preserved, Not Promoted)
+
+A substantial proving cluster now exists under:
+
+- `transition-steward/first-project-v-forge/`
+
+This cluster captures one bounded workstream:
+- doctrine-aware context-loading design
+- harness enforcement / inspectability posture for context admission
+- execution-scoped planning digest spec and closure work
+- first-project v1 execution packet proving work
+- affiliate-link posture, placement, and graph posture
+- first-project V Forge record-family and schema-drafting-basis notes
+
+### Why this cluster exists
+
+This work was created to pressure-test whether a first-project execution slice
+could be made structurally legible enough for later schema/spec work and for
+LLM execution inside V Forge without relying on planning-packet bleed.
+
+### What this cluster is
+
+It is:
+- transition-support side work
+- derivation history plus schema-facing preparation
+- useful implementation guidance if read cautiously and in hierarchy
+- preserved branch reality
+
+It is not:
+- final authority doctrine
+- a replacement for `transition-plan.md`
+- a signal that the original transition batches are complete
+- automatically safe as direct coding input without a coding-readiness pass
+
+### Current best starting point inside that cluster
+
+For V Forge schema/spec drafting, the current cluster starting point is:
+- `transition-steward/first-project-v-forge/first-project-v-forge-schema-drafting-basis-note.md`
+
+For execution-preparation reading, the current cluster starting point is:
+- `transition-steward/first-project-v-forge/first-project-v1-execution-packet-draft.md`
+
+These files are still transition-support only.
+
+---
+
 ## Sequencing Summary
 
 ```
@@ -385,6 +742,14 @@ Batch A  →  Batch B  →  Batch C  →  Batch D
                Batch J  (follows Batch D, independent of H/I)
                    ↓
                Batch K  (deferred, follows A–F stable)
+
+Batch L  (V Forge execution and desktop interaction doctrine —
+          landed on current branch, independent of H/I/K sequencing,
+          prerequisite for V Forge implementation work)
+
+Later first-project / context-loading / V Forge cluster
+          (preserved transition-support side work; not on the main
+          authority-correction spine; do not treat as replacement control flow)
 ```
 
 Batches A, B, C must run in order.
@@ -392,6 +757,12 @@ Batches D through H run in sequence after C.
 Batch I is blocked on external research input.
 Batch J may run after Batch D regardless of H or I status.
 Batch K is the last phase — do not start it early.
+Batch L governs V Forge execution and desktop interaction posture; it was
+landed on the current branch and is a prerequisite for any V Forge
+implementation work that involves content execution, command dispatch,
+or analytical tool/plugin use inside V Forge.
+The later first-project cluster should be read after — not instead of — the
+main transition-control spine.
 
 ---
 
@@ -408,9 +779,22 @@ Batch K is the last phase — do not start it early.
   Batch I promotes the research into governed doctrine.
 - Do not correct the strategy/* system field before Batch D establishes
   the VEDA Strategy identity. The files are usable as-is.
+- Do not let provider capability imply settled schema or strategy doctrine.
+  DataForSEO AI Optimization admission means the source is admitted as VEDA
+  observatory input; it does not mean normalization, weighting, derived models,
+  or tactics are already canonized.
 - Do not treat the transition-steward folder as a replacement for authority
   docs. Any load-bearing conclusion must be promoted into the proper doc
   cluster and removed from here.
+- Do not treat Batch L docs as optional pre-implementation reading. They are
+  load-bearing doctrine. V Forge content execution, desktop command dispatch,
+  and analytical tool/plugin use must comply with them before implementation
+  begins.
+- Do not let the later `first-project-v-forge/` cluster silently become a
+  replacement for authority doctrine or for transition-control sequencing.
+- Do not begin coding from the full cluster indiscriminately. A coding-readiness
+  pass must first classify what in the cluster is safe implementation guidance,
+  what is derivation history only, and what remains blocked by missing authority.
 
 ---
 
@@ -424,6 +808,24 @@ Batch K is the last phase — do not start it early.
 - One branch per batch — no mixing batch scope
 - Merge and review each batch before starting the next
 - Physical consolidation does not mean conceptual merger
+- The transition plan remains the control spine even when later branch work is
+  useful and organized
+
+---
+
+## Immediate Next Control-Step
+
+1. Human reviews and accepts or corrects the Batch H Firecrawl family design pass
+   and promotes accepted, non-credit-blocked families into `veda/schema-reference.md`.
+2. DataForSEO AI-surface authority promotion remains paused pending provider
+   credits; resume only after real LLM Mentions / citation-related payloads are
+   captured, inventoried, and compared against the current transition-support
+   design notes.
+3. First-slice V Forge work may proceed in parallel from the completed coding
+   packet for handoff acceptance, approval gate, and activity trail.
+4. Batch I remains separately blocked on Qdrant/Postgres research output review.
+5. Resume expansion of the first-project V Forge cluster only if coding,
+   schema drafting, or runtime proving work exposes a real missing seam.
 
 ---
 
@@ -437,7 +839,15 @@ The transition is complete when:
 - VEDA docs name VEDA Strategy explicitly where relevant
 - `ecosystem-schema-spine.md` includes `veda_strategy` in all enumerations
 - Firecrawl is in the VEDA provider registry via the governed process
+- DataForSEO AI Optimization is reflected consistently as VEDA observatory input,
+  with later schema and strategy implications clarified in the proper batches
 - Qdrant retrieval posture is in a governed ecosystem doc
 - Pre-project observability concepts are formalized in VEDA docs
-- No contradictions remain between Tier 1 docs
+- V Forge content execution, desktop interaction/command-dispatch posture,
+  and bounded analytical tool/plugin posture are governed by load-bearing
+  doctrine docs (Batch L complete)
+- The original authority-correction batches are human-reviewed and accepted
+- The later `transition-steward/first-project-v-forge/` cluster is either
+  appropriately promoted, explicitly classified as transition-support only,
+  or superseded where necessary
 - Implementation can proceed from docs without drift assumptions

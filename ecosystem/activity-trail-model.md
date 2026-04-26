@@ -33,7 +33,8 @@ This document governs:
 This document does not define:
 
 - the internal logging infrastructure of individual systems
-- the specific database schema for activity trail storage
+- the specific database schema for activity trail storage, except by reference to the
+  implementation contract in `activity-trail-implementation.md`
 - the UI for activity trail browsing
 - system-specific event types beyond the ecosystem-level contract
 - detailed implementation of event bus or pub/sub mechanics
@@ -151,6 +152,20 @@ Every activity record must carry these fields:
 
 - `details` — structured key-value metadata specific to the action type. Must not contain secrets, credentials, or raw personal data.
 - `result_summary` — brief structured summary of the action outcome (e.g., `{result_count: 15}` for a query, `{status: approved}` for an approval decision).
+
+### Detail fields for LLM-backed governed actions
+
+When the action invoking the trail record was backed by an LLM call, `details` must additionally carry the following structured fields. These are governance requirements, not optional implementation choices. They allow an operator or auditor to know what model was used, what kind of reasoning was invoked, which governed records authorized the call, and what was actually consumed.
+
+- `llm_model` — the model identifier used (e.g., `claude-sonnet-4-20250514`). Required when an LLM was invoked.
+- `prompt_class` — a short controlled-vocabulary label identifying the category of reasoning invoked (e.g., `intake_scoring`, `gap_detection`, `content_draft`). Identifies *what kind of reasoning was invoked*, not what was said.
+- `governance_context_refs` — a typed reference list of the governed records and decisions admitted as authority context for the call. Structured as `[{ref_type: "...", ref_id: "..."}]`. If no governed records were admitted, record `governance_context_refs: []` explicitly — the empty list is informative.
+- `input_artifact_refs` — a typed reference list of the evidence packets, signal packages, or documents passed as content input. Distinct from `governance_context_refs`: governance context is what authorized the call; input artifacts are what the model consumed. Structured as `[{ref_type: "...", ref_id: "..."}]`.
+- `llm_output_summary` — a structured summary of what the LLM returned, consistent with `result_summary`. Captures the classification label or decision produced, not full prose.
+
+Raw prompt text and full LLM completions must not be stored in `details` or any other activity trail field.
+
+See `activity-trail-implementation.md` for write helper mechanics and storage behavior.
 
 ### Cost fields (when applicable)
 
@@ -384,6 +399,7 @@ This document should be used:
 
 ## Related Docs
 
+- `activity-trail-implementation.md` *(implementation contract — storage schema, write helper, fail-closed behavior, first-slice replay path)*
 - `cross-system-access-governance.md`
 - `activity-trail-integration-map.md` *(concrete seam-to-action-type mapping layer)*
 - `../interfaces/v-forge-evidence-access-contract.md`

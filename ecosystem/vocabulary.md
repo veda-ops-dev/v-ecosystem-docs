@@ -60,6 +60,11 @@ The pure observatory of the V Ecosystem. VEDA observes external reality, records
 ## V Forge
 Execution system of record. V Forge carries out approved work, owns the content graph of what was built, and produces execution intelligence by crossing the content graph against VEDA signal.
 
+## VEDA Strategy
+Derived strategic intelligence system of record. VEDA Strategy reads VEDA's observatory truth and derives bounded strategic intelligence from it — opportunity scoring, content gap detection at the strategic level, clustering, and competitive analysis. VEDA Strategy signals Project V when new project-worthy opportunities emerge and signals V Forge when in-scope execution-relevant conditions are identified.
+
+VEDA Strategy does not own observatory truth (that belongs to VEDA), planning truth (that belongs to Project V), or execution truth (that belongs to V Forge). It derives intelligence from VEDA's observations. It does not replace VEDA as the observatory, Project V as the planner, or V Forge as the executor.
+
 ## Observatory
 The role and mental model that defines VEDA's purpose. An observatory watches and records. It does not interpret on behalf of the ecosystem. It does not model what was built internally. It does not propose what should be built next.
 

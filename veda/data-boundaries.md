@@ -220,8 +220,29 @@ Examples may include:
 Supporting material must remain explicitly subordinate to VEDA’s canonical observatory records.
 It must not be used to smuggle foreign canonical truth into VEDA by convenience.
 
----
+### Bucket and snapshot storage posture
 
+Where provider captures are large, numerous, or evidence-heavy, VEDA may preserve them in bucket/blob backing storage rather than embedding them directly into hot-path canonical rows.
+
+This is the correct posture for large crawl captures such as:
+
+- raw Firecrawl API payloads
+- raw HTML captures
+- normalized markdown exports
+- link dumps
+- large provider-side metadata or discovery artifacts
+
+In this posture:
+
+- the bucket/blob store is evidence backing storage, not canonical truth
+- canonical VEDA records remain the system of record for the observatory fact that a capture occurred
+- canonical VEDA records must preserve stable references to backing artifacts
+- provenance, project scope, capture time, provider identity, and hot-path query fields must remain in governed VEDA records rather than living only in the bucket
+
+Bucket storage is allowed as evidence support.
+It must not become a shadow database or an excuse to avoid schema design.
+
+---
 ## Reference Without Ownership Rule
 
 VEDA may reference entities or systems outside its canonical ownership boundary without owning their truth.
@@ -449,3 +470,5 @@ This document should be used:
 - `../interfaces/veda-to-project-v-signal-interface.md`
 - `../governance/auth-and-actor-model.md`
 - `../governance/failure-and-recovery-doctrine.md`
+
+

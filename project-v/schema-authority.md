@@ -377,6 +377,25 @@ Represents a planning-support research artifact used by Project V.
 ### Notes
 Research docs support planning truth. They are not observability truth.
 
+### External Technology Research Posture
+
+A ResearchDoc with source_type = external_reference may represent
+external technology research as defined in
+`external-technology-research-doctrine.md`.
+
+When used in this posture, the record must include:
+
+- technology identity
+- version or version range
+- source attribution
+- capture timestamp
+- freshness classification
+- linked DecisionRecord references where the research supports a governed
+  planning decision
+
+This is not a new record family. It is a governed specialization of
+ResearchDoc.
+
 ---
 
 ## 10. `EvidenceLink`

@@ -277,6 +277,23 @@ V Forge reads what VEDA observed. V Forge does not replace VEDA as the observer.
 The governed signal path is defined in
 `../interfaces/veda-to-v-forge-signal-interface.md`.
 
+### Relationship to VEDA Strategy
+V Forge may consume bounded execution-relevant strategic signals from VEDA
+Strategy through the governed signal interface.
+
+VEDA Strategy derives strategic intelligence from VEDA observatory truth and
+delivers bounded signal packages when in-scope execution-relevant conditions
+are identified. V Forge receives those signals as inputs to its execution
+intelligence. V Forge remains the execution system of record. It decides what
+to do with those signals. VEDA Strategy does not make execution decisions and
+does not authorize scope changes through signal delivery.
+
+VEDA Strategy signals V Forge. It does not instruct V Forge. V Forge does not
+generate strategic signals — that is VEDA Strategy's role.
+
+The governed signal path from VEDA Strategy to V Forge is defined in
+`../interfaces/veda-strategy-to-v-forge-signal-interface.md`.
+
 ---
 
 ## Responsibility Model
@@ -387,3 +404,4 @@ This document should be used:
 - `../interfaces/veda-to-v-forge-signal-interface.md`
 - `../interfaces/project-v-to-v-forge-handoff-interface.md`
 - `../interfaces/v-forge-to-project-v-return-to-planning-interface.md`
+- `../interfaces/veda-strategy-to-v-forge-signal-interface.md`

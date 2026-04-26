@@ -2,15 +2,15 @@
 
 ## Purpose
 
-This document formalizes the shared schema conventions that all three system
-schema authority docs — Project V, VEDA, and V Forge — depend on.
+This document formalizes the shared schema conventions that all four system
+schema authority docs — Project V, VEDA, VEDA Strategy, and V Forge — depend on.
 
 It exists to answer:
 
 ```text
 What are the shared schema-layer contracts at the ecosystem level: the activity
 trail record schema, the canonical enumerated types, the cross-system identity
-reference posture, and the retention rules that implementations across all three
+reference posture, and the retention rules that implementations across all four
 systems must treat as fixed?
 ```
 
@@ -25,7 +25,7 @@ This document governs:
 - the activity trail record schema as an ecosystem-layer schema contract
 - the canonical enumerated types for `actor_type`, `actor_system`,
   `action_class`, action vocabulary, and entity type vocabulary
-- the cross-system identity and reference posture applicable across all three systems
+- the cross-system identity and reference posture applicable across all four systems
 - retention and compaction constraints for ecosystem-level records
 - the ecosystem-layer schema authority boundary
 
@@ -124,6 +124,8 @@ system schema authority docs, not here.
   intake_outcome, readiness_evaluation, planning-side traceability records.
 - VEDA entity schemas: evidence, signal_package, observatory event record, source
   capture record, evidence provenance record, provider configuration record.
+- VEDA Strategy entity schemas: strategic_signal_package, opportunity scoring
+  records, gap detection records, clustering records, competitive analysis records.
 - V Forge entity schemas: task, execution record, content graph entities (page,
   topic, entity, internal_link, archetype, schema_usage), execution_intelligence
   record, execution_return record, bounded execution findings record.
@@ -169,6 +171,7 @@ Allowed values:
 
 - `project_v` — the Project V planning system
 - `veda` — the VEDA observatory and signal system
+- `veda_strategy` — the VEDA Strategy derived intelligence system
 - `v_forge` — the V Forge execution system
 - `ecosystem` — ecosystem-level processes not owned by a single system
 - `extension` — governed extensions or integrations operating under an explicit
@@ -307,6 +310,11 @@ The `entity_type` field on every activity trail record must use a value from
 this enumeration. The owning system column indicates which system's schema
 authority doc defines the full entity schema for that type.
 
+Note: `strategic_signal_package` is owned by VEDA Strategy. Full entity schema
+for this type will be defined in `veda-strategy/schema-authority.md` once that
+doc is created in Batch D. The entry here establishes canonical ownership so
+activity trail records can reference VEDA Strategy entities before that doc exists.
+
 | Entity type | Owning system | Description |
 |---|---|---|
 | `project` | Project V | A Project V project record |
@@ -315,6 +323,7 @@ authority doc defines the full entity schema for that type.
 | `handoff` | Project V | A Project V handoff record |
 | `agent` | ecosystem | An agent instance |
 | `signal_package` | VEDA | A VEDA signal delivery package (used for VEDA → Project V and VEDA → V Forge delivery events) |
+| `strategic_signal_package` | VEDA Strategy | A VEDA Strategy strategic signal package (used for VEDA Strategy → Project V and VEDA Strategy → V Forge delivery events) |
 | `execution_return` | V Forge | A V Forge return-to-planning findings package |
 | `launch_authorization` | Project V | A launch authorization request record |
 | `scope_update` | Project V | A post-replanning scope update delivery record |
@@ -355,7 +364,7 @@ this contract.
 |---|---|---|---|---|
 | `actor_type` | Yes | No | `agent` \| `operator` \| `system` | Must be one of the three canonical values. See `actor_type` enumeration above. |
 | `actor_id` | Yes | No | Identifier string | The identifier of the acting entity. The value class varies by `actor_type` and will be specified in the actor identity schema spec (a companion artifact to `governance/auth-and-actor-model.md`). Must not be empty or anonymous for governed actions. |
-| `actor_system` | Yes | No | `project_v` \| `veda` \| `v_forge` \| `ecosystem` \| `extension` | Must be one of the five canonical values. See `actor_system` enumeration above. |
+| `actor_system` | Yes | No | `project_v` \| `veda` \| `veda_strategy` \| `v_forge` \| `ecosystem` \| `extension` | Must be one of the six canonical values. See `actor_system` enumeration above. |
 
 **Note on `actor_id` value class:** The exact format and value class for `actor_id`
 per `actor_type` (e.g., what kind of identifier is used for an operator vs an agent
@@ -379,9 +388,9 @@ that spec exists. This is the one open schema-facing item at the ecosystem layer
 
 | Field | Required | Nullable | Allowed values / format | Notes |
 |---|---|---|---|---|
-| `entity_type` | Yes | No | Value from canonical `entity_type` enumeration | Must be one of the fifteen canonical values in the entity type table above. |
+| `entity_type` | Yes | No | Value from canonical `entity_type` enumeration | Must be one of the sixteen canonical values in the entity type table above. |
 | `entity_id` | Yes | No | Identifier string | The identifier of the affected entity in its owning system. Must be stable and resolvable against the owning system's records. |
-| `target_system` | Yes | No | `project_v` \| `veda` \| `v_forge` | The system that owns the affected entity. Must be consistent with the `entity_type` value's owning system. |
+| `target_system` | Yes | No | `project_v` \| `veda` \| `veda_strategy` \| `v_forge` | The system that owns the affected entity. Must be consistent with the `entity_type` value's owning system. |
 
 ---
 
@@ -502,6 +511,8 @@ This means:
   from Project V's identifier space
 - an activity trail record with `entity_type: signal_package` carries an
   `entity_id` from VEDA's identifier space
+- an activity trail record with `entity_type: strategic_signal_package` carries
+  an `entity_id` from VEDA Strategy's identifier space
 - an activity trail record with `entity_type: task` carries an `entity_id`
   from V Forge's identifier space
 
@@ -613,6 +624,14 @@ when defining how V Forge records reference handoff records from Project V and
 signal packages from VEDA. Do not redefine any enumerated type or field contract
 from this document.
 
+**By the VEDA Strategy schema authority doc:** Reference the `entity_type` table
+to confirm which entity types VEDA Strategy owns (`strategic_signal_package` at
+first pass). Reference the activity trail record schema when specifying VEDA
+Strategy's record-production obligations for strategic signal delivery events.
+Reference the cross-system reference pattern when defining how VEDA Strategy
+records reference VEDA observatory records and Project V project identifiers.
+Do not redefine any enumerated type or field contract from this document.
+
 **By activity trail implementation work:** Use the activity trail record schema
 contract as the field-level specification for the activity trail database schema.
 Use the canonical enumerated types as the value sets for enumerated columns or
@@ -639,4 +658,5 @@ not appear in activity trail records before they are canonical in both documents
 - `governance/actor-identity-schema-spec.md` *(actor_id value-class specification per actor_type — to be created)*
 - `project-v/project-v-schema-authority.md` *(Project V entity schemas — to be created)*
 - `veda/veda-schema-authority.md` *(VEDA entity schemas — to be created)*
+- `veda-strategy/schema-authority.md` *(VEDA Strategy entity schemas — to be created in Batch D)*
 - `v-forge/v-forge-schema-authority.md` *(V Forge entity schemas — to be created)*

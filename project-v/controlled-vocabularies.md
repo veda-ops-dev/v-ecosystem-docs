@@ -221,6 +221,15 @@ Allowed values:
 - `veda_reference`
 - `external_reference`
 
+Note: `external_reference` may carry the governed External Technology Research
+posture defined in `external-technology-research-doctrine.md` when the referenced
+research concerns external technology used in implementation-target planning. The
+posture adds required semantics beyond the baseline `ResearchDoc` traits —
+specifically: technology identity, version or version range, source attribution,
+capture timestamp, freshness classification, and linked DecisionRecord references.
+The posture does not introduce a new vocabulary value; it narrows the interpretation
+of `external_reference` under specific conditions.
+
 ---
 
 ## Research Doc Status
@@ -229,6 +238,25 @@ Allowed values:
 
 - `active`
 - `archived`
+
+---
+
+## ETR Freshness Classification
+
+Applies to `ResearchDoc` records in External Technology Research posture per
+`external-technology-research-doctrine.md`.
+
+Allowed values:
+
+- `current`
+- `aging`
+- `stale`
+- `unknown`
+
+These values are governance-sensitive because they constrain readiness and audit
+results. `stale` and `unknown` are hard-failure triggers for `research` and
+`implementation_readiness` audit types. `aging` is a warning trigger. Adding or
+renaming a value follows the Vocabulary Change Rule.
 
 ---
 

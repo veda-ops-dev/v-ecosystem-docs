@@ -70,7 +70,7 @@ VEDA is the telescope.
 
 It points at external reality — search behavior, performance signals, market conditions, platform activity — and records what it sees with timestamps, provenance, and fidelity. It does not ask what should be done about what it saw. It does not know what was built. It simply watches and records faithfully.
 
-Interpretation belongs to Project V and V Forge, who take what the observatory saw and ask the real questions.
+Interpretation belongs to VEDA Strategy, Project V, and V Forge, who take what the observatory saw and ask the real questions — VEDA Strategy derives scored intelligence and strategic signals from it, Project V uses those signals for planning, and V Forge uses them for execution intelligence.
 
 This mental model is the primary guard against VEDA scope creep.
 If a proposed capability cannot be described as something a telescope does, it does not belong in VEDA.
@@ -105,6 +105,7 @@ VEDA owns:
 - Google Analytics 4 performance observations
 - Google Search Console indexation and performance observations
 - YouTube search and channel observatory data
+- raw AI-surface observability — mentions, citations, fan-out queries, brand entity appearances, and answer-surface platform metadata captured from admitted providers such as DataForSEO AI Optimization
 - source capture and source item ingestion
 - observatory event log
 - external provider data ingestion pipelines
@@ -131,16 +132,24 @@ VEDA does not own:
 - intelligence derived from internal project structure
 
 ### Explanation
-VEDA may supply signal to Project V and V Forge.
+VEDA may supply signal to VEDA Strategy, Project V, and V Forge.
 VEDA may observe how external reality responds to what was built.
 But VEDA must not become the system that models internal project structure, makes planning proposals, or owns execution history.
 
 The content graph — the structural model of what a project has built — belongs to V Forge.
-VEDA Brain does not exist in this ecosystem. Intelligence synthesis is the responsibility of Project V for pre-build planning and V Forge for post-build execution intelligence.
+VEDA Brain does not exist in this ecosystem. Derived strategic intelligence — opportunity scoring, gap detection, clustering, competitive analysis — is the responsibility of VEDA Strategy. Planning decisions are the responsibility of Project V. Execution intelligence is the responsibility of V Forge.
 
 ---
 
 ## Main Ecosystem Relationships
+
+### Relationship to VEDA Strategy
+VEDA provides bounded observatory signal to VEDA Strategy for strategic intelligence derivation.
+
+VEDA Strategy reads VEDA's observatory truth and derives scored opportunities, gap signals, clustering outputs, and competitive analysis from it.
+
+VEDA does not own the derived intelligence VEDA Strategy produces.
+VEDA does not make the planning or execution decisions that follow from VEDA Strategy's outputs.
 
 ### Relationship to Project V
 VEDA provides bounded, market-facing signal to Project V.
@@ -178,7 +187,9 @@ VEDA is not responsible for:
 - deciding what projects should be built
 - modeling the internal structure of what was built
 - generating planning proposals
+- deriving strategic intelligence — that is VEDA Strategy's role
 - generating execution intelligence
+- replacing VEDA Strategy's derived intelligence role
 - replacing Project V's planning role
 - replacing V Forge's execution intelligence role
 

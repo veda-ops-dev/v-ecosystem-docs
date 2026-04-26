@@ -299,6 +299,8 @@ This principle must be reflected in contract design: VEDA API responses must not
 
 API routes that package VEDA signal for Project V or V Forge consumption must be consistent with the governed signal interfaces. A route that packages planning-relevant signal must be consistent with `../interfaces/veda-to-project-v-signal-interface.md`. A route that packages execution-relevant signal must be consistent with `../interfaces/veda-to-v-forge-signal-interface.md`.
 
+VEDA observatory records consumed by VEDA Strategy as the basis for derived strategic intelligence are read through the governed VEDA → VEDA Strategy read path. VEDA API contract design must not route derived strategic intelligence back into VEDA itself or expose it as though VEDA produced it.
+
 Signal that exits VEDA outside the governed interfaces is ungoverned. There is no shortcut route that bypasses the interface contract because it is operationally convenient.
 
 ### Principle C3 — Downstream conclusions must not flow back into VEDA through write routes
@@ -435,9 +437,9 @@ If a VEDA API response shape could be mistaken for a planning API response or an
 
 Route names like `/pages`, `/topics`, `/entities`, `/content-gaps`, or response fields like `pageId`, `topicRef`, `contentArchetype` are content-graph concepts. ADR-002 transferred the content graph to V Forge. These concepts must not reappear in VEDA route families or response shapes under any name.
 
-### Rule 3 — VEDA Brain output types must not reappear as route families or response types
+### Rule 3 — Derived strategic intelligence output types must not reappear as route families or response types
 
-Opportunity scores, content gap signals, semantic coverage maps, query cluster intelligence, competitive opportunity rankings — these are VEDA Brain output types. ADR-003 eliminated VEDA Brain. They must not reappear as VEDA API route families, response types, or derived output labels.
+Opportunity scores, content gap signals, semantic coverage maps, query cluster intelligence, competitive opportunity rankings — these are derived strategic intelligence output types. VEDA is observatory-only and does not produce them. They must not reappear as VEDA API route families, response types, or derived output labels. If these output types are needed, they belong in VEDA Strategy (for derived strategic intelligence), Project V (for planning intelligence), or V Forge (for execution intelligence) — not in VEDA.
 
 ### Rule 4 — Raw observation records must not be displaced by derived output in canonical positions
 

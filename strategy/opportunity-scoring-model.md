@@ -42,7 +42,7 @@ Those belong in the objective function doc, intake workflow, VEDA docs, and Proj
 
 ## System
 
-- strategy
+- veda_strategy
 
 ---
 

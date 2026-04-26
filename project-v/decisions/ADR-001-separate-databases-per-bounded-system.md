@@ -2,7 +2,21 @@
 
 ## Status
 
-Accepted.
+Superseded by ADR-012.
+
+---
+
+## Supersession Notice
+
+The current ecosystem database posture is governed by:
+`../../ecosystem/decisions/ADR-012-single-postgres-multi-schema.md`
+
+ADR-012 establishes the settled posture: one physical PostgreSQL database with
+four schemas (`project_v`, `veda`, `veda_strategy`, `v_forge`), one per bounded
+system. That decision supersedes the per-database posture described below.
+
+The content below is preserved as historical context. It must not be read as
+current doctrine.
 
 ---
 
@@ -74,3 +88,4 @@ make boundary enforcement structurally reinforced, not just policy-enforced.
 - `../../interfaces/data-boundaries.md`
 - `../../ecosystem/db-posture.md`
 - `../../ecosystem/decisions/ADR-009-no-direct-database-access.md`
+- `../../ecosystem/decisions/ADR-012-single-postgres-multi-schema.md` *(superseding decision)*

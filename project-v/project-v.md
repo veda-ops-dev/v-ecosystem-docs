@@ -125,6 +125,15 @@ Project V consumes bounded planning-relevant outputs from VEDA.
 Project V does not own VEDA’s observability or evidence role.
 VEDA remains the signal, evidence, and observability system of record.
 
+## Relationship to VEDA Strategy
+Project V consumes bounded strategic signal packages from VEDA Strategy.
+
+VEDA Strategy reads VEDA observatory truth and derives scored opportunities, strategic gap signals, and other bounded strategic intelligence. It delivers those signals to Project V through the governed interface defined in `../interfaces/veda-strategy-to-project-v-signal-interface.md`.
+
+Project V evaluates the delivered signal and makes its own planning determination. Receiving a strategic signal from VEDA Strategy is not the same as a planning decision. Project V remains the planning system of record.
+
+VEDA Strategy does not generate planning decisions. Project V does not generate strategic signals. That boundary is firm.
+
 ## Relationship to V Forge
 Project V creates and governs handoff truth for work that should move into execution.
 
@@ -203,3 +212,6 @@ This document should be used:
 - `operational-workflow.md`
 - `lifecycle.md`
 - `v-forge-integration.md`
+- `../veda-strategy/veda-strategy.md`
+- `../interfaces/veda-strategy-to-project-v-signal-interface.md`
+- `../interfaces/veda-to-project-v-signal-interface.md`

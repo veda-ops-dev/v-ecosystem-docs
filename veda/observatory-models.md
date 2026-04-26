@@ -388,7 +388,7 @@ Models named `PageNode`, `TopicCluster`, `ContentEntity`, `ObservedPage`, `Seman
 
 ### Rule 3 — VEDA Brain patterns may not re-enter VEDA as derived model categories
 
-A model that materializes planning proposals, content gap recommendations, cross-system intelligence products, or opportunity scoring is a VEDA Brain pattern. ADR-003 eliminated VEDA Brain. A "search intelligence model" or "derived opportunity record" that encodes these patterns is VEDA Brain under a different name. If the model is needed, it belongs in Project V or V Forge.
+A model that materializes planning proposals, content gap recommendations, cross-system intelligence products, or opportunity scoring is a VEDA Brain pattern. ADR-003 eliminated VEDA Brain. A "search intelligence model" or "derived opportunity record" that encodes these patterns is VEDA Brain under a different name. If the model is needed, it belongs in VEDA Strategy (for derived strategic intelligence such as opportunity scoring, gap detection, clustering, and competitive analysis), or in Project V or V Forge where the capability is planning- or execution-specific.
 
 ### Rule 4 — External URLs and identifiers must not be silently upgraded into owned entities
 

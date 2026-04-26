@@ -122,6 +122,7 @@ A valid first-pass traceability chain in Project V should preserve linkage acros
 - handoff records
 - bounded external or execution references where needed
 - audit results
+- external technology research references where implementation-target decisions depend on them
 - planning-side drift or invalidation findings
 
 That chain should help answer:
@@ -166,6 +167,8 @@ Project V may store bounded links such as:
 Those links support orchestration and traceability.
 They do not transfer canonical ownership of execution truth into Project V.
 
+External technology research is distinct from execution-facing ExternalLink records. When planning depends on a version-specific external technology claim, the planning basis should remain recoverable through governed ResearchDoc posture as defined in `external-technology-research-doctrine.md`.
+
 ### Rule
 External references must remain directional and honest.
 A reference from Project V to an execution-facing system is not the same thing as Project V owning that referenced truth.
@@ -183,6 +186,12 @@ Project V should remain able to show:
 - what target system the handoff was directed toward
 - what bounded rationale supported the handoff
 - what external references, if any, were attached to preserve follow-up clarity
+
+The execution-ready planning artifact that Project V produces to carry approved
+scope and constraints into V Forge is the implementation document. The traceability
+chain must extend into that artifact. A document with no linkage to planning records,
+decisions, and ETR references is not a governed implementation document. See
+`implementation-document-doctrine.md`.
 
 ### Rule
 A handoff may include or point to bounded traceability.
@@ -368,6 +377,7 @@ This document should be used:
 - `v-forge-integration.md`
 - `schema-authority.md`
 - `data-boundaries.md`
+- `implementation-document-doctrine.md`
 - `../interfaces/project-v-to-v-forge-handoff-interface.md`
 - `../interfaces/v-forge-to-project-v-return-to-planning-interface.md`
 - `../governance/decision-continuity-doctrine.md`

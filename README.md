@@ -27,13 +27,14 @@ These define system-wide law and must not be bypassed.
 - `project-v/`
 - `veda/`
 - `v-forge/`
+- `veda-strategy/`
 
 These define system-specific behavior within the ecosystem boundaries.
 
-### Strategy Authority
+### Strategy Doctrine
 - `strategy/`
 
-Defines evaluation models, scoring systems, and long-term ecosystem direction.
+Contains Tier 1 ecosystem-level strategic doctrine: objective function, opportunity scoring, project thesis model, and outcome evaluation doctrine. These docs are governed by VEDA Strategy (`veda-strategy/`) as the authority-owning system — the `system:` field on each strategy doc is `veda_strategy`.
 
 ### Tier 3 — Implementation Support
 - `interfaces/*-implementation-design.md`

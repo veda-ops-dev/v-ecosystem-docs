@@ -42,7 +42,7 @@ Those belong in the opportunity scoring model, strategy docs, VEDA docs, and Pro
 
 ## System
 
-- strategy
+- veda_strategy
 
 ---
 

@@ -367,11 +367,11 @@ Materializing search intelligence outputs into standing tables without documente
 
 ### Rule 6 — VEDA Brain patterns must not re-enter through search intelligence vocabulary
 
-"Opportunity score," "content gap signal," "semantic coverage map," "query cluster intelligence," "competitive opportunity ranking" — these are VEDA Brain output types. They do not belong in the search intelligence layer under any name. If a proposed output type describes a planning recommendation or an execution optimization, it belongs in Project V or V Forge, not in VEDA's search intelligence layer.
+"Opportunity score," "content gap signal," "semantic coverage map," "query cluster intelligence," "competitive opportunity ranking" — these are VEDA Brain output types. They do not belong in the search intelligence layer under any name. If a proposed output type describes derived strategic intelligence such as opportunity scoring, gap detection, clustering, or competitive analysis, it belongs in VEDA Strategy. If it describes a planning recommendation, it belongs in Project V. If it describes an execution optimization, it belongs in V Forge. None of these belong in VEDA's search intelligence layer.
 
 ### Rule 7 — Cross-system signal interfaces remain the governed path out
 
-Search intelligence output that is intended for Project V or V Forge must exit VEDA through the governed signal interfaces: `veda-to-project-v-signal-interface.md` and `veda-to-v-forge-signal-interface.md`. Routing search intelligence output directly into planning records or execution records outside those interfaces is a boundary violation, regardless of the technical convenience.
+Search intelligence output that is intended for Project V or V Forge must exit VEDA through the governed signal interfaces: `veda-to-project-v-signal-interface.md` and `veda-to-v-forge-signal-interface.md`. Observatory signal consumed by VEDA Strategy as the basis for derived strategic intelligence follows the governed VEDA → VEDA Strategy read path. Routing search intelligence output directly into planning records, execution records, or derived intelligence records outside governed interfaces is a boundary violation, regardless of the technical convenience.
 
 ### Rule 8 — New correlation or derivation patterns require documented rationale
 

@@ -1,0 +1,40 @@
+{
+  "id": "04121230-1463-0541-0000-80b9a0e68ef5",
+  "status_code": 20000,
+  "status_message": "Ok.",
+  "time": "0.0387 sec.",
+  "cost": 0.0011,
+  "result_count": 1,
+  "path": [
+    "v3",
+    "dataforseo_labs",
+    "google",
+    "search_intent",
+    "live"
+  ],
+  "data": {
+    "api": "dataforseo_labs",
+    "function": "search_intent",
+    "se_type": "google",
+    "keywords": [
+      "seo"
+    ],
+    "language_code": "en"
+  },
+  "result": [
+    {
+      "language_code": "en",
+      "items_count": 1,
+      "items": [
+        {
+          "keyword": "seo",
+          "keyword_intent": {
+            "label": "navigational",
+            "probability": 0.9823565
+          },
+          "secondary_keyword_intents": null
+        }
+      ]
+    }
+  ]
+}
