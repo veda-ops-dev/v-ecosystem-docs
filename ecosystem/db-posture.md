@@ -88,20 +88,27 @@ unless an explicit governed exception is approved.
 The physical database shape is:
 
 - one shared PostgreSQL-family database instance
-- four schemas, one per bounded system
+- four bounded-system schemas, one per bounded system
+- one constrained ecosystem governance schema
 
-The current schema set is:
+The bounded-system schema set is:
 
-- `project_v` — owned by Project V
-- `veda` — owned by VEDA
-- `veda_strategy` — owned by VEDA Strategy
-- `v_forge` — owned by V Forge
+- `project_v` - owned by Project V
+- `veda` - owned by VEDA
+- `veda_strategy` - owned by VEDA Strategy
+- `v_forge` - owned by V Forge
 
-Each schema is a hard logical boundary, not a naming convention.
+The constrained ecosystem governance schema is:
+
+- `ecosystem` - owned by the ecosystem infrastructure / operations layer for shared governance infrastructure only
+
+Each bounded-system schema is a hard logical boundary, not a naming convention.
 Being in the same database instance does not make schemas interchangeable or
-co-owned. A schema is a canonical ownership container, not a folder.
+co-owned. A bounded-system schema is a canonical ownership container, not a folder.
 
-This shape is governed by ADR-012.
+The `ecosystem` schema is not a bounded-system schema and is not a shared application database. It is a governed exception for ecosystem-wide governance artifacts that cannot be correctly owned by any one bounded system. Its initial permitted scope is limited to `ecosystem.activity_trail` and `ecosystem.activity_trail_dlq`.
+
+This shape is governed by ADR-012 and amended by ADR-013.
 
 ---
 
@@ -173,10 +180,12 @@ This means:
 - VEDA Strategy runs migrations for `veda_strategy`
 - V Forge runs migrations for `v_forge`
 
-One system’s migration runner must not mutate another system’s schema.
+The `ecosystem` governance schema is migrated by the ecosystem infrastructure / operations layer, not by any bounded-system migration runner.
+
+One system's migration runner must not mutate another system's schema or the `ecosystem` governance schema unless explicitly operating under ecosystem infrastructure migration authority.
 
 Migration tooling may differ between systems.
-Migration ownership may not.
+Migration ownership may not blur.
 
 ---
 
@@ -291,11 +300,15 @@ A declared boundary that is not verified is weak architecture.
 The ecosystem database posture has drifted if:
 
 - multiple bounded systems begin storing mixed canonical truth across schemas by convenience
-- one system begins writing directly into another system’s canonical tables
-- one system’s credentials can freely reach into another system’s schema without governed reason
+- one system begins writing directly into another system's canonical tables
+- one system's credentials can freely reach into another system's schema without governed reason
 - JSON blobs become a storage loophole for cross-boundary truth copying
 - a new bounded system is added without its own schema and persistence boundary
+- the `ecosystem` governance schema is expanded beyond its governed scope without a later ADR or equivalent authority update
+- the `ecosystem_trail_writer` role is granted anything broader than the permitted trail-write capability
 - vendor-specific convenience becomes hidden doctrine without explicit approval
+
+The `ecosystem` schema authorized by ADR-013 is not evidence of drift by itself. It is a constrained governance exception. Treating it as a general-purpose shared schema is drift.
 
 These are not harmless shortcuts.
 They are persistence-boundary failures.
@@ -322,11 +335,12 @@ Database posture is too load-bearing to drift through convenience decisions.
 
 A capable LLM should be able to infer from this doc that:
 
-- the ecosystem uses one physical PostgreSQL-family database with four schemas
+- the ecosystem uses one physical PostgreSQL-family database with four bounded-system schemas plus one constrained ecosystem governance schema
 - each bounded system owns its own schema; physical consolidation does not mean shared ownership
+- the `ecosystem` schema is a governance-only exception, not a fifth bounded system or shared application database
 - canonical ownership stays separated by schema and enforced by credentials, service boundaries, and API enforcement
-- cross-system direct schema access is forbidden
-- migration ownership stays local to the owning system’s schema
+- cross-system direct schema access is forbidden except for the narrowly scoped `ecosystem_trail_writer` insert-only trail write path authorized by ADR-013
+- migration ownership stays local to the owning system's schema; `ecosystem` schema migrations are owned by ecosystem infrastructure / operations
 - future vector capability should be added without fragmenting the database family casually
 - future onboarded systems normally receive their own schema and persistence boundary
 
@@ -351,6 +365,7 @@ This document should be used:
 - `v-ecosystem-overview.md`
 - `cross-system-boundaries.md`
 - `decisions/ADR-012-single-postgres-multi-schema.md`
+- `decisions/ADR-013-ecosystem-governance-schema.md`
 - `../project-v/project-v.md`
 - `../veda/veda.md`
 - `../veda-strategy/veda-strategy.md`
